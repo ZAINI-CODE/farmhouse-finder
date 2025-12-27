@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   MapPin, Users, Star, Heart, Share2, Calendar, ChevronLeft,
@@ -78,6 +78,7 @@ Set on 50 acres of rolling vineyards, the estate features breathtaking panoramic
 
 export default function PropertyDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -356,7 +357,12 @@ export default function PropertyDetail() {
                     </div>
                   </div>
 
-                  <Button variant="accent" size="xl" className="w-full mb-4">
+                  <Button
+                    variant="accent"
+                    size="xl"
+                    className="w-full mb-4"
+                    onClick={() => navigate(`/booking/${id || '1'}`)}
+                  >
                     Request to Book
                   </Button>
 

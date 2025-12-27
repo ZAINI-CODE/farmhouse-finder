@@ -11,6 +11,9 @@ import ServiceDetail from "./pages/ServiceDetail";
 import Catering from "./pages/Catering";
 import Photography from "./pages/Photography";
 import Decoration from "./pages/Decoration";
+import MusicDJ from "./pages/MusicDJ";
+import EventPlanning from "./pages/EventPlanning";
+import Booking from "./pages/Booking";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
@@ -32,6 +35,9 @@ const App = () => (
           <Route path="/services/catering" element={<Catering />} />
           <Route path="/services/photography" element={<Photography />} />
           <Route path="/services/decoration" element={<Decoration />} />
+          <Route path="/services/music-dj" element={<MusicDJ />} />
+          <Route path="/services/event-planning" element={<EventPlanning />} />
+          <Route path="/booking/:propertyId" element={<Booking />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
