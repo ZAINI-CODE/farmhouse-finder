@@ -106,7 +106,7 @@ export function ServiceCategories() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <Link to={`/services?category=${category.id}`}>
+              <Link to={category.id === "catering" ? "/services/catering" : category.id === "photography" ? "/services/photography" : category.id === "decoration" ? "/services/decoration" : category.id === "music" ? "/services/music-dj" : category.id === "planning" ? "/services/event-planning" : `/services?category=${category.id}`}>
                 <div className="group bg-card rounded-2xl p-6 border border-border hover:border-accent/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                   <div className="flex items-start justify-between mb-4">
                     <div
