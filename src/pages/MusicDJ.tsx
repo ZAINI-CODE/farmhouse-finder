@@ -11,81 +11,81 @@ import { Badge } from "@/components/ui/badge";
 const djVendors = [
   {
     id: "dj-1",
-    name: "DJ Soundwave",
-    location: "Los Angeles, CA",
+    name: "DJ Hamza Sound System",
+    location: "DHA Phase 5, Lahore",
     rating: 4.9,
     reviews: 312,
-    price: "$800-2000",
-    description: "High-energy DJ with 15+ years experience. Specializing in weddings, corporate events, and festivals.",
-    tags: ["Weddings", "Corporate", "Festivals"],
+    price: "Rs. 25,000-60,000",
+    description: "High-energy DJ with 15+ years experience. Specializing in weddings, mehndi nights, and corporate events.",
+    tags: ["Weddings", "Corporate", "Mehndi"],
     featured: true,
     image: "https://images.unsplash.com/photo-1571266028243-d220c6a8b028?w=600",
-    specialties: ["EDM", "Top 40", "Hip Hop"],
+    specialties: ["Bollywood", "Punjabi", "Pop"],
   },
   {
     id: "dj-2",
-    name: "Melody Masters Band",
-    location: "Nashville, TN",
+    name: "Qawwali Masters",
+    location: "Data Darbar, Lahore",
     rating: 4.8,
     reviews: 189,
-    price: "$2000-5000",
-    description: "Live band experience with versatile repertoire. From jazz to rock, we set the perfect mood.",
-    tags: ["Live Band", "Jazz", "Rock"],
+    price: "Rs. 50,000-120,000",
+    description: "Live qawwali performances for mehndi and religious events. Traditional music that touches the soul.",
+    tags: ["Qawwali", "Traditional", "Live"],
     featured: true,
     image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600",
-    specialties: ["Live Music", "Jazz", "Rock"],
+    specialties: ["Qawwali", "Sufi", "Folk"],
   },
   {
     id: "dj-3",
-    name: "Beats by Marcus",
-    location: "Atlanta, GA",
+    name: "Mehndi Beats by Imran",
+    location: "Gulberg II, Lahore",
     rating: 4.9,
     reviews: 267,
-    price: "$600-1500",
-    description: "Urban music specialist with state-of-the-art sound equipment. Making parties unforgettable.",
-    tags: ["Hip Hop", "R&B", "Urban"],
+    price: "Rs. 18,000-45,000",
+    description: "Mehndi and dholki specialist with state-of-the-art sound equipment. Making parties unforgettable.",
+    tags: ["Mehndi", "Dholki", "Wedding"],
     featured: false,
     image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600",
-    specialties: ["Hip Hop", "R&B", "Trap"],
+    specialties: ["Mehndi Songs", "Punjabi", "Bollywood"],
   },
   {
     id: "dj-4",
-    name: "Classical Strings Quartet",
-    location: "New York, NY",
+    name: "Classical Music Ensemble",
+    location: "Model Town, Lahore",
     rating: 5.0,
     reviews: 156,
-    price: "$1500-3500",
-    description: "Elegant classical music for sophisticated events. Perfect for ceremonies and cocktail hours.",
-    tags: ["Classical", "Ceremony", "Elegant"],
+    price: "Rs. 45,000-100,000",
+    description: "Elegant classical music for sophisticated events. Perfect for nikah ceremonies and receptions.",
+    tags: ["Classical", "Nikah", "Elegant"],
     featured: true,
     image: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=600",
-    specialties: ["Classical", "Chamber Music", "Ceremony"],
+    specialties: ["Ghazal", "Classical", "Instrumental"],
   },
   {
     id: "dj-5",
-    name: "Fiesta Sound System",
-    location: "Miami, FL",
+    name: "Lahori Dhol Wale",
+    location: "Old Lahore, Lahore",
     rating: 4.7,
     reviews: 234,
-    price: "$500-1200",
-    description: "Latin music experts bringing the heat to any celebration. Salsa, bachata, and reggaeton specialists.",
-    tags: ["Latin", "Salsa", "Party"],
+    price: "Rs. 15,000-35,000",
+    description: "Traditional dhol players bringing the authentic Lahori baraat experience. Energy guaranteed!",
+    tags: ["Dhol", "Baraat", "Traditional"],
     featured: false,
     image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600",
-    specialties: ["Salsa", "Bachata", "Reggaeton"],
+    specialties: ["Dhol", "Bhangra", "Folk"],
   },
   {
     id: "dj-6",
-    name: "Acoustic Vibes Duo",
-    location: "Denver, CO",
+    name: "Acoustic Nights",
+    location: "Johar Town, Lahore",
     rating: 4.8,
     reviews: 145,
-    price: "$400-900",
+    price: "Rs. 12,000-30,000",
     description: "Intimate acoustic performances for smaller gatherings. Guitar and vocals that create magic.",
     tags: ["Acoustic", "Intimate", "Duo"],
     featured: false,
     image: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=600",
-    specialties: ["Acoustic", "Folk", "Indie"],
+    specialties: ["Acoustic", "Unplugged", "Romantic"],
   },
 ];
 
@@ -125,7 +125,7 @@ export default function MusicDJ() {
                   transition={{ delay: 0.1 }}
                   className="text-muted-foreground"
                 >
-                  Find the perfect sound for your event
+                  Find the perfect sound for your event in Lahore
                 </motion.p>
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function MusicDJ() {
 
           {/* Quick Filters */}
           <div className="flex flex-wrap gap-2 mb-8">
-            {["All", "DJ", "Live Band", "Classical", "Latin", "Acoustic", "EDM"].map((filter) => (
+            {["All", "DJ", "Qawwali", "Dhol", "Classical", "Acoustic", "Mehndi"].map((filter) => (
               <button
                 key={filter}
                 className="px-4 py-2 rounded-full text-sm font-medium bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-colors"

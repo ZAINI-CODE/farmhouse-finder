@@ -11,11 +11,11 @@ import { Badge } from "@/components/ui/badge";
 const eventPlanners = [
   {
     id: "ep-1",
-    name: "Elite Events Co.",
-    location: "New York, NY",
+    name: "Ayesha's Elite Events",
+    location: "Gulberg III, Lahore",
     rating: 5.0,
     reviews: 287,
-    price: "$3000-15000",
+    price: "Rs. 100,000-500,000",
     description: "Full-service luxury event planning for high-end weddings and corporate galas. White-glove service guaranteed.",
     tags: ["Luxury", "Weddings", "Corporate"],
     featured: true,
@@ -24,24 +24,24 @@ const eventPlanners = [
   },
   {
     id: "ep-2",
-    name: "Dream Day Planners",
-    location: "Los Angeles, CA",
+    name: "Shadi Planners by Sana",
+    location: "DHA Phase 6, Lahore",
     rating: 4.9,
     reviews: 234,
-    price: "$2000-8000",
-    description: "Making wedding dreams come true since 2010. Personalized planning for your perfect day.",
+    price: "Rs. 60,000-250,000",
+    description: "Making wedding dreams come true since 2010. Complete shadi planning from mehndi to walima.",
     tags: ["Weddings", "Romantic", "Personalized"],
     featured: true,
     image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600",
-    specialties: ["Weddings", "Engagements", "Showers"],
+    specialties: ["Weddings", "Engagements", "Dholki"],
   },
   {
     id: "ep-3",
-    name: "Corporate Connect Events",
-    location: "Chicago, IL",
+    name: "Corporate Connect Lahore",
+    location: "Main Boulevard, Lahore",
     rating: 4.8,
     reviews: 189,
-    price: "$5000-25000",
+    price: "Rs. 150,000-800,000",
     description: "Specialized in corporate conferences, product launches, and team building events.",
     tags: ["Corporate", "Conferences", "Team Building"],
     featured: false,
@@ -50,42 +50,42 @@ const eventPlanners = [
   },
   {
     id: "ep-4",
-    name: "Fiesta Party Planners",
-    location: "Miami, FL",
+    name: "Dawat-e-Khas",
+    location: "Model Town, Lahore",
     rating: 4.9,
     reviews: 312,
-    price: "$1500-6000",
-    description: "Bringing vibrant celebrations to life! Specializing in birthdays, quinceañeras, and cultural events.",
-    tags: ["Birthdays", "Cultural", "Fun"],
+    price: "Rs. 45,000-180,000",
+    description: "Bringing vibrant celebrations to life! Specializing in mehndi, dholki, and cultural events.",
+    tags: ["Mehndi", "Cultural", "Fun"],
     featured: true,
     image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600",
-    specialties: ["Birthdays", "Quinceañeras", "Cultural"],
+    specialties: ["Mehndi", "Dholki", "Cultural"],
   },
   {
     id: "ep-5",
-    name: "Green Gathering Events",
-    location: "Portland, OR",
+    name: "Green Garden Events",
+    location: "Bahria Town, Lahore",
     rating: 4.7,
     reviews: 156,
-    price: "$1000-5000",
-    description: "Eco-conscious event planning with sustainable practices. Beautiful events that care for the planet.",
-    tags: ["Eco-Friendly", "Sustainable", "Outdoor"],
+    price: "Rs. 35,000-150,000",
+    description: "Outdoor event specialists. Beautiful garden parties, daytime events, and eco-friendly celebrations.",
+    tags: ["Outdoor", "Garden", "Daytime"],
     featured: false,
     image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600",
-    specialties: ["Eco Events", "Outdoor", "Sustainable"],
+    specialties: ["Garden Events", "Outdoor", "Daytime"],
   },
   {
     id: "ep-6",
-    name: "Milestone Moments",
-    location: "Austin, TX",
+    name: "Milestone Moments Pakistan",
+    location: "Johar Town, Lahore",
     rating: 4.8,
     reviews: 198,
-    price: "$800-4000",
-    description: "Celebrating life's biggest moments. From baby showers to retirement parties, we do it all.",
+    price: "Rs. 25,000-120,000",
+    description: "Celebrating life's biggest moments. From aqeeqah to retirement parties, we do it all.",
     tags: ["Life Events", "Intimate", "Personal"],
     featured: false,
     image: "https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=600",
-    specialties: ["Baby Showers", "Anniversaries", "Retirements"],
+    specialties: ["Aqeeqah", "Anniversaries", "Birthdays"],
   },
 ];
 
@@ -125,7 +125,7 @@ export default function EventPlanning() {
                   transition={{ delay: 0.1 }}
                   className="text-muted-foreground"
                 >
-                  Professional planners for any occasion
+                  Professional planners for any occasion in Lahore
                 </motion.p>
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function EventPlanning() {
 
           {/* Quick Filters */}
           <div className="flex flex-wrap gap-2 mb-8">
-            {["All", "Weddings", "Corporate", "Birthdays", "Cultural", "Outdoor", "Luxury"].map((filter) => (
+            {["All", "Weddings", "Corporate", "Mehndi", "Cultural", "Outdoor", "Luxury"].map((filter) => (
               <button
                 key={filter}
                 className="px-4 py-2 rounded-full text-sm font-medium bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-colors"

@@ -11,9 +11,9 @@ import property4 from "@/assets/property-4.jpg";
 const featuredProperties = [
   {
     id: "1",
-    title: "Sunset Valley Estate",
-    location: "Napa Valley, CA",
-    price: 1500,
+    title: "Royal Garden Farmhouse",
+    location: "DHA Phase 6, Lahore",
+    price: 85000,
     rating: 4.9,
     reviews: 127,
     guests: 150,
@@ -23,9 +23,9 @@ const featuredProperties = [
   },
   {
     id: "2",
-    title: "Rustic Barn Venue",
-    location: "Austin, TX",
-    price: 1200,
+    title: "Green Valley Resort",
+    location: "Bedian Road, Lahore",
+    price: 65000,
     rating: 4.8,
     reviews: 89,
     guests: 200,
@@ -35,24 +35,24 @@ const featuredProperties = [
   },
   {
     id: "3",
-    title: "Hilltop Haven Retreat",
-    location: "Sonoma, CA",
-    price: 2000,
+    title: "Raiwind Gardens",
+    location: "Raiwind Road, Lahore",
+    price: 120000,
     rating: 5.0,
     reviews: 64,
-    guests: 80,
+    guests: 300,
     image: property3,
     badge: "New",
     amenities: ["Views", "Fire Pit", "Kitchen"],
   },
   {
     id: "4",
-    title: "Charming Garden Cottage",
-    location: "Charleston, SC",
-    price: 800,
+    title: "Pearl Farmhouse",
+    location: "Canal Road, Lahore",
+    price: 45000,
     rating: 4.7,
     reviews: 156,
-    guests: 50,
+    guests: 80,
     image: property4,
     amenities: ["Garden", "Gazebo", "Lights"],
   },
@@ -80,7 +80,7 @@ export function FeaturedProperties() {
               transition={{ delay: 0.1 }}
               className="font-heading text-3xl md:text-4xl font-bold text-foreground mt-2"
             >
-              Featured Properties
+              Featured Properties in Lahore
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -175,7 +175,7 @@ export function FeaturedProperties() {
                       </div>
                       <div>
                         <span className="font-heading font-bold text-lg text-primary">
-                          ${property.price}
+                          Rs. {property.price.toLocaleString()}
                         </span>
                         <span className="text-muted-foreground text-sm">/day</span>
                       </div>

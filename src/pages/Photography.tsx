@@ -11,11 +11,11 @@ import { Badge } from "@/components/ui/badge";
 const photographyVendors = [
   {
     id: "2",
-    name: "Lens & Light Photography",
-    location: "Los Angeles, CA",
+    name: "Hassan Photography Studio",
+    location: "M.M. Alam Road, Lahore",
     rating: 5.0,
     reviews: 189,
-    price: "From $2,500",
+    price: "From Rs. 75,000",
     description: "Capturing your special moments with artistic excellence. Award-winning wedding and event photography.",
     tags: ["Weddings", "Portraits", "Events"],
     featured: true,
@@ -24,11 +24,11 @@ const photographyVendors = [
   },
   {
     id: "13",
-    name: "Moment Makers Studio",
-    location: "New York, NY",
+    name: "Usman Films & Photography",
+    location: "Gulberg II, Lahore",
     rating: 4.9,
     reviews: 245,
-    price: "From $3,500",
+    price: "From Rs. 95,000",
     description: "Documentary-style photography that tells your story. Specializing in luxury weddings.",
     tags: ["Documentary", "Luxury", "Editorial"],
     featured: true,
@@ -37,12 +37,12 @@ const photographyVendors = [
   },
   {
     id: "14",
-    name: "Sunshine Photography",
-    location: "Miami, FL",
+    name: "Bilal's Memories Studio",
+    location: "DHA Phase 4, Lahore",
     rating: 4.8,
     reviews: 178,
-    price: "From $1,800",
-    description: "Bright, airy, and joyful photography. Capturing the happiness of your celebrations.",
+    price: "From Rs. 55,000",
+    description: "Bright, vibrant photography capturing the joy of your celebrations with professional touch.",
     tags: ["Bright", "Natural", "Joyful"],
     featured: false,
     image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600",
@@ -50,11 +50,11 @@ const photographyVendors = [
   },
   {
     id: "15",
-    name: "Classic Moments",
-    location: "Chicago, IL",
+    name: "Tariq Classic Photography",
+    location: "Model Town, Lahore",
     rating: 4.9,
     reviews: 201,
-    price: "From $2,200",
+    price: "From Rs. 65,000",
     description: "Timeless, elegant photography with a classic touch. Beautiful images that last forever.",
     tags: ["Classic", "Elegant", "Timeless"],
     featured: false,
@@ -63,29 +63,29 @@ const photographyVendors = [
   },
   {
     id: "16",
-    name: "Urban Edge Photos",
-    location: "San Francisco, CA",
+    name: "Zain Studios",
+    location: "Johar Town, Lahore",
     rating: 4.7,
     reviews: 134,
-    price: "From $2,000",
-    description: "Modern, edgy photography for couples who dare to be different. City vibes and bold colors.",
-    tags: ["Modern", "Urban", "Bold"],
+    price: "From Rs. 60,000",
+    description: "Modern photography for couples who want something unique. Creative shots and bold compositions.",
+    tags: ["Modern", "Creative", "Bold"],
     featured: false,
     image: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600",
-    style: ["Modern", "Edgy"],
+    style: ["Modern", "Creative"],
   },
   {
     id: "17",
-    name: "Nature's Frame",
-    location: "Denver, CO",
+    name: "Farhan Outdoor Photography",
+    location: "Bahria Town, Lahore",
     rating: 4.9,
     reviews: 156,
-    price: "From $2,800",
-    description: "Outdoor and destination photography specialists. Mountains, beaches, and everywhere in between.",
-    tags: ["Outdoor", "Destination", "Adventure"],
+    price: "From Rs. 85,000",
+    description: "Outdoor and destination photography specialists. Gardens, resorts, and everywhere beautiful.",
+    tags: ["Outdoor", "Destination", "Nature"],
     featured: true,
     image: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=600",
-    style: ["Outdoor", "Adventure"],
+    style: ["Outdoor", "Nature"],
   },
 ];
 
@@ -125,7 +125,7 @@ export default function Photography() {
                   transition={{ delay: 0.1 }}
                   className="text-muted-foreground"
                 >
-                  Capture your special moments forever
+                  Capture your special moments forever in Lahore
                 </motion.p>
               </div>
             </div>

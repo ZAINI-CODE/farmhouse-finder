@@ -11,81 +11,81 @@ import { Badge } from "@/components/ui/badge";
 const cateringVendors = [
   {
     id: "1",
-    name: "Golden Fork Catering",
-    location: "San Francisco, CA",
+    name: "Rahim's Royal Catering",
+    location: "Gulberg III, Lahore",
     rating: 4.9,
     reviews: 234,
-    price: "$45-120/person",
-    description: "Award-winning catering with farm-to-table cuisine. Perfect for weddings and corporate events.",
-    tags: ["Farm-to-Table", "Weddings", "Corporate"],
+    price: "Rs. 1,500-3,500/person",
+    description: "Award-winning catering with traditional Pakistani cuisine. Perfect for weddings and corporate events.",
+    tags: ["Pakistani", "Weddings", "Corporate"],
     featured: true,
     image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=600",
-    specialties: ["American", "Fusion"],
+    specialties: ["Biryani", "BBQ"],
   },
   {
     id: "7",
-    name: "Taste of Italy Catering",
-    location: "Boston, MA",
+    name: "Sultan's Kitchen",
+    location: "DHA Phase 5, Lahore",
     rating: 4.8,
     reviews: 167,
-    price: "$35-55/person",
-    description: "Authentic Italian cuisine for your special events. Traditional recipes with fresh ingredients.",
-    tags: ["Italian", "Mediterranean", "Buffet"],
+    price: "Rs. 1,200-2,800/person",
+    description: "Authentic Mughlai cuisine for your special events. Traditional recipes with fresh ingredients.",
+    tags: ["Mughlai", "Continental", "Buffet"],
     featured: false,
     image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600",
-    specialties: ["Italian", "Mediterranean"],
+    specialties: ["Mughlai", "Continental"],
   },
   {
     id: "9",
-    name: "Spice Route Kitchen",
-    location: "Houston, TX",
+    name: "Ahmed's BBQ House",
+    location: "Model Town, Lahore",
     rating: 4.7,
     reviews: 145,
-    price: "$30-60/person",
-    description: "Exotic flavors from around the world. Specializing in Indian and Asian fusion cuisine.",
-    tags: ["Indian", "Asian", "Fusion"],
+    price: "Rs. 800-2,000/person",
+    description: "Famous for tikka, seekh kebab and traditional BBQ. Specializing in outdoor events.",
+    tags: ["BBQ", "Tikka", "Outdoor"],
     featured: true,
     image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600",
-    specialties: ["Indian", "Asian"],
+    specialties: ["BBQ", "Tikka"],
   },
   {
     id: "10",
-    name: "BBQ Masters",
-    location: "Dallas, TX",
+    name: "Karachi Biryani Masters",
+    location: "Johar Town, Lahore",
     rating: 4.9,
     reviews: 312,
-    price: "$25-45/person",
-    description: "Texas-style BBQ at its finest. Slow-smoked meats and all the classic sides.",
-    tags: ["BBQ", "Texas-Style", "Outdoor"],
+    price: "Rs. 600-1,500/person",
+    description: "Authentic Karachi-style biryani and pulao. Serving Lahore for over 25 years.",
+    tags: ["Biryani", "Pulao", "Traditional"],
     featured: false,
     image: "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600",
-    specialties: ["BBQ", "American"],
+    specialties: ["Biryani", "Pulao"],
   },
   {
     id: "11",
-    name: "Ocean Fresh Seafood",
-    location: "Seattle, WA",
+    name: "Nihari House Catering",
+    location: "Old Anarkali, Lahore",
     rating: 4.8,
     reviews: 189,
-    price: "$50-90/person",
-    description: "Fresh Pacific Northwest seafood. Raw bars, grilled specialties, and seafood buffets.",
-    tags: ["Seafood", "Pacific", "Fresh"],
+    price: "Rs. 1,000-2,500/person",
+    description: "Traditional Lahori breakfast and lunch catering. Famous nihari, halwa puri, and more.",
+    tags: ["Traditional", "Lahori", "Breakfast"],
     featured: false,
     image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600",
-    specialties: ["Seafood", "Pacific Northwest"],
+    specialties: ["Nihari", "Lahori"],
   },
   {
     id: "12",
-    name: "Vegan Delights Catering",
-    location: "Portland, OR",
+    name: "Bismillah Dawat",
+    location: "Garden Town, Lahore",
     rating: 4.9,
     reviews: 156,
-    price: "$35-65/person",
-    description: "Creative plant-based cuisine that impresses everyone. Beautiful, delicious, and sustainable.",
-    tags: ["Vegan", "Plant-Based", "Organic"],
+    price: "Rs. 900-2,200/person",
+    description: "Complete wedding and event catering solutions. Halal, hygienic, and delicious.",
+    tags: ["Halal", "Weddings", "Events"],
     featured: true,
     image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600",
-    specialties: ["Vegan", "Organic"],
+    specialties: ["Pakistani", "Halal"],
   },
 ];
 
@@ -125,7 +125,7 @@ export default function Catering() {
                   transition={{ delay: 0.1 }}
                   className="text-muted-foreground"
                 >
-                  Find the perfect caterer for your event
+                  Find the perfect caterer for your event in Lahore
                 </motion.p>
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function Catering() {
 
           {/* Quick Filters */}
           <div className="flex flex-wrap gap-2 mb-8">
-            {["All", "Italian", "BBQ", "Vegan", "Seafood", "Asian", "Farm-to-Table"].map((filter) => (
+            {["All", "Biryani", "BBQ", "Mughlai", "Traditional", "Continental", "Lahori"].map((filter) => (
               <button
                 key={filter}
                 className="px-4 py-2 rounded-full text-sm font-medium bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
