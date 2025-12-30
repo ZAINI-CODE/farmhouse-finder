@@ -11,11 +11,11 @@ import { Badge } from "@/components/ui/badge";
 const decorationVendors = [
   {
     id: "4",
-    name: "Bloom & Blossom Decor",
-    location: "Miami, FL",
+    name: "Fatima's Floral Designs",
+    location: "Gulberg III, Lahore",
     rating: 4.9,
     reviews: 178,
-    price: "From $2,000",
+    price: "From Rs. 80,000",
     description: "Transform your venue into a magical wonderland. Specializing in floral installations and lighting.",
     tags: ["Floral", "Lighting", "Theme Design"],
     featured: true,
@@ -24,11 +24,11 @@ const decorationVendors = [
   },
   {
     id: "18",
-    name: "Enchanted Events Decor",
-    location: "Las Vegas, NV",
+    name: "Asad Event Decorators",
+    location: "DHA Phase 6, Lahore",
     rating: 4.8,
     reviews: 234,
-    price: "From $3,500",
+    price: "From Rs. 120,000",
     description: "Creating unforgettable atmospheres. From intimate gatherings to grand celebrations.",
     tags: ["Grand", "Theatrical", "Custom"],
     featured: true,
@@ -37,24 +37,24 @@ const decorationVendors = [
   },
   {
     id: "19",
-    name: "Rustic Charm Decorations",
-    location: "Nashville, TN",
+    name: "Nadia's Traditional Decor",
+    location: "Model Town, Lahore",
     rating: 4.7,
     reviews: 156,
-    price: "From $1,500",
-    description: "Bringing warmth and character to your events. Farmhouse, bohemian, and vintage styles.",
-    tags: ["Rustic", "Bohemian", "Vintage"],
+    price: "From Rs. 50,000",
+    description: "Bringing warmth and tradition to your events. Mehndi, baraat, and walima specialists.",
+    tags: ["Traditional", "Mehndi", "Baraat"],
     featured: false,
     image: "https://images.unsplash.com/photo-1510076857177-7470076d4098?w=600",
-    style: ["Rustic", "Bohemian"],
+    style: ["Traditional", "Cultural"],
   },
   {
     id: "20",
-    name: "Modern Minimalist Design",
-    location: "Austin, TX",
+    name: "Modern Touch Events",
+    location: "Johar Town, Lahore",
     rating: 4.9,
     reviews: 145,
-    price: "From $2,500",
+    price: "From Rs. 90,000",
     description: "Clean lines, elegant simplicity. Modern decor that makes a sophisticated statement.",
     tags: ["Modern", "Minimalist", "Contemporary"],
     featured: false,
@@ -63,29 +63,29 @@ const decorationVendors = [
   },
   {
     id: "21",
-    name: "Tropical Paradise Events",
-    location: "San Diego, CA",
+    name: "Zahid Garden Decorations",
+    location: "Bahria Town, Lahore",
     rating: 4.8,
     reviews: 189,
-    price: "From $2,200",
-    description: "Bringing tropical vibes to your celebrations. Lush greenery and vibrant colors.",
-    tags: ["Tropical", "Colorful", "Beach"],
+    price: "From Rs. 70,000",
+    description: "Outdoor garden specialists. Lush greenery, fairy lights, and vibrant colors.",
+    tags: ["Outdoor", "Garden", "Natural"],
     featured: true,
     image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600",
-    style: ["Tropical", "Vibrant"],
+    style: ["Garden", "Natural"],
   },
   {
     id: "22",
-    name: "Classic Elegance Decor",
-    location: "Boston, MA",
+    name: "Royal Palace Decor",
+    location: "Cantt, Lahore",
     rating: 4.9,
     reviews: 167,
-    price: "From $3,000",
-    description: "Timeless beauty and sophistication. Classic designs that never go out of style.",
+    price: "From Rs. 150,000",
+    description: "Timeless beauty and sophistication. Classic designs inspired by Mughal heritage.",
     tags: ["Classic", "Elegant", "Timeless"],
     featured: false,
     image: "https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=600",
-    style: ["Classic", "Elegant"],
+    style: ["Classic", "Royal"],
   },
 ];
 
@@ -125,7 +125,7 @@ export default function Decoration() {
                   transition={{ delay: 0.1 }}
                   className="text-muted-foreground"
                 >
-                  Transform your venue into a dream setting
+                  Transform your venue into a dream setting in Lahore
                 </motion.p>
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function Decoration() {
 
           {/* Quick Filters */}
           <div className="flex flex-wrap gap-2 mb-8">
-            {["All", "Floral", "Rustic", "Modern", "Classic", "Tropical", "Bohemian"].map((filter) => (
+            {["All", "Floral", "Traditional", "Modern", "Classic", "Outdoor", "Mehndi"].map((filter) => (
               <button
                 key={filter}
                 className="px-4 py-2 rounded-full text-sm font-medium bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-colors"

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { 
   MapPin, Users, Star, Heart, Search, SlidersHorizontal, 
-  Grid3X3, List, ChevronDown, X 
+  Grid3X3, List, X 
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -20,9 +20,9 @@ import property4 from "@/assets/property-4.jpg";
 const allProperties = [
   {
     id: "1",
-    title: "Sunset Valley Estate",
-    location: "Napa Valley, CA",
-    price: 1500,
+    title: "Royal Garden Farmhouse",
+    location: "DHA Phase 6, Lahore",
+    price: 85000,
     rating: 4.9,
     reviews: 127,
     guests: 150,
@@ -33,9 +33,9 @@ const allProperties = [
   },
   {
     id: "2",
-    title: "Rustic Barn Venue",
-    location: "Austin, TX",
-    price: 1200,
+    title: "Green Valley Resort",
+    location: "Bedian Road, Lahore",
+    price: 65000,
     rating: 4.8,
     reviews: 89,
     guests: 200,
@@ -46,12 +46,12 @@ const allProperties = [
   },
   {
     id: "3",
-    title: "Hilltop Haven Retreat",
-    location: "Sonoma, CA",
-    price: 2000,
+    title: "Raiwind Gardens",
+    location: "Raiwind Road, Lahore",
+    price: 120000,
     rating: 5.0,
     reviews: 64,
-    guests: 80,
+    guests: 300,
     image: property3,
     badge: "New",
     amenities: ["Views", "Fire Pit", "Kitchen", "WiFi"],
@@ -59,21 +59,21 @@ const allProperties = [
   },
   {
     id: "4",
-    title: "Charming Garden Cottage",
-    location: "Charleston, SC",
-    price: 800,
+    title: "Pearl Continental Farmhouse",
+    location: "Canal Road, Lahore",
+    price: 45000,
     rating: 4.7,
     reviews: 156,
-    guests: 50,
+    guests: 80,
     image: property4,
     amenities: ["Garden", "Gazebo", "Lights", "Parking"],
     type: "Cottage",
   },
   {
     id: "5",
-    title: "Mountain View Ranch",
-    location: "Denver, CO",
-    price: 1800,
+    title: "Bahria Orchards Villa",
+    location: "Bahria Orchard, Lahore",
+    price: 95000,
     rating: 4.9,
     reviews: 92,
     guests: 120,
@@ -83,12 +83,12 @@ const allProperties = [
   },
   {
     id: "6",
-    title: "Lakeside Retreat",
-    location: "Lake Tahoe, CA",
-    price: 2500,
+    title: "Lake City Retreat",
+    location: "Lake City, Lahore",
+    price: 150000,
     rating: 5.0,
     reviews: 45,
-    guests: 60,
+    guests: 250,
     image: property3,
     badge: "Premium",
     amenities: ["Lake Access", "Dock", "Kayaks", "Hot Tub"],
@@ -104,7 +104,7 @@ export default function Properties() {
   const [showFilters, setShowFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("All");
-  const [priceRange, setPriceRange] = useState([0, 3000]);
+  const [priceRange, setPriceRange] = useState([0, 200000]);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
 
   const filteredProperties = allProperties.filter((property) => {
@@ -126,7 +126,7 @@ export default function Properties() {
           {/* Page Header */}
           <div className="mb-8">
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2">
-              Explore Properties
+              Explore Properties in Lahore
             </h1>
             <p className="text-muted-foreground">
               Discover {filteredProperties.length} stunning venues for your next event
@@ -212,13 +212,13 @@ export default function Properties() {
                   {/* Price Range */}
                   <div>
                     <label className="text-sm font-medium text-foreground mb-3 block">
-                      Price Range: ${priceRange[0]} - ${priceRange[1]}
+                      Price Range: Rs. {priceRange[0].toLocaleString()} - Rs. {priceRange[1].toLocaleString()}
                     </label>
                     <Slider
                       value={priceRange}
                       onValueChange={setPriceRange}
-                      max={3000}
-                      step={100}
+                      max={200000}
+                      step={5000}
                       className="mt-4"
                     />
                   </div>
@@ -252,14 +252,14 @@ export default function Properties() {
                 </div>
 
                 {/* Clear Filters */}
-                {(selectedType !== "All" || selectedAmenities.length > 0 || priceRange[0] > 0 || priceRange[1] < 3000) && (
+                {(selectedType !== "All" || selectedAmenities.length > 0 || priceRange[0] > 0 || priceRange[1] < 200000) && (
                   <div className="mt-4 pt-4 border-t border-border">
                     <Button
                       variant="ghost"
                       onClick={() => {
                         setSelectedType("All");
                         setSelectedAmenities([]);
-                        setPriceRange([0, 3000]);
+                        setPriceRange([0, 200000]);
                       }}
                     >
                       <X className="h-4 w-4 mr-2" />
@@ -352,7 +352,7 @@ export default function Properties() {
                         </div>
                         <div>
                           <span className="font-heading font-bold text-lg text-primary">
-                            ${property.price}
+                            Rs. {property.price.toLocaleString()}
                           </span>
                           <span className="text-muted-foreground text-sm">/day</span>
                         </div>
@@ -374,7 +374,7 @@ export default function Properties() {
                   setSearchQuery("");
                   setSelectedType("All");
                   setSelectedAmenities([]);
-                  setPriceRange([0, 3000]);
+                  setPriceRange([0, 200000]);
                 }}
               >
                 Clear Filters
