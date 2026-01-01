@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import heroImage from "@/assets/hero-farmhouse.jpg";
+import logo from "@/assets/logo.png";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -73,9 +74,11 @@ export default function Login() {
         >
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-accent">
-              <span className="text-accent-foreground font-heading font-bold text-xl">B</span>
-            </div>
+            <img 
+              src={logo} 
+              alt="BookFarm Logo" 
+              className="w-10 h-10 rounded-xl shadow-sm"
+            />
             <span className="font-heading font-bold text-xl text-foreground">BookFarm</span>
           </Link>
 
