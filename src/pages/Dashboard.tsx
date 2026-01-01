@@ -1,62 +1,121 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, MapPin, Clock, Users, MessageSquare, Heart, Settings, Bell, ChevronRight } from 'lucide-react';
+import { 
+  Calendar, MapPin, Clock, Users, MessageSquare, Heart, Settings, Bell, 
+  ChevronRight, Plus, Home, Briefcase, BarChart3, Star, Building2
+} from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('upcoming');
+  const [userRole, setUserRole] = useState<string>('customer');
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState<{ full_name: string } | null>(null);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/login');
+    }
+  }, [user, loading, navigate]);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      if (user) {
+        // Fetch profile
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('full_name')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (profileData) {
+          setProfile(profileData);
+        }
+
+        // Fetch role
+        const { data: roleData } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (roleData) {
+          setUserRole(roleData.role);
+        }
+      }
+    }
+    fetchUserData();
+  }, [user]);
 
   const bookings = [
     {
       id: 1,
-      property: 'Green Valley Farmhouse',
-      location: 'Karjat, Maharashtra',
+      property: 'Royal Garden Farmhouse',
+      location: 'DHA Phase 6, Lahore',
       date: 'Jan 15, 2025',
       time: '10:00 AM - 6:00 PM',
       guests: 50,
       status: 'confirmed',
-      amount: '₹45,000',
+      amount: 'Rs. 85,000',
       image: '/placeholder.svg'
     },
     {
       id: 2,
-      property: 'Sunset Heritage Villa',
-      location: 'Lonavala, Maharashtra',
+      property: 'Green Valley Resort',
+      location: 'Bedian Road, Lahore',
       date: 'Feb 20, 2025',
       time: '9:00 AM - 9:00 PM',
       guests: 100,
       status: 'pending',
-      amount: '₹85,000',
+      amount: 'Rs. 65,000',
       image: '/placeholder.svg'
     },
     {
       id: 3,
-      property: 'Royal Gardens Estate',
-      location: 'Pune, Maharashtra',
+      property: 'Raiwind Gardens',
+      location: 'Raiwind Road, Lahore',
       date: 'Dec 10, 2024',
       time: '11:00 AM - 7:00 PM',
       guests: 75,
       status: 'completed',
-      amount: '₹62,000',
+      amount: 'Rs. 120,000',
       image: '/placeholder.svg'
     }
   ];
 
   const favorites = [
-    { id: 1, name: 'Lakeside Retreat', location: 'Igatpuri', price: '₹35,000/day', image: '/placeholder.svg' },
-    { id: 2, name: 'Mountain View Farm', location: 'Mahabaleshwar', price: '₹28,000/day', image: '/placeholder.svg' },
+    { id: 1, name: 'Pearl Farmhouse', location: 'Canal Road, Lahore', price: 'Rs. 45,000/day', image: '/placeholder.svg' },
+    { id: 2, name: 'Bahria Orchards Villa', location: 'Bahria Orchard, Lahore', price: 'Rs. 95,000/day', image: '/placeholder.svg' },
   ];
 
   const notifications = [
-    { id: 1, message: 'Your booking at Green Valley Farmhouse is confirmed!', time: '2 hours ago', read: false },
-    { id: 2, message: 'New message from Sunset Heritage Villa owner', time: '1 day ago', read: false },
-    { id: 3, message: 'Rate your experience at Royal Gardens Estate', time: '3 days ago', read: true },
+    { id: 1, message: 'Your booking at Royal Garden Farmhouse is confirmed!', time: '2 hours ago', read: false },
+    { id: 2, message: 'New message from Green Valley Resort owner', time: '1 day ago', read: false },
+    { id: 3, message: 'Rate your experience at Raiwind Gardens', time: '3 days ago', read: true },
+  ];
+
+  const ownerMenuItems = [
+    { icon: Plus, label: 'List New Property', href: '/properties/new', description: 'Add a new venue to your listings' },
+    { icon: Building2, label: 'My Properties', href: '/properties/manage', description: 'Manage your listed properties' },
+    { icon: Calendar, label: 'Booking Requests', href: '/bookings/requests', description: 'View and manage booking requests' },
+    { icon: BarChart3, label: 'Analytics', href: '/analytics', description: 'Track your property performance' },
+    { icon: Star, label: 'Reviews', href: '/reviews', description: 'See what customers are saying' },
+  ];
+
+  const vendorMenuItems = [
+    { icon: Plus, label: 'Add Service', href: '/services/new', description: 'Add a new service offering' },
+    { icon: Briefcase, label: 'My Services', href: '/services/manage', description: 'Manage your services' },
+    { icon: Calendar, label: 'Service Requests', href: '/services/requests', description: 'View service booking requests' },
+    { icon: BarChart3, label: 'Analytics', href: '/analytics', description: 'Track your service performance' },
   ];
 
   const getStatusColor = (status: string) => {
@@ -72,6 +131,16 @@ const Dashboard = () => {
   const upcomingBookings = bookings.filter(b => b.status === 'confirmed' || b.status === 'pending');
   const pastBookings = bookings.filter(b => b.status === 'completed' || b.status === 'cancelled');
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-secondary flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  const userName = profile?.full_name || user?.user_metadata?.full_name || 'User';
+
   return (
     <div className="min-h-screen bg-secondary">
       <Navbar />
@@ -81,8 +150,16 @@ const Dashboard = () => {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-display font-bold text-foreground">Welcome back, John!</h1>
-              <p className="text-muted-foreground mt-1">Manage your bookings and explore new venues</p>
+              <h1 className="text-3xl font-heading font-bold text-foreground">
+                Welcome back, {userName}!
+              </h1>
+              <p className="text-muted-foreground mt-1">
+                {userRole === 'owner' 
+                  ? 'Manage your properties and bookings' 
+                  : userRole === 'vendor'
+                  ? 'Manage your services and requests'
+                  : 'Manage your bookings and explore new venues'}
+              </p>
             </div>
             <div className="flex gap-3 mt-4 md:mt-0">
               <Button variant="outline" size="sm" className="gap-2">
@@ -97,14 +174,44 @@ const Dashboard = () => {
             </div>
           </div>
 
+          {/* Owner/Vendor Quick Actions */}
+          {(userRole === 'owner' || userRole === 'vendor') && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-8"
+            >
+              <h2 className="text-xl font-heading font-semibold text-foreground mb-4">Quick Actions</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                {(userRole === 'owner' ? ownerMenuItems : vendorMenuItems).map((item, index) => (
+                  <Link key={item.label} to={item.href}>
+                    <Card className="border-0 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 cursor-pointer h-full">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className="p-2 bg-accent/10 rounded-lg shrink-0">
+                            <item.icon className="w-5 h-5 text-accent" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-foreground">{item.label}</h3>
+                            <p className="text-xs text-muted-foreground mt-1">{item.description}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Stats Cards */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                  { label: 'Total Bookings', value: '12', icon: Calendar },
-                  { label: 'Upcoming', value: '2', icon: Clock },
+                  { label: userRole === 'owner' ? 'Total Properties' : 'Total Bookings', value: userRole === 'owner' ? '3' : '12', icon: userRole === 'owner' ? Building2 : Calendar },
+                  { label: userRole === 'owner' ? 'Active Bookings' : 'Upcoming', value: '2', icon: Clock },
                   { label: 'Favorites', value: '5', icon: Heart },
                   { label: 'Messages', value: '3', icon: MessageSquare },
                 ].map((stat, index) => (
@@ -134,7 +241,9 @@ const Dashboard = () => {
               {/* Bookings */}
               <Card className="border-0 shadow-sm">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-xl font-display">My Bookings</CardTitle>
+                  <CardTitle className="text-xl font-heading">
+                    {userRole === 'owner' ? 'Property Bookings' : 'My Bookings'}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -235,7 +344,7 @@ const Dashboard = () => {
               <Card className="border-0 shadow-sm">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-display">Notifications</CardTitle>
+                    <CardTitle className="text-lg font-heading">Notifications</CardTitle>
                     <Button variant="ghost" size="sm" className="text-primary text-xs">Mark all read</Button>
                   </div>
                 </CardHeader>
@@ -256,7 +365,7 @@ const Dashboard = () => {
               <Card className="border-0 shadow-sm">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-display">Saved Properties</CardTitle>
+                    <CardTitle className="text-lg font-heading">Saved Properties</CardTitle>
                     <Link to="/properties" className="text-primary text-xs flex items-center gap-1">
                       View all <ChevronRight className="w-3 h-3" />
                     </Link>
@@ -284,16 +393,18 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-              {/* Quick Actions */}
-              <Card className="border-0 shadow-sm bg-primary text-primary-foreground">
-                <CardContent className="p-6 text-center">
-                  <h3 className="font-display font-bold text-lg mb-2">Are you a vendor?</h3>
-                  <p className="text-sm opacity-90 mb-4">Join BookFarm and grow your business</p>
-                  <Button asChild variant="secondary" className="w-full">
-                    <Link to="/vendor/register">Register as Vendor</Link>
-                  </Button>
-                </CardContent>
-              </Card>
+              {/* Quick Actions for Customers */}
+              {userRole === 'customer' && (
+                <Card className="border-0 shadow-sm bg-primary text-primary-foreground">
+                  <CardContent className="p-6 text-center">
+                    <h3 className="font-heading font-bold text-lg mb-2">Own a Farmhouse?</h3>
+                    <p className="text-sm opacity-90 mb-4">List your property and start earning</p>
+                    <Button asChild variant="secondary" className="w-full">
+                      <Link to="/register?type=owner">List Your Property</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           </div>
         </div>

@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, User, Heart, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { href: "/properties", label: "Properties" },
@@ -15,6 +17,7 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const { user, signOut } = useAuth();
 
   return (
     <header
@@ -29,9 +32,11 @@ export function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-accent transition-transform group-hover:scale-105">
-              <span className="text-accent-foreground font-heading font-bold text-xl">B</span>
-            </div>
+            <img 
+              src={logo} 
+              alt="BookFarm Logo" 
+              className="w-10 h-10 rounded-xl shadow-sm transition-transform group-hover:scale-105"
+            />
             <span
               className={cn(
                 "font-heading font-bold text-xl transition-colors",
@@ -103,17 +108,35 @@ export function Navbar() {
               <MessageSquare className="h-5 w-5" />
             </Button>
             <div className="w-px h-6 bg-border mx-2" />
-            <Link to="/login">
-              <Button
-                variant={isHome ? "hero-outline" : "outline"}
-                className={cn(isHome && "border-primary-foreground/30")}
-              >
-                Log In
-              </Button>
-            </Link>
-            <Link to="/register">
-              <Button variant="accent">Sign Up</Button>
-            </Link>
+            {user ? (
+              <>
+                <Link to="/dashboard">
+                  <Button
+                    variant={isHome ? "hero-outline" : "outline"}
+                    className={cn(isHome && "border-primary-foreground/30")}
+                  >
+                    Dashboard
+                  </Button>
+                </Link>
+                <Button variant="accent" onClick={() => signOut()}>
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button
+                    variant={isHome ? "hero-outline" : "outline"}
+                    className={cn(isHome && "border-primary-foreground/30")}
+                  >
+                    Log In
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button variant="accent">Sign Up</Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -156,16 +179,31 @@ export function Navbar() {
                   </Link>
                 ))}
                 <div className="pt-4 border-t border-border space-y-2">
-                  <Link to="/login" className="block">
-                    <Button variant="outline" className="w-full">
-                      Log In
-                    </Button>
-                  </Link>
-                  <Link to="/register" className="block">
-                    <Button variant="accent" className="w-full">
-                      Sign Up
-                    </Button>
-                  </Link>
+                  {user ? (
+                    <>
+                      <Link to="/dashboard" className="block" onClick={() => setIsOpen(false)}>
+                        <Button variant="outline" className="w-full">
+                          Dashboard
+                        </Button>
+                      </Link>
+                      <Button variant="accent" className="w-full" onClick={() => { signOut(); setIsOpen(false); }}>
+                        Sign Out
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/login" className="block" onClick={() => setIsOpen(false)}>
+                        <Button variant="outline" className="w-full">
+                          Log In
+                        </Button>
+                      </Link>
+                      <Link to="/register" className="block" onClick={() => setIsOpen(false)}>
+                        <Button variant="accent" className="w-full">
+                          Sign Up
+                        </Button>
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>
