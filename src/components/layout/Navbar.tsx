@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, User, Heart, MessageSquare } from "lucide-react";
+import { Menu, X, Search, Heart, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import logo from "@/assets/logo.png";
 
 const navLinks = [
@@ -73,7 +74,7 @@ export function Navbar() {
           </div>
 
           {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
@@ -107,6 +108,13 @@ export function Navbar() {
             >
               <MessageSquare className="h-5 w-5" />
             </Button>
+            <div className={cn(
+              isHome
+                ? "[&_button]:text-primary-foreground/90 [&_button]:hover:text-primary-foreground [&_button]:hover:bg-primary-foreground/10"
+                : ""
+            )}>
+              <ThemeToggle />
+            </div>
             <div className="w-px h-6 bg-border mx-2" />
             {user ? (
               <>
@@ -178,6 +186,10 @@ export function Navbar() {
                     {link.label}
                   </Link>
                 ))}
+                <div className="flex items-center justify-between py-2 px-4">
+                  <span className="text-sm text-muted-foreground">Theme</span>
+                  <ThemeToggle />
+                </div>
                 <div className="pt-4 border-t border-border space-y-2">
                   {user ? (
                     <>
