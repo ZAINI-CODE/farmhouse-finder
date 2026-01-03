@@ -9,10 +9,31 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
   Calendar, MapPin, Clock, Users, MessageSquare, Heart, Settings, Bell, 
-  ChevronRight, Plus, Home, Briefcase, BarChart3, Star, Building2
+  ChevronRight, Plus, Home, Briefcase, BarChart3, Star, Building2,
+  CreditCard, AlertCircle, CheckCircle2, XCircle, Loader2, Banknote
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { format } from 'date-fns';
+
+interface Booking {
+  id: string;
+  property_id: string;
+  event_date: string;
+  guest_count: number;
+  status: string;
+  total_amount: number;
+  event_type: string | null;
+  notes: string | null;
+  created_at: string;
+  payment_status?: string;
+  transaction_id?: string;
+  property?: {
+    title: string;
+    location: string;
+    images: string[];
+  };
+}
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('upcoming');
@@ -20,77 +41,8 @@ const Dashboard = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<{ full_name: string } | null>(null);
-
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/login');
-    }
-  }, [user, loading, navigate]);
-
-  useEffect(() => {
-    async function fetchUserData() {
-      if (user) {
-        // Fetch profile
-        const { data: profileData } = await supabase
-          .from('profiles')
-          .select('full_name')
-          .eq('user_id', user.id)
-          .single();
-        
-        if (profileData) {
-          setProfile(profileData);
-        }
-
-        // Fetch role
-        const { data: roleData } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .single();
-        
-        if (roleData) {
-          setUserRole(roleData.role);
-        }
-      }
-    }
-    fetchUserData();
-  }, [user]);
-
-  const bookings = [
-    {
-      id: 1,
-      property: 'Royal Garden Farmhouse',
-      location: 'DHA Phase 6, Lahore',
-      date: 'Jan 15, 2025',
-      time: '10:00 AM - 6:00 PM',
-      guests: 50,
-      status: 'confirmed',
-      amount: 'Rs. 85,000',
-      image: '/placeholder.svg'
-    },
-    {
-      id: 2,
-      property: 'Green Valley Resort',
-      location: 'Bedian Road, Lahore',
-      date: 'Feb 20, 2025',
-      time: '9:00 AM - 9:00 PM',
-      guests: 100,
-      status: 'pending',
-      amount: 'Rs. 65,000',
-      image: '/placeholder.svg'
-    },
-    {
-      id: 3,
-      property: 'Raiwind Gardens',
-      location: 'Raiwind Road, Lahore',
-      date: 'Dec 10, 2024',
-      time: '11:00 AM - 7:00 PM',
-      guests: 75,
-      status: 'completed',
-      amount: 'Rs. 120,000',
-      image: '/placeholder.svg'
-    }
-  ];
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loadingBookings, setLoadingBookings] = useState(true);
 
   const favorites = [
     { id: 1, name: 'Pearl Farmhouse', location: 'Canal Road, Lahore', price: 'Rs. 45,000/day', image: '/placeholder.svg' },
@@ -120,11 +72,44 @@ const Dashboard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'confirmed': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'completed': return 'bg-blue-100 text-blue-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
+      case 'confirmed': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+      case 'pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
+      case 'completed': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400';
+      case 'cancelled': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
       default: return 'bg-muted text-muted-foreground';
+    }
+  };
+
+  const getPaymentStatusColor = (status: string) => {
+    switch (status) {
+      case 'verified': 
+      case 'completed': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+      case 'pending_verification': return 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400';
+      case 'pending': return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400';
+      case 'failed': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
+      default: return 'bg-muted text-muted-foreground';
+    }
+  };
+
+  const getPaymentStatusIcon = (status: string) => {
+    switch (status) {
+      case 'verified': 
+      case 'completed': return <CheckCircle2 className="w-3 h-3" />;
+      case 'pending_verification': return <Loader2 className="w-3 h-3 animate-spin" />;
+      case 'pending': return <AlertCircle className="w-3 h-3" />;
+      case 'failed': return <XCircle className="w-3 h-3" />;
+      default: return <Banknote className="w-3 h-3" />;
+    }
+  };
+
+  const getPaymentStatusLabel = (status: string) => {
+    switch (status) {
+      case 'verified': return 'Payment Verified';
+      case 'completed': return 'Paid';
+      case 'pending_verification': return 'Verifying Payment';
+      case 'pending': return 'Awaiting Payment';
+      case 'failed': return 'Payment Failed';
+      default: return status;
     }
   };
 
@@ -253,85 +238,144 @@ const Dashboard = () => {
                     </TabsList>
                     
                     <TabsContent value="upcoming" className="space-y-4">
-                      {upcomingBookings.map((booking) => (
-                        <motion.div
-                          key={booking.id}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          className="flex gap-4 p-4 bg-secondary rounded-xl"
-                        >
-                          <img
-                            src={booking.image}
-                            alt={booking.property}
-                            className="w-24 h-24 object-cover rounded-lg"
-                          />
-                          <div className="flex-1">
-                            <div className="flex items-start justify-between">
-                              <div>
-                                <h3 className="font-semibold text-foreground">{booking.property}</h3>
-                                <p className="text-sm text-muted-foreground flex items-center gap-1">
-                                  <MapPin className="w-3 h-3" /> {booking.location}
-                                </p>
+                      {loadingBookings ? (
+                        <div className="flex items-center justify-center py-8">
+                          <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                        </div>
+                      ) : upcomingBookings.length === 0 ? (
+                        <div className="text-center py-8">
+                          <Calendar className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
+                          <p className="text-muted-foreground">No upcoming bookings</p>
+                          <Button className="mt-4" onClick={() => navigate('/properties')}>
+                            Browse Properties
+                          </Button>
+                        </div>
+                      ) : (
+                        upcomingBookings.map((booking) => (
+                          <motion.div
+                            key={booking.id}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col md:flex-row gap-4 p-4 bg-secondary rounded-xl"
+                          >
+                            <img
+                              src={booking.property?.images?.[0] || '/placeholder.svg'}
+                              alt={booking.property?.title || 'Property'}
+                              className="w-full md:w-24 h-32 md:h-24 object-cover rounded-lg"
+                            />
+                            <div className="flex-1">
+                              <div className="flex flex-col md:flex-row md:items-start justify-between gap-2">
+                                <div>
+                                  <h3 className="font-semibold text-foreground">{booking.property?.title || 'Property'}</h3>
+                                  <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                    <MapPin className="w-3 h-3" /> {booking.property?.location || 'Lahore, Pakistan'}
+                                  </p>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                  <Badge className={getStatusColor(booking.status)}>
+                                    {booking.status}
+                                  </Badge>
+                                  <Badge className={getPaymentStatusColor(booking.payment_status || 'pending')}>
+                                    <span className="flex items-center gap-1">
+                                      {getPaymentStatusIcon(booking.payment_status || 'pending')}
+                                      {getPaymentStatusLabel(booking.payment_status || 'pending')}
+                                    </span>
+                                  </Badge>
+                                </div>
                               </div>
-                              <Badge className={getStatusColor(booking.status)}>
-                                {booking.status}
-                              </Badge>
+                              <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="w-3 h-3" /> {format(new Date(booking.event_date), 'PPP')}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Users className="w-3 h-3" /> {booking.guest_count} guests
+                                </span>
+                                {booking.event_type && (
+                                  <span className="flex items-center gap-1">
+                                    <Star className="w-3 h-3" /> {booking.event_type}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-3 gap-2">
+                                <span className="font-semibold text-primary">PKR {booking.total_amount.toLocaleString()}</span>
+                                <div className="flex gap-2">
+                                  {booking.payment_status === 'pending' && (
+                                    <Button size="sm" onClick={() => navigate('/payment', { state: { bookingDetails: booking } })}>
+                                      <CreditCard className="w-3 h-3 mr-1" />
+                                      Pay Now
+                                    </Button>
+                                  )}
+                                  <Button size="sm" variant="outline">View Details</Button>
+                                </div>
+                              </div>
                             </div>
-                            <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
-                              <span className="flex items-center gap-1">
-                                <Calendar className="w-3 h-3" /> {booking.date}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Clock className="w-3 h-3" /> {booking.time}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Users className="w-3 h-3" /> {booking.guests} guests
-                              </span>
-                            </div>
-                            <div className="flex items-center justify-between mt-3">
-                              <span className="font-semibold text-primary">{booking.amount}</span>
-                              <Button size="sm" variant="outline">View Details</Button>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
+                          </motion.div>
+                        ))
+                      )}
                     </TabsContent>
                     
                     <TabsContent value="past" className="space-y-4">
-                      {pastBookings.map((booking) => (
-                        <motion.div
-                          key={booking.id}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          className="flex gap-4 p-4 bg-secondary rounded-xl"
-                        >
-                          <img
-                            src={booking.image}
-                            alt={booking.property}
-                            className="w-24 h-24 object-cover rounded-lg"
-                          />
-                          <div className="flex-1">
-                            <div className="flex items-start justify-between">
-                              <div>
-                                <h3 className="font-semibold text-foreground">{booking.property}</h3>
-                                <p className="text-sm text-muted-foreground flex items-center gap-1">
-                                  <MapPin className="w-3 h-3" /> {booking.location}
-                                </p>
+                      {loadingBookings ? (
+                        <div className="flex items-center justify-center py-8">
+                          <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                        </div>
+                      ) : pastBookings.length === 0 ? (
+                        <div className="text-center py-8">
+                          <Calendar className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
+                          <p className="text-muted-foreground">No past bookings</p>
+                        </div>
+                      ) : (
+                        pastBookings.map((booking) => (
+                          <motion.div
+                            key={booking.id}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col md:flex-row gap-4 p-4 bg-secondary rounded-xl"
+                          >
+                            <img
+                              src={booking.property?.images?.[0] || '/placeholder.svg'}
+                              alt={booking.property?.title || 'Property'}
+                              className="w-full md:w-24 h-32 md:h-24 object-cover rounded-lg"
+                            />
+                            <div className="flex-1">
+                              <div className="flex flex-col md:flex-row md:items-start justify-between gap-2">
+                                <div>
+                                  <h3 className="font-semibold text-foreground">{booking.property?.title || 'Property'}</h3>
+                                  <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                    <MapPin className="w-3 h-3" /> {booking.property?.location || 'Lahore, Pakistan'}
+                                  </p>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                  <Badge className={getStatusColor(booking.status)}>
+                                    {booking.status}
+                                  </Badge>
+                                  <Badge className={getPaymentStatusColor(booking.payment_status || 'completed')}>
+                                    <span className="flex items-center gap-1">
+                                      {getPaymentStatusIcon(booking.payment_status || 'completed')}
+                                      {getPaymentStatusLabel(booking.payment_status || 'completed')}
+                                    </span>
+                                  </Badge>
+                                </div>
                               </div>
-                              <Badge className={getStatusColor(booking.status)}>
-                                {booking.status}
-                              </Badge>
-                            </div>
-                            <div className="flex items-center justify-between mt-3">
-                              <span className="font-semibold text-primary">{booking.amount}</span>
-                              <div className="flex gap-2">
-                                <Button size="sm" variant="outline">Write Review</Button>
-                                <Button size="sm">Book Again</Button>
+                              <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="w-3 h-3" /> {format(new Date(booking.event_date), 'PPP')}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Users className="w-3 h-3" /> {booking.guest_count} guests
+                                </span>
+                              </div>
+                              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-3 gap-2">
+                                <span className="font-semibold text-primary">PKR {booking.total_amount.toLocaleString()}</span>
+                                <div className="flex gap-2">
+                                  <Button size="sm" variant="outline">Write Review</Button>
+                                  <Button size="sm" onClick={() => navigate(`/booking/${booking.property_id}`)}>Book Again</Button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </motion.div>
-                      ))}
+                          </motion.div>
+                        ))
+                      )}
                     </TabsContent>
                   </Tabs>
                 </CardContent>
