@@ -22,7 +22,7 @@ const packages = [
   {
     id: "basic",
     name: "Basic Package",
-    price: 1500,
+    price: 150000,
     features: [
       "Venue rental for 8 hours",
       "Basic setup & cleanup",
@@ -33,7 +33,7 @@ const packages = [
   {
     id: "premium",
     name: "Premium Package",
-    price: 2500,
+    price: 250000,
     features: [
       "Venue rental for 12 hours",
       "Premium setup & decoration",
@@ -47,7 +47,7 @@ const packages = [
   {
     id: "luxury",
     name: "Luxury Package",
-    price: 4000,
+    price: 400000,
     features: [
       "Venue rental for 24 hours",
       "Full luxury decoration",
@@ -62,10 +62,10 @@ const packages = [
 ];
 
 const addOns = [
-  { id: "catering", name: "Catering Service", price: 45, unit: "per person" },
-  { id: "photography", name: "Photography Package", price: 800, unit: "flat rate" },
-  { id: "decoration", name: "Premium Decoration", price: 500, unit: "flat rate" },
-  { id: "dj", name: "DJ & Music", price: 600, unit: "flat rate" },
+  { id: "catering", name: "Catering Service", price: 2500, unit: "per person" },
+  { id: "photography", name: "Photography Package", price: 50000, unit: "flat rate" },
+  { id: "decoration", name: "Premium Decoration", price: 35000, unit: "flat rate" },
+  { id: "dj", name: "DJ & Music", price: 40000, unit: "flat rate" },
 ];
 
 export default function Booking() {
@@ -112,11 +112,25 @@ export default function Booking() {
   };
 
   const handleSubmit = () => {
-    toast({
-      title: "Booking Request Submitted!",
-      description: "The property owner will review your request and get back to you within 24 hours.",
-    });
-    navigate("/");
+    // Navigate to payment page with booking details
+    const bookingDetails = {
+      propertyId,
+      propertyName: "Gulshan Farmhouse",
+      date: date!,
+      guests,
+      packageName: currentPackage.name,
+      packagePrice: currentPackage.price,
+      addOns: selectedAddOns.map(id => {
+        const addon = addOns.find(a => a.id === id)!;
+        const price = addon.unit === "per person" ? addon.price * guests : addon.price;
+        return { name: addon.name, price };
+      }),
+      serviceFee,
+      total,
+      contactInfo,
+    };
+    
+    navigate("/payment", { state: { bookingDetails } });
   };
 
   return (
@@ -247,7 +261,7 @@ export default function Booking() {
                             {pkg.name}
                           </h3>
                           <p className="text-2xl font-bold text-primary mb-3">
-                            ${pkg.price.toLocaleString()}
+                            PKR {pkg.price.toLocaleString()}
                           </p>
                           <ul className="space-y-2">
                             {pkg.features.slice(0, 4).map((feature, i) => (
@@ -303,7 +317,7 @@ export default function Booking() {
                             </div>
                           </div>
                           <span className="font-semibold text-primary">
-                            ${addon.price}
+                            PKR {addon.price.toLocaleString()}
                           </span>
                         </button>
                       ))}
@@ -472,9 +486,9 @@ export default function Booking() {
                   <div className="bg-accent/10 rounded-xl p-4 flex items-start gap-3">
                     <Shield className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-medium text-sm">Secure Booking</p>
+                      <p className="font-medium text-sm">Proceed to Payment</p>
                       <p className="text-sm text-muted-foreground">
-                        No payment required now. The property owner will confirm your booking and you'll receive payment instructions via email.
+                        You'll be redirected to our secure payment page to complete your booking via Pakistani bank transfer.
                       </p>
                     </div>
                   </div>
@@ -486,7 +500,7 @@ export default function Booking() {
                     onClick={handleSubmit}
                   >
                     <CreditCard className="mr-2 h-5 w-5" />
-                    Submit Booking Request
+                    Proceed to Payment
                   </Button>
 
                   <p className="text-center text-sm text-muted-foreground">
@@ -515,7 +529,7 @@ export default function Booking() {
                     </h3>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                       <MapPin className="h-4 w-4" />
-                      Napa Valley, California
+                      Lahore, Pakistan
                     </div>
 
                     <Separator className="my-4" />
@@ -524,31 +538,31 @@ export default function Booking() {
                     <div className="space-y-3 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">{currentPackage.name}</span>
-                        <span>${currentPackage.price.toLocaleString()}</span>
+                        <span>PKR {currentPackage.price.toLocaleString()}</span>
                       </div>
                       
                       {selectedAddOns.map(addonId => {
                         const addon = addOns.find(a => a.id === addonId);
                         if (!addon) return null;
                         const price = addon.unit === "per person" ? addon.price * guests : addon.price;
-                        return (
-                          <div key={addonId} className="flex justify-between">
-                            <span className="text-muted-foreground">{addon.name}</span>
-                            <span>${price.toLocaleString()}</span>
-                          </div>
-                        );
+                          return (
+                            <div key={addonId} className="flex justify-between">
+                              <span className="text-muted-foreground">{addon.name}</span>
+                              <span>PKR {price.toLocaleString()}</span>
+                            </div>
+                          );
                       })}
 
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Service fee</span>
-                        <span>${serviceFee.toLocaleString()}</span>
+                        <span>PKR {serviceFee.toLocaleString()}</span>
                       </div>
 
                       <Separator />
 
                       <div className="flex justify-between font-semibold text-base">
                         <span>Total</span>
-                        <span className="text-primary">${total.toLocaleString()}</span>
+                        <span className="text-primary">PKR {total.toLocaleString()}</span>
                       </div>
                     </div>
                   </div>
