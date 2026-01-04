@@ -305,7 +305,7 @@ const Dashboard = () => {
                                       Pay Now
                                     </Button>
                                   )}
-                                  <Button size="sm" variant="outline">View Details</Button>
+                                  <Button size="sm" variant="outline" onClick={() => navigate(`/booking/details/${booking.id}`)}>View Details</Button>
                                 </div>
                               </div>
                             </div>
@@ -368,7 +368,7 @@ const Dashboard = () => {
                               <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-3 gap-2">
                                 <span className="font-semibold text-primary">PKR {booking.total_amount.toLocaleString()}</span>
                                 <div className="flex gap-2">
-                                  <Button size="sm" variant="outline">Write Review</Button>
+                                  <Button size="sm" variant="outline" onClick={() => navigate(`/booking/details/${booking.id}`)}>View Details</Button>
                                   <Button size="sm" onClick={() => navigate(`/booking/${booking.property_id}`)}>Book Again</Button>
                                 </div>
                               </div>

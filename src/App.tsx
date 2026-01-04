@@ -17,6 +17,7 @@ import MusicDJ from "./pages/MusicDJ";
 import EventPlanning from "./pages/EventPlanning";
 import Booking from "./pages/Booking";
 import Payment from "./pages/Payment";
+import BookingDetails from "./pages/BookingDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -46,6 +47,7 @@ const App = () => (
               <Route path="/services/music-dj" element={<MusicDJ />} />
               <Route path="/services/event-planning" element={<EventPlanning />} />
               <Route path="/booking/:propertyId" element={<Booking />} />
+              <Route path="/booking/details/:bookingId" element={<BookingDetails />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
