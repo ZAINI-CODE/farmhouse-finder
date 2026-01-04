@@ -67,9 +67,14 @@ export type Database = {
           guest_count: number
           id: string
           notes: string | null
+          payment_method: string | null
+          payment_status: string | null
+          payment_verified_at: string | null
+          payment_verified_by: string | null
           property_id: string
           status: string | null
           total_amount: number
+          transaction_id: string | null
           updated_at: string
           user_id: string
         }
@@ -80,9 +85,14 @@ export type Database = {
           guest_count: number
           id?: string
           notes?: string | null
+          payment_method?: string | null
+          payment_status?: string | null
+          payment_verified_at?: string | null
+          payment_verified_by?: string | null
           property_id: string
           status?: string | null
           total_amount: number
+          transaction_id?: string | null
           updated_at?: string
           user_id: string
         }
@@ -93,9 +103,14 @@ export type Database = {
           guest_count?: number
           id?: string
           notes?: string | null
+          payment_method?: string | null
+          payment_status?: string | null
+          payment_verified_at?: string | null
+          payment_verified_by?: string | null
           property_id?: string
           status?: string | null
           total_amount?: number
+          transaction_id?: string | null
           updated_at?: string
           user_id?: string
         }

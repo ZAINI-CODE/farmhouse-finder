@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useNotifications } from "@/hooks/useNotifications";
+import { supabase } from "@/integrations/supabase/client";
 import property1 from "@/assets/property-1.jpg";
 
 // Pakistani Banks
@@ -182,17 +183,39 @@ export default function Payment() {
 
     setIsSubmitting(true);
     
+    const selectedBankName = pakistaniBanks.find(b => b.id === selectedBank)?.name || selectedBank;
+    
+    // If this is an existing booking (has id), update it with payment info
+    if ((bookingDetails as any).id) {
+      try {
+        const { error } = await supabase
+          .from('bookings')
+          .update({
+            payment_status: 'pending_verification',
+            transaction_id: transactionId,
+            payment_method: selectedBankName,
+          })
+          .eq('id', (bookingDetails as any).id);
+
+        if (error) {
+          console.error('Error updating booking:', error);
+        }
+      } catch (error) {
+        console.error('Error updating booking:', error);
+      }
+    }
+    
     // Send payment received notification
     try {
       await sendPaymentReceived(
         bookingDetails.contactInfo?.email || 'customer@example.com',
         bookingDetails.contactInfo?.name || 'Customer',
         {
-          bookingId: `BF-${Date.now().toString().slice(-8)}`,
-          propertyName: bookingDetails.propertyName,
-          eventDate: format(bookingDetails.date, 'PPP'),
-          guestCount: bookingDetails.guests,
-          totalAmount: bookingDetails.total,
+          bookingId: (bookingDetails as any).id?.slice(0, 8).toUpperCase() || `BF-${Date.now().toString().slice(-8)}`,
+          propertyName: bookingDetails.propertyName || (bookingDetails as any).property?.title || 'Property',
+          eventDate: bookingDetails.date ? format(bookingDetails.date, 'PPP') : format(new Date((bookingDetails as any).event_date), 'PPP'),
+          guestCount: bookingDetails.guests || (bookingDetails as any).guest_count,
+          totalAmount: bookingDetails.total || (bookingDetails as any).total_amount,
           transactionId: transactionId,
         }
       );
@@ -200,7 +223,6 @@ export default function Payment() {
       console.error('Error sending notification:', error);
     }
     
-    // Simulate payment verification
     setTimeout(() => {
       toast({
         title: "Payment Submitted! ✅",
