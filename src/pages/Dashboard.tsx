@@ -58,7 +58,7 @@ const Dashboard = () => {
   const ownerMenuItems = [
     { icon: Plus, label: 'List New Property', href: '/properties/new', description: 'Add a new venue to your listings' },
     { icon: Building2, label: 'My Properties', href: '/properties/manage', description: 'Manage your listed properties' },
-    { icon: Calendar, label: 'Booking Requests', href: '/bookings/requests', description: 'View and manage booking requests' },
+    { icon: Calendar, label: 'Booking Requests', href: '/owner/admin', description: 'View and manage booking requests' },
     { icon: BarChart3, label: 'Analytics', href: '/analytics', description: 'Track your property performance' },
     { icon: Star, label: 'Reviews', href: '/reviews', description: 'See what customers are saying' },
   ];
