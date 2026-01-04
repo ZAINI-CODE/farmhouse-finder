@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { useNotifications } from "@/hooks/useNotifications";
 import property1 from "@/assets/property-1.jpg";
 
 // Pakistani Banks
@@ -126,6 +127,7 @@ export default function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { sendPaymentReceived } = useNotifications();
   
   const bookingDetails = location.state?.bookingDetails as BookingDetails;
   
@@ -168,7 +170,7 @@ export default function Payment() {
     });
   };
 
-  const handleSubmitPayment = () => {
+  const handleSubmitPayment = async () => {
     if (!selectedBank || !transactionId.trim()) {
       toast({
         title: "Missing Information",
@@ -179,6 +181,24 @@ export default function Payment() {
     }
 
     setIsSubmitting(true);
+    
+    // Send payment received notification
+    try {
+      await sendPaymentReceived(
+        bookingDetails.contactInfo?.email || 'customer@example.com',
+        bookingDetails.contactInfo?.name || 'Customer',
+        {
+          bookingId: `BF-${Date.now().toString().slice(-8)}`,
+          propertyName: bookingDetails.propertyName,
+          eventDate: format(bookingDetails.date, 'PPP'),
+          guestCount: bookingDetails.guests,
+          totalAmount: bookingDetails.total,
+          transactionId: transactionId,
+        }
+      );
+    } catch (error) {
+      console.error('Error sending notification:', error);
+    }
     
     // Simulate payment verification
     setTimeout(() => {
