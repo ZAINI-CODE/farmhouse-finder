@@ -24,6 +24,9 @@ import Dashboard from "./pages/Dashboard";
 import OwnerAdmin from "./pages/OwnerAdmin";
 import VendorRegister from "./pages/VendorRegister";
 import VendorDashboard from "./pages/VendorDashboard";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CookiePolicy from "./pages/CookiePolicy";
+import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -56,6 +59,9 @@ const App = () => (
               <Route path="/owner/admin" element={<OwnerAdmin />} />
               <Route path="/vendor/register" element={<VendorRegister />} />
               <Route path="/vendor/dashboard" element={<VendorDashboard />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/cookies" element={<CookiePolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
