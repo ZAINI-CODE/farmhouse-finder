@@ -80,7 +80,7 @@ const handler = async (req: Request): Promise<Response> => {
           continue;
         }
 
-        const property = booking.properties as { title: string; location: string; address: string } | null;
+        const property = (booking.properties as unknown) as { title: string; location: string; address: string } | null;
         const formattedDate = new Date(booking.event_date).toLocaleDateString('en-US', {
           weekday: 'long',
           year: 'numeric',
