@@ -6,88 +6,86 @@ export default function PrivacyPolicy() {
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
       <main className="flex-1 container mx-auto px-4 py-16 max-w-4xl">
-        <h1 className="font-heading text-4xl font-bold text-foreground mb-8">Privacy Policy</h1>
-        <p className="text-muted-foreground mb-8">Last updated: January 5, 2026</p>
+        <h1 className="font-heading text-4xl font-bold text-foreground mb-4">Privacy Policy</h1>
+        <p className="text-muted-foreground mb-8">Effective Date: January 6, 2026</p>
 
-        <div className="prose prose-lg max-w-none text-foreground space-y-8">
+        <div className="space-y-10 text-foreground">
           <section>
-            <h2 className="font-heading text-2xl font-semibold mb-4">1. Introduction</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Welcome to BookFarm. We respect your privacy and are committed to protecting your personal data. 
-              This privacy policy explains how we collect, use, and safeguard your information when you use our platform.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="font-heading text-2xl font-semibold mb-4">2. Information We Collect</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">We collect the following types of information:</p>
-            <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-              <li><strong className="text-foreground">Personal Information:</strong> Name, email address, phone number, and billing information when you create an account or make a booking.</li>
-              <li><strong className="text-foreground">Usage Data:</strong> Information about how you interact with our platform, including pages visited and features used.</li>
-              <li><strong className="text-foreground">Device Information:</strong> Browser type, operating system, and device identifiers.</li>
-              <li><strong className="text-foreground">Location Data:</strong> General location information to provide relevant venue and vendor recommendations.</li>
+            <h2 className="font-heading text-xl font-semibold mb-3">1. Information We Collect</h2>
+            <p className="text-muted-foreground leading-relaxed mb-3">We collect information to provide and improve our services:</p>
+            <ul className="list-disc list-inside text-muted-foreground space-y-1 ml-4">
+              <li><strong className="text-foreground">Account Information:</strong> Name, email, phone number, and payment details</li>
+              <li><strong className="text-foreground">Booking Data:</strong> Reservation history, preferences, and communications</li>
+              <li><strong className="text-foreground">Device & Usage Data:</strong> IP address, browser type, pages visited, and interaction patterns</li>
+              <li><strong className="text-foreground">Location Data:</strong> General location to provide relevant recommendations</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="font-heading text-2xl font-semibold mb-4">3. How We Use Your Information</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">We use your information to:</p>
-            <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-              <li>Process bookings and payments</li>
-              <li>Send booking confirmations and reminders</li>
-              <li>Provide customer support</li>
-              <li>Improve our services and user experience</li>
-              <li>Send promotional communications (with your consent)</li>
+            <h2 className="font-heading text-xl font-semibold mb-3">2. How We Use Your Information</h2>
+            <p className="text-muted-foreground leading-relaxed mb-3">Your information helps us:</p>
+            <ul className="list-disc list-inside text-muted-foreground space-y-1 ml-4">
+              <li>Process bookings and facilitate transactions</li>
+              <li>Send confirmations, reminders, and support communications</li>
+              <li>Personalize your experience and recommendations</li>
+              <li>Improve platform functionality and security</li>
               <li>Comply with legal obligations</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="font-heading text-2xl font-semibold mb-4">4. Information Sharing</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              We share your information with property owners and vendors only as necessary to fulfill your bookings. 
-              We do not sell your personal data to third parties. We may share data with service providers who help 
-              us operate our platform, subject to confidentiality agreements.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="font-heading text-2xl font-semibold mb-4">5. Data Security</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              We implement industry-standard security measures to protect your data, including encryption, 
-              secure servers, and regular security audits. However, no method of transmission over the internet 
-              is 100% secure.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="font-heading text-2xl font-semibold mb-4">6. Your Rights</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">You have the right to:</p>
-            <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-              <li>Access your personal data</li>
-              <li>Correct inaccurate data</li>
-              <li>Request deletion of your data</li>
-              <li>Opt-out of marketing communications</li>
-              <li>Data portability</li>
+            <h2 className="font-heading text-xl font-semibold mb-3">3. Data Sharing</h2>
+            <p className="text-muted-foreground leading-relaxed mb-3">We share your information with:</p>
+            <ul className="list-disc list-inside text-muted-foreground space-y-1 ml-4">
+              <li><strong className="text-foreground">Property Owners & Vendors:</strong> To fulfill your bookings</li>
+              <li><strong className="text-foreground">Payment Processors:</strong> To complete secure transactions</li>
+              <li><strong className="text-foreground">Service Providers:</strong> For hosting, analytics, and customer support</li>
+              <li><strong className="text-foreground">Legal Authorities:</strong> When required by law or to protect rights</li>
             </ul>
-          </section>
-
-          <section>
-            <h2 className="font-heading text-2xl font-semibold mb-4">7. Data Retention</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              We retain your personal data for as long as necessary to provide our services and comply with 
-              legal obligations. Booking records are retained for a minimum of 7 years for tax and legal purposes.
+            <p className="text-muted-foreground leading-relaxed mt-3">
+              We do not sell your personal data to third parties.
             </p>
           </section>
 
           <section>
-            <h2 className="font-heading text-2xl font-semibold mb-4">8. Contact Us</h2>
+            <h2 className="font-heading text-xl font-semibold mb-3">4. Cookies & Tracking</h2>
             <p className="text-muted-foreground leading-relaxed">
-              If you have questions about this privacy policy or your personal data, please contact us at:
+              We use cookies and similar technologies to enhance functionality, analyze usage, and deliver personalized content. See our <a href="/cookies" className="text-primary hover:underline">Cookie Policy</a> for details on managing preferences.
             </p>
-            <p className="text-muted-foreground mt-2">
-              Email: privacy@bookfarm.com<br />
-              Address: San Francisco, CA
+          </section>
+
+          <section>
+            <h2 className="font-heading text-xl font-semibold mb-3">5. Data Protection & Security</h2>
+            <p className="text-muted-foreground leading-relaxed">
+              We implement industry-standard security measures including encryption, secure servers, and regular audits. While we strive to protect your data, no transmission method is 100% secure.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="font-heading text-xl font-semibold mb-3">6. Your Rights</h2>
+            <p className="text-muted-foreground leading-relaxed mb-3">Depending on your location, you may have the right to:</p>
+            <ul className="list-disc list-inside text-muted-foreground space-y-1 ml-4">
+              <li>Access, correct, or delete your personal data</li>
+              <li>Object to or restrict certain processing</li>
+              <li>Data portability</li>
+              <li>Withdraw consent at any time</li>
+              <li>Opt-out of marketing communications</li>
+            </ul>
+            <p className="text-muted-foreground leading-relaxed mt-3">
+              To exercise these rights, contact us at <a href="mailto:privacy@bookfarm.com" className="text-primary hover:underline">privacy@bookfarm.com</a>.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="font-heading text-xl font-semibold mb-3">7. Policy Updates</h2>
+            <p className="text-muted-foreground leading-relaxed">
+              We may update this Privacy Policy periodically. Material changes will be communicated via email or platform notification. Continued use after updates constitutes acceptance.
+            </p>
+          </section>
+
+          <section className="pt-6 border-t border-border">
+            <p className="text-muted-foreground">
+              Questions? Contact us at <a href="mailto:privacy@bookfarm.com" className="text-primary hover:underline">privacy@bookfarm.com</a>
             </p>
           </section>
         </div>
