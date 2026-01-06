@@ -1,12 +1,28 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, MapPin, Calendar, Users } from "lucide-react";
+import { Search, MapPin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import heroImage from "@/assets/hero-farmhouse.jpg";
 
 export function Hero() {
+  const navigate = useNavigate();
   const [searchType, setSearchType] = useState<"properties" | "services">("properties");
+  const [location, setLocation] = useState("");
+  const [date, setDate] = useState("");
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (location) params.set("location", location);
+    if (date) params.set("date", date);
+    
+    if (searchType === "properties") {
+      navigate(`/properties${params.toString() ? `?${params.toString()}` : ""}`);
+    } else {
+      navigate(`/services${params.toString() ? `?${params.toString()}` : ""}`);
+    }
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -86,11 +102,13 @@ export function Hero() {
             </div>
 
             {/* Search Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 p-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-2">
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                   placeholder="Location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
                   className="pl-10 h-12 bg-background border-border"
                 />
               </div>
@@ -99,19 +117,12 @@ export function Hero() {
                 <Input
                   type="date"
                   placeholder="Check In"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
                   className="pl-10 h-12 bg-background border-border"
                 />
               </div>
-              <div className="relative">
-                <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  type="number"
-                  placeholder="Guests"
-                  min="1"
-                  className="pl-10 h-12 bg-background border-border"
-                />
-              </div>
-              <Button variant="accent" size="lg" className="h-12">
+              <Button variant="accent" size="lg" className="h-12" onClick={handleSearch}>
                 <Search className="h-5 w-5 mr-2" />
                 Search
               </Button>
