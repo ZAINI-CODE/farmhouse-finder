@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
+import { format } from "date-fns";
 import { 
   MapPin, Users, Star, Heart, Search, SlidersHorizontal, 
-  Grid3X3, List, X 
+  Grid3X3, List, X, CalendarIcon 
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -12,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
@@ -219,12 +223,20 @@ export default function Properties() {
   const [selectedType, setSelectedType] = useState("All");
   const [priceRange, setPriceRange] = useState([0, 200000]);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
-  // Initialize search query from URL parameters
+  // Initialize filters from URL parameters
   useEffect(() => {
     const locationParam = searchParams.get("location");
+    const dateParam = searchParams.get("date");
     if (locationParam) {
       setSearchQuery(locationParam);
+    }
+    if (dateParam) {
+      const parsedDate = new Date(dateParam);
+      if (!isNaN(parsedDate.getTime())) {
+        setSelectedDate(parsedDate);
+      }
     }
   }, [searchParams]);
 
@@ -266,6 +278,43 @@ export default function Properties() {
                   className="pl-10 h-12"
                 />
               </div>
+              
+              {/* Date Picker */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "h-12 w-full lg:w-[200px] justify-start text-left font-normal",
+                      !selectedDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {selectedDate ? format(selectedDate, "PPP") : <span>Event Date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    disabled={(date) => date < new Date()}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
+              
+              {selectedDate && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-12 w-12 shrink-0"
+                  onClick={() => setSelectedDate(undefined)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
               
               <div className="flex gap-3">
                 <Button
