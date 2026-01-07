@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { format } from "date-fns";
 import {
-  MapPin, Star, Search, ArrowRight, CalendarIcon, X,
+  MapPin, Star, Search, ArrowRight, CalendarIcon, X, Heart,
   UtensilsCrossed, Camera, Music, Flower2, Cake, Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useFavorites } from "@/hooks/useFavorites";
 
 const categories = [
   { id: "all", label: "All Services", icon: Sparkles },
@@ -121,6 +122,7 @@ const vendors = [
 ];
 
 export default function Services() {
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = searchParams.get("category") || "all";
   const [searchQuery, setSearchQuery] = useState("");
@@ -283,9 +285,25 @@ export default function Services() {
                         }`}>
                           <CategoryIcon className="h-7 w-7" />
                         </div>
-                        {vendor.featured && (
-                          <Badge className="bg-accent text-accent-foreground">Featured</Badge>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {vendor.featured && (
+                            <Badge className="bg-accent text-accent-foreground">Featured</Badge>
+                          )}
+                          <button 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              toggleFavorite(vendor.id, 'vendor');
+                            }}
+                            className={cn(
+                              "w-8 h-8 rounded-full bg-muted flex items-center justify-center transition-all",
+                              isFavorite(vendor.id, 'vendor') 
+                                ? "text-destructive" 
+                                : "text-muted-foreground hover:text-destructive"
+                            )}
+                          >
+                            <Heart className={cn("h-4 w-4", isFavorite(vendor.id, 'vendor') && "fill-current")} />
+                          </button>
+                        </div>
                       </div>
 
                       {/* Content */}

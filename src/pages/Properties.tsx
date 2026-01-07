@@ -16,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useFavorites } from "@/hooks/useFavorites";
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
@@ -216,6 +217,7 @@ const propertyTypes = ["All", "Estate", "Barn", "Farmhouse", "Cottage", "Ranch"]
 const amenitiesOptions = ["Pool", "Garden", "Kitchen", "Parking", "WiFi", "Fire Pit", "Views", "Hot Tub"];
 
 export default function Properties() {
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [searchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
@@ -474,8 +476,19 @@ export default function Properties() {
                         </Badge>
                       )}
                       
-                      <button className="absolute top-3 right-3 w-9 h-9 rounded-full bg-card/80 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:text-destructive hover:bg-card transition-all">
-                        <Heart className="h-5 w-5" />
+                      <button 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleFavorite(property.id, 'property');
+                        }}
+                        className={cn(
+                          "absolute top-3 right-3 w-9 h-9 rounded-full bg-card/80 backdrop-blur-sm flex items-center justify-center transition-all",
+                          isFavorite(property.id, 'property') 
+                            ? "text-destructive" 
+                            : "text-muted-foreground hover:text-destructive hover:bg-card"
+                        )}
+                      >
+                        <Heart className={cn("h-5 w-5", isFavorite(property.id, 'property') && "fill-current")} />
                       </button>
                     </div>
 
