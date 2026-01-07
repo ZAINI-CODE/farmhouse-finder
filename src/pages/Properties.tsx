@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { 
   MapPin, Users, Star, Heart, Search, SlidersHorizontal, 
   Grid3X3, List, X 
@@ -212,12 +212,21 @@ const propertyTypes = ["All", "Estate", "Barn", "Farmhouse", "Cottage", "Ranch"]
 const amenitiesOptions = ["Pool", "Garden", "Kitchen", "Parking", "WiFi", "Fire Pit", "Views", "Hot Tub"];
 
 export default function Properties() {
+  const [searchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("All");
   const [priceRange, setPriceRange] = useState([0, 200000]);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+
+  // Initialize search query from URL parameters
+  useEffect(() => {
+    const locationParam = searchParams.get("location");
+    if (locationParam) {
+      setSearchQuery(locationParam);
+    }
+  }, [searchParams]);
 
   const filteredProperties = allProperties.filter((property) => {
     const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
