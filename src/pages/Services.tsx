@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
+import { format } from "date-fns";
 import {
-  MapPin, Star, Search, ArrowRight,
+  MapPin, Star, Search, ArrowRight, CalendarIcon, X,
   UtensilsCrossed, Camera, Music, Flower2, Cake, Sparkles
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const categories = [
   { id: "all", label: "All Services", icon: Sparkles },
@@ -120,6 +124,22 @@ export default function Services() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = searchParams.get("category") || "all";
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+
+  // Initialize filters from URL parameters
+  useEffect(() => {
+    const locationParam = searchParams.get("location");
+    const dateParam = searchParams.get("date");
+    if (locationParam) {
+      setSearchQuery(locationParam);
+    }
+    if (dateParam) {
+      const parsedDate = new Date(dateParam);
+      if (!isNaN(parsedDate.getTime())) {
+        setSelectedDate(parsedDate);
+      }
+    }
+  }, []);
 
   const filteredVendors = vendors.filter((vendor) => {
     const matchesCategory = activeCategory === "all" || vendor.category === activeCategory;
@@ -160,16 +180,55 @@ export default function Services() {
             </motion.p>
           </div>
 
-          {/* Search */}
-          <div className="max-w-2xl mx-auto mb-8">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input
-                placeholder="Search vendors by name, location, or service..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-14 text-base rounded-xl"
-              />
+          {/* Search and Date Filter */}
+          <div className="max-w-3xl mx-auto mb-8">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  placeholder="Search vendors by name, location, or service..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-12 h-14 text-base rounded-xl"
+                />
+              </div>
+              
+              {/* Date Picker */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "h-14 w-full sm:w-[200px] justify-start text-left font-normal rounded-xl",
+                      !selectedDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {selectedDate ? format(selectedDate, "PPP") : <span>Event Date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    disabled={(date) => date < new Date()}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
+              
+              {selectedDate && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-14 w-14 shrink-0 rounded-xl"
+                  onClick={() => setSelectedDate(undefined)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           </div>
 
