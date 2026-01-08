@@ -21,6 +21,7 @@ import BookingDetails from "./pages/BookingDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Favorites from "./pages/Favorites";
 import OwnerAdmin from "./pages/OwnerAdmin";
 import VendorRegister from "./pages/VendorRegister";
 import VendorDashboard from "./pages/VendorDashboard";
@@ -60,6 +61,7 @@ const App = () => (
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/favorites" element={<Favorites />} />
               <Route path="/owner/admin" element={<OwnerAdmin />} />
               <Route path="/vendor/register" element={<VendorRegister />} />
               <Route path="/vendor/dashboard" element={<VendorDashboard />} />
