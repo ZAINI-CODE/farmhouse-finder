@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { format } from "date-fns";
 import {
-  MapPin, Star, Search, ArrowRight, CalendarIcon, X, Heart,
+  MapPin, Star, Search, ArrowRight, CalendarIcon, X, Heart, Loader2,
   UtensilsCrossed, Camera, Music, Flower2, Cake, Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useFavorites } from "@/hooks/useFavorites";
+import { supabase } from "@/integrations/supabase/client";
 
 const categories = [
   { id: "all", label: "All Services", icon: Sparkles },
@@ -26,100 +27,18 @@ const categories = [
   { id: "planning", label: "Event Planning", icon: Sparkles },
 ];
 
-const vendors = [
-  {
-    id: "1",
-    name: "Golden Fork Catering",
-    category: "catering",
-    location: "San Francisco, CA",
-    rating: 4.9,
-    reviews: 234,
-    price: "$$",
-    description: "Award-winning catering with farm-to-table cuisine",
-    tags: ["Farm-to-Table", "Weddings", "Corporate"],
-    featured: true,
-  },
-  {
-    id: "2",
-    name: "Lens & Light Photography",
-    category: "photography",
-    location: "Los Angeles, CA",
-    rating: 5.0,
-    reviews: 189,
-    price: "$$$",
-    description: "Capturing your special moments with artistic excellence",
-    tags: ["Weddings", "Portraits", "Events"],
-    featured: true,
-  },
-  {
-    id: "3",
-    name: "Beat Masters DJ",
-    category: "music",
-    location: "Austin, TX",
-    rating: 4.8,
-    reviews: 156,
-    price: "$$",
-    description: "Professional DJ services for all types of events",
-    tags: ["Weddings", "Parties", "Corporate"],
-  },
-  {
-    id: "4",
-    name: "Bloom & Blossom Decor",
-    category: "decoration",
-    location: "Miami, FL",
-    rating: 4.9,
-    reviews: 178,
-    price: "$$$",
-    description: "Transform your venue into a magical wonderland",
-    tags: ["Floral", "Lighting", "Theme Design"],
-    featured: true,
-  },
-  {
-    id: "5",
-    name: "Sweet Delights Bakery",
-    category: "bakery",
-    location: "Chicago, IL",
-    rating: 4.7,
-    reviews: 203,
-    price: "$$",
-    description: "Custom cakes and desserts for every occasion",
-    tags: ["Wedding Cakes", "Cupcakes", "Dessert Tables"],
-  },
-  {
-    id: "6",
-    name: "Perfect Day Planning",
-    category: "planning",
-    location: "New York, NY",
-    rating: 5.0,
-    reviews: 145,
-    price: "$$$",
-    description: "Full-service event planning and coordination",
-    tags: ["Weddings", "Corporate", "Luxury"],
-    featured: true,
-  },
-  {
-    id: "7",
-    name: "Taste of Italy Catering",
-    category: "catering",
-    location: "Boston, MA",
-    rating: 4.8,
-    reviews: 167,
-    price: "$$",
-    description: "Authentic Italian cuisine for your special events",
-    tags: ["Italian", "Mediterranean", "Buffet"],
-  },
-  {
-    id: "8",
-    name: "Rhythm & Soul Band",
-    category: "music",
-    location: "Nashville, TN",
-    rating: 4.9,
-    reviews: 98,
-    price: "$$$",
-    description: "Live band entertainment for memorable events",
-    tags: ["Live Music", "Jazz", "Soul"],
-  },
-];
+interface Vendor {
+  id: string;
+  business_name: string;
+  category: string;
+  location: string;
+  rating: number | null;
+  reviews_count: number | null;
+  price_range: string | null;
+  description: string | null;
+  specialties: string[] | null;
+  is_verified: boolean | null;
+}
 
 export default function Services() {
   const { isFavorite, toggleFavorite } = useFavorites();
@@ -127,6 +46,30 @@ export default function Services() {
   const activeCategory = searchParams.get("category") || "all";
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  
+  const [vendors, setVendors] = useState<Vendor[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch vendors from database
+  useEffect(() => {
+    const fetchVendors = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('vendors')
+        .select('id, business_name, category, location, rating, reviews_count, price_range, description, specialties, is_verified')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching vendors:', error);
+      } else {
+        setVendors(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchVendors();
+  }, []);
 
   // Initialize filters from URL parameters
   useEffect(() => {
@@ -144,16 +87,16 @@ export default function Services() {
   }, []);
 
   const filteredVendors = vendors.filter((vendor) => {
-    const matchesCategory = activeCategory === "all" || vendor.category === activeCategory;
+    const matchesCategory = activeCategory === "all" || vendor.category.toLowerCase() === activeCategory;
     const matchesSearch =
-      vendor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      vendor.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      vendor.business_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (vendor.description?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false) ||
       vendor.location.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   const getCategoryIcon = (categoryId: string) => {
-    const category = categories.find((c) => c.id === categoryId);
+    const category = categories.find((c) => c.id === categoryId.toLowerCase());
     return category?.icon || Sparkles;
   };
 
@@ -257,102 +200,15 @@ export default function Services() {
 
           {/* Results Count */}
           <p className="text-muted-foreground mb-6">
-            Showing {filteredVendors.length} service providers
+            {loading ? 'Loading...' : `Showing ${filteredVendors.length} service providers`}
           </p>
 
           {/* Vendors Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredVendors.map((vendor, index) => {
-              const CategoryIcon = getCategoryIcon(vendor.category);
-              return (
-                <motion.div
-                  key={vendor.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <Link to={`/services/${vendor.id}`}>
-                    <div className="group bg-card rounded-2xl border border-border p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                      {/* Header */}
-                      <div className="flex items-start justify-between mb-4">
-                        <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${
-                          vendor.category === "catering" ? "bg-orange-500/10 text-orange-600" :
-                          vendor.category === "photography" ? "bg-blue-500/10 text-blue-600" :
-                          vendor.category === "music" ? "bg-purple-500/10 text-purple-600" :
-                          vendor.category === "decoration" ? "bg-pink-500/10 text-pink-600" :
-                          vendor.category === "bakery" ? "bg-amber-500/10 text-amber-600" :
-                          "bg-emerald-500/10 text-emerald-600"
-                        }`}>
-                          <CategoryIcon className="h-7 w-7" />
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {vendor.featured && (
-                            <Badge className="bg-accent text-accent-foreground">Featured</Badge>
-                          )}
-                          <button 
-                            onClick={(e) => {
-                              e.preventDefault();
-                              toggleFavorite(vendor.id, 'vendor');
-                            }}
-                            className={cn(
-                              "w-8 h-8 rounded-full bg-muted flex items-center justify-center transition-all",
-                              isFavorite(vendor.id, 'vendor') 
-                                ? "text-destructive" 
-                                : "text-muted-foreground hover:text-destructive"
-                            )}
-                          >
-                            <Heart className={cn("h-4 w-4", isFavorite(vendor.id, 'vendor') && "fill-current")} />
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <h3 className="font-heading font-semibold text-lg text-foreground mb-1 group-hover:text-primary transition-colors">
-                        {vendor.name}
-                      </h3>
-
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                        <MapPin className="h-4 w-4" />
-                        {vendor.location}
-                      </div>
-
-                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                        {vendor.description}
-                      </p>
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {vendor.tags.slice(0, 2).map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-md"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Footer */}
-                      <div className="flex items-center justify-between pt-4 border-t border-border">
-                        <div className="flex items-center gap-2">
-                          <Star className="h-4 w-4 fill-accent text-accent" />
-                          <span className="font-medium">{vendor.rating}</span>
-                          <span className="text-muted-foreground text-sm">
-                            ({vendor.reviews})
-                          </span>
-                        </div>
-                        <span className="text-muted-foreground font-medium">
-                          {vendor.price}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {filteredVendors.length === 0 && (
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : filteredVendors.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-muted-foreground text-lg mb-4">
                 No vendors found matching your criteria.
@@ -366,6 +222,99 @@ export default function Services() {
               >
                 Clear Filters
               </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredVendors.map((vendor, index) => {
+                const CategoryIcon = getCategoryIcon(vendor.category);
+                return (
+                  <motion.div
+                    key={vendor.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <Link to={`/services/${vendor.id}`}>
+                      <div className="group bg-card rounded-2xl border border-border p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        {/* Header */}
+                        <div className="flex items-start justify-between mb-4">
+                          <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${
+                            vendor.category.toLowerCase() === "catering" ? "bg-orange-500/10 text-orange-600" :
+                            vendor.category.toLowerCase() === "photography" ? "bg-blue-500/10 text-blue-600" :
+                            vendor.category.toLowerCase() === "music" ? "bg-purple-500/10 text-purple-600" :
+                            vendor.category.toLowerCase() === "decoration" ? "bg-pink-500/10 text-pink-600" :
+                            vendor.category.toLowerCase() === "bakery" ? "bg-amber-500/10 text-amber-600" :
+                            "bg-emerald-500/10 text-emerald-600"
+                          }`}>
+                            <CategoryIcon className="h-7 w-7" />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {vendor.is_verified && (
+                              <Badge className="bg-accent text-accent-foreground">Verified</Badge>
+                            )}
+                            <button 
+                              onClick={(e) => {
+                                e.preventDefault();
+                                toggleFavorite(vendor.id, 'vendor');
+                              }}
+                              className={cn(
+                                "w-8 h-8 rounded-full bg-muted flex items-center justify-center transition-all",
+                                isFavorite(vendor.id, 'vendor') 
+                                  ? "text-destructive" 
+                                  : "text-muted-foreground hover:text-destructive"
+                              )}
+                            >
+                              <Heart className={cn("h-4 w-4", isFavorite(vendor.id, 'vendor') && "fill-current")} />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <h3 className="font-heading font-semibold text-lg text-foreground mb-1 group-hover:text-primary transition-colors">
+                          {vendor.business_name}
+                        </h3>
+
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                          <MapPin className="h-4 w-4" />
+                          {vendor.location}
+                        </div>
+
+                        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                          {vendor.description || 'No description available'}
+                        </p>
+
+                        {/* Tags */}
+                        {vendor.specialties && vendor.specialties.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {vendor.specialties.slice(0, 2).map((tag) => (
+                              <span
+                                key={tag}
+                                className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-md"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Footer */}
+                        <div className="flex items-center justify-between pt-4 border-t border-border">
+                          <div className="flex items-center gap-2">
+                            <Star className="h-4 w-4 fill-accent text-accent" />
+                            <span className="font-medium">{vendor.rating || 0}</span>
+                            <span className="text-muted-foreground text-sm">
+                              ({vendor.reviews_count || 0})
+                            </span>
+                          </div>
+                          <span className="text-muted-foreground font-medium">
+                            {vendor.price_range || '$$'}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </div>
           )}
 
