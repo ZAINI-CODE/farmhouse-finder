@@ -195,18 +195,13 @@ const Dashboard = () => {
               {/* Stats Cards */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                  { label: userRole === 'owner' ? 'Total Properties' : 'Total Bookings', value: userRole === 'owner' ? '3' : '12', icon: userRole === 'owner' ? Building2 : Calendar },
-                  { label: userRole === 'owner' ? 'Active Bookings' : 'Upcoming', value: '2', icon: Clock },
-                  { label: 'Favorites', value: '5', icon: Heart },
-                  { label: 'Messages', value: '3', icon: MessageSquare },
-                ].map((stat, index) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Card className="border-0 shadow-sm">
+                  { label: userRole === 'owner' ? 'Total Properties' : 'Total Bookings', value: userRole === 'owner' ? '3' : '12', icon: userRole === 'owner' ? Building2 : Calendar, href: null },
+                  { label: userRole === 'owner' ? 'Active Bookings' : 'Upcoming', value: '2', icon: Clock, href: null },
+                  { label: 'Favorites', value: '5', icon: Heart, href: '/favorites' },
+                  { label: 'Messages', value: '3', icon: MessageSquare, href: null },
+                ].map((stat, index) => {
+                  const cardContent = (
+                    <Card className={`border-0 shadow-sm ${stat.href ? 'hover:shadow-md cursor-pointer transition-shadow' : ''}`}>
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3">
                           <div className="p-2 bg-primary/10 rounded-lg">
@@ -219,8 +214,23 @@ const Dashboard = () => {
                         </div>
                       </CardContent>
                     </Card>
-                  </motion.div>
-                ))}
+                  );
+
+                  return (
+                    <motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      {stat.href ? (
+                        <Link to={stat.href}>{cardContent}</Link>
+                      ) : (
+                        cardContent
+                      )}
+                    </motion.div>
+                  );
+                })}
               </div>
 
               {/* Bookings */}
