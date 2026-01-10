@@ -12,8 +12,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { 
   ChefHat, Camera, Palette, Music, CalendarCheck, 
-  Check, ArrowRight, ArrowLeft, Upload, MapPin, Phone, Mail, Globe
+  Check, ArrowRight, ArrowLeft, MapPin, Phone, Mail, Globe
 } from 'lucide-react';
+import { ImageUpload } from '@/components/ImageUpload';
+import { useAuth } from '@/hooks/useAuth';
 
 const serviceCategories = [
   { id: 'catering', name: 'Catering', icon: ChefHat, description: 'Food & beverage services' },
@@ -45,7 +47,7 @@ const VendorRegister = () => {
     state: '',
     serviceAreas: '',
     website: '',
-    portfolio: [] as File[],
+    portfolio: [] as string[],
     // Step 4: Terms
     termsAccepted: false,
   });
@@ -357,13 +359,12 @@ const VendorRegister = () => {
 
                     <div className="space-y-2">
                       <Label>Portfolio Images (Optional)</Label>
-                      <div className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-primary/50 transition-colors cursor-pointer">
-                        <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-                        <p className="text-sm text-muted-foreground">
-                          Drag and drop images or <span className="text-primary">browse</span>
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">PNG, JPG up to 5MB each</p>
-                      </div>
+                      <ImageUpload
+                        bucket="vendor-images"
+                        images={formData.portfolio as unknown as string[]}
+                        onImagesChange={(images) => updateFormData('portfolio', images)}
+                        maxImages={10}
+                      />
                     </div>
                   </motion.div>
                 )}

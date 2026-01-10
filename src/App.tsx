@@ -23,6 +23,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Favorites from "./pages/Favorites";
 import OwnerAdmin from "./pages/OwnerAdmin";
+import PropertyNew from "./pages/PropertyNew";
 import VendorRegister from "./pages/VendorRegister";
 import VendorDashboard from "./pages/VendorDashboard";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -63,6 +64,7 @@ const App = () => (
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/owner/admin" element={<OwnerAdmin />} />
+              <Route path="/properties/new" element={<PropertyNew />} />
               <Route path="/vendor/register" element={<VendorRegister />} />
               <Route path="/vendor/dashboard" element={<VendorDashboard />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
