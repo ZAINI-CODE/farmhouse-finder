@@ -24,6 +24,8 @@ import Dashboard from "./pages/Dashboard";
 import Favorites from "./pages/Favorites";
 import OwnerAdmin from "./pages/OwnerAdmin";
 import PropertyNew from "./pages/PropertyNew";
+import PropertyManage from "./pages/PropertyManage";
+import PropertyEdit from "./pages/PropertyEdit";
 import VendorRegister from "./pages/VendorRegister";
 import VendorDashboard from "./pages/VendorDashboard";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -65,6 +67,8 @@ const App = () => (
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/owner/admin" element={<OwnerAdmin />} />
               <Route path="/properties/new" element={<PropertyNew />} />
+              <Route path="/properties/manage" element={<PropertyManage />} />
+              <Route path="/properties/edit/:id" element={<PropertyEdit />} />
               <Route path="/vendor/register" element={<VendorRegister />} />
               <Route path="/vendor/dashboard" element={<VendorDashboard />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
