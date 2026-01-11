@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
+import { ReviewsSection } from "@/components/reviews/ReviewsSection";
 
 interface Vendor {
   id: string;
@@ -227,6 +228,20 @@ export default function ServiceDetail() {
                   </div>
                 </motion.div>
               )}
+
+              {/* Reviews Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <ReviewsSection
+                  itemId={vendor.id}
+                  itemType="vendor"
+                  rating={vendor.rating}
+                  reviewsCount={vendor.reviews_count}
+                />
+              </motion.div>
             </div>
 
             {/* Sidebar */}
