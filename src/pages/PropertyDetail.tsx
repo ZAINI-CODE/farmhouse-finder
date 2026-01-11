@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
+import { ReviewsSection } from "@/components/reviews/ReviewsSection";
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
@@ -303,6 +304,16 @@ export default function PropertyDetail() {
                   </div>
                 </div>
               </div>
+
+              <Separator />
+
+              {/* Reviews Section */}
+              <ReviewsSection
+                itemId={property.id}
+                itemType="property"
+                rating={property.rating}
+                reviewsCount={property.reviews_count}
+              />
             </div>
 
             {/* Booking Widget */}
