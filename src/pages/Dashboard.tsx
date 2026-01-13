@@ -44,6 +44,64 @@ const Dashboard = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loadingBookings, setLoadingBookings] = useState(true);
 
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    const fetchUserData = async () => {
+      // Fetch user profile
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (profileData) {
+        setProfile(profileData);
+      }
+
+      // Fetch user role
+      const { data: roleData } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (roleData) {
+        setUserRole(roleData.role);
+      }
+    };
+
+    const fetchBookings = async () => {
+      setLoadingBookings(true);
+      try {
+        const { data, error } = await supabase
+          .from('bookings')
+          .select(`
+            *,
+            property:properties(title, location, images)
+          `)
+          .eq('user_id', user.id)
+          .order('event_date', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching bookings:', error);
+        } else {
+          setBookings(data || []);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+      } finally {
+        setLoadingBookings(false);
+      }
+    };
+
+    fetchUserData();
+    fetchBookings();
+  }, [user, navigate]);
+
   const favorites = [
     { id: 1, name: 'Pearl Farmhouse', location: 'Canal Road, Lahore', price: 'Rs. 45,000/day', image: '/placeholder.svg' },
     { id: 2, name: 'Bahria Orchards Villa', location: 'Bahria Orchard, Lahore', price: 'Rs. 95,000/day', image: '/placeholder.svg' },
