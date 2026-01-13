@@ -48,6 +48,8 @@ export default function Properties() {
   const [showFilters, setShowFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 200000]);
+  const [guestCapacity, setGuestCapacity] = useState(0);
+  const [minRating, setMinRating] = useState(0);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   
@@ -103,9 +105,11 @@ export default function Properties() {
     const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       property.location.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesPrice = property.price_per_day >= priceRange[0] && property.price_per_day <= priceRange[1];
+    const matchesGuests = guestCapacity === 0 || (property.max_guests && property.max_guests >= guestCapacity);
+    const matchesRating = minRating === 0 || (property.rating && property.rating >= minRating);
     const matchesAmenities = selectedAmenities.length === 0 ||
       selectedAmenities.every((amenity) => property.amenities?.includes(amenity));
-    return matchesSearch && matchesPrice && matchesAmenities;
+    return matchesSearch && matchesPrice && matchesGuests && matchesRating && matchesAmenities;
   });
 
   return (
@@ -182,9 +186,9 @@ export default function Properties() {
                 >
                   <SlidersHorizontal className="h-5 w-5 mr-2" />
                   Filters
-                  {selectedAmenities.length > 0 && (
+                  {(selectedAmenities.length > 0 || guestCapacity > 0 || minRating > 0 || priceRange[0] > 0 || priceRange[1] < 200000) && (
                     <Badge className="ml-2 bg-accent text-accent-foreground">
-                      {selectedAmenities.length}
+                      {selectedAmenities.length + (guestCapacity > 0 ? 1 : 0) + (minRating > 0 ? 1 : 0) + (priceRange[0] > 0 || priceRange[1] < 200000 ? 1 : 0)}
                     </Badge>
                   )}
                 </Button>
@@ -214,19 +218,69 @@ export default function Properties() {
                 exit={{ opacity: 0, height: 0 }}
                 className="mt-4 pt-4 border-t border-border"
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {/* Price Range */}
                   <div>
                     <label className="text-sm font-medium text-foreground mb-3 block">
-                      Price Range: PKR {priceRange[0].toLocaleString()} - PKR {priceRange[1].toLocaleString()}
+                      Price Range
                     </label>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      PKR {priceRange[0].toLocaleString()} - PKR {priceRange[1].toLocaleString()}
+                    </p>
                     <Slider
                       value={priceRange}
                       onValueChange={setPriceRange}
                       max={200000}
                       step={5000}
-                      className="mt-4"
+                      className="mt-2"
                     />
+                  </div>
+
+                  {/* Guest Capacity */}
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-3 block">
+                      Minimum Guests
+                    </label>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      {guestCapacity === 0 ? 'Any capacity' : `At least ${guestCapacity} guests`}
+                    </p>
+                    <Slider
+                      value={[guestCapacity]}
+                      onValueChange={(val) => setGuestCapacity(val[0])}
+                      max={500}
+                      step={10}
+                      className="mt-2"
+                    />
+                  </div>
+
+                  {/* Rating Filter */}
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-3 block">
+                      Minimum Rating
+                    </label>
+                    <div className="flex gap-2 mt-2">
+                      {[0, 3, 3.5, 4, 4.5].map((rating) => (
+                        <button
+                          key={rating}
+                          onClick={() => setMinRating(rating)}
+                          className={cn(
+                            "flex items-center gap-1 px-3 py-1.5 rounded-full text-sm border transition-colors",
+                            minRating === rating
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "bg-card border-border hover:border-primary"
+                          )}
+                        >
+                          {rating === 0 ? (
+                            "Any"
+                          ) : (
+                            <>
+                              <Star className="h-3 w-3 fill-current" />
+                              {rating}+
+                            </>
+                          )}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Amenities */}
@@ -234,41 +288,72 @@ export default function Properties() {
                     <label className="text-sm font-medium text-foreground mb-3 block">
                       Amenities
                     </label>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-2">
                       {amenitiesOptions.map((amenity) => (
-                        <label
+                        <button
                           key={amenity}
-                          className="flex items-center gap-2 text-sm cursor-pointer"
+                          onClick={() => {
+                            if (selectedAmenities.includes(amenity)) {
+                              setSelectedAmenities(selectedAmenities.filter((a) => a !== amenity));
+                            } else {
+                              setSelectedAmenities([...selectedAmenities, amenity]);
+                            }
+                          }}
+                          className={cn(
+                            "text-xs px-3 py-1.5 rounded-full border transition-colors",
+                            selectedAmenities.includes(amenity)
+                              ? "bg-primary text-primary-foreground border-primary"
+                              : "bg-card border-border hover:border-primary"
+                          )}
                         >
-                          <Checkbox
-                            checked={selectedAmenities.includes(amenity)}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                setSelectedAmenities([...selectedAmenities, amenity]);
-                              } else {
-                                setSelectedAmenities(selectedAmenities.filter((a) => a !== amenity));
-                              }
-                            }}
-                          />
                           {amenity}
-                        </label>
+                        </button>
                       ))}
                     </div>
                   </div>
                 </div>
 
                 {/* Clear Filters */}
-                {(selectedAmenities.length > 0 || priceRange[0] > 0 || priceRange[1] < 200000) && (
-                  <div className="mt-4 pt-4 border-t border-border">
+                {(selectedAmenities.length > 0 || priceRange[0] > 0 || priceRange[1] < 200000 || guestCapacity > 0 || minRating > 0) && (
+                  <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
+                    <div className="flex flex-wrap gap-2">
+                      {priceRange[0] > 0 || priceRange[1] < 200000 ? (
+                        <Badge variant="secondary" className="gap-1">
+                          Price: PKR {priceRange[0].toLocaleString()} - {priceRange[1].toLocaleString()}
+                          <X className="h-3 w-3 cursor-pointer" onClick={() => setPriceRange([0, 200000])} />
+                        </Badge>
+                      ) : null}
+                      {guestCapacity > 0 && (
+                        <Badge variant="secondary" className="gap-1">
+                          {guestCapacity}+ guests
+                          <X className="h-3 w-3 cursor-pointer" onClick={() => setGuestCapacity(0)} />
+                        </Badge>
+                      )}
+                      {minRating > 0 && (
+                        <Badge variant="secondary" className="gap-1">
+                          {minRating}+ stars
+                          <X className="h-3 w-3 cursor-pointer" onClick={() => setMinRating(0)} />
+                        </Badge>
+                      )}
+                      {selectedAmenities.map((amenity) => (
+                        <Badge key={amenity} variant="secondary" className="gap-1">
+                          {amenity}
+                          <X className="h-3 w-3 cursor-pointer" onClick={() => setSelectedAmenities(selectedAmenities.filter(a => a !== amenity))} />
+                        </Badge>
+                      ))}
+                    </div>
                     <Button
                       variant="ghost"
+                      size="sm"
                       onClick={() => {
                         setSelectedAmenities([]);
                         setPriceRange([0, 200000]);
+                        setGuestCapacity(0);
+                        setMinRating(0);
                       }}
                     >
                       <X className="h-4 w-4 mr-2" />
-                      Clear All Filters
+                      Clear All
                     </Button>
                   </div>
                 )}
@@ -291,6 +376,8 @@ export default function Properties() {
                   setSearchQuery("");
                   setSelectedAmenities([]);
                   setPriceRange([0, 200000]);
+                  setGuestCapacity(0);
+                  setMinRating(0);
                 }}
               >
                 Clear Filters
