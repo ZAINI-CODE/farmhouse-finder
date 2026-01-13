@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import {
   ArrowLeft, Calendar, Users, MapPin, Download, Printer,
   CheckCircle2, Clock, AlertCircle, XCircle, Loader2,
-  Building2, Phone, Mail, CreditCard, FileText, Share2
+  Building2, Phone, Mail, CreditCard, FileText, Share2, MessageSquare
 } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -16,6 +16,7 @@ import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { MessagesSection } from '@/components/messaging/MessagesSection';
 
 interface BookingDetail {
   id: string;
@@ -464,6 +465,9 @@ export default function BookingDetails() {
                 </CardContent>
               </Card>
             )}
+
+            {/* Messages Section */}
+            <MessagesSection bookingId={booking.id} />
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3">
