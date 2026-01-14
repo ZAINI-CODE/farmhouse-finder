@@ -57,6 +57,13 @@ export type Database = {
             referencedRelation: "vendors"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "booking_services_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       bookings: {
@@ -120,6 +127,13 @@ export type Database = {
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties_public"
             referencedColumns: ["id"]
           },
         ]
@@ -401,7 +415,156 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      properties_public: {
+        Row: {
+          address: string | null
+          amenities: string[] | null
+          bathrooms: number | null
+          bedrooms: number | null
+          created_at: string | null
+          description: string | null
+          id: string | null
+          images: string[] | null
+          is_active: boolean | null
+          location: string | null
+          max_guests: number | null
+          price_per_day: number | null
+          rating: number | null
+          reviews_count: number | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          amenities?: string[] | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          images?: string[] | null
+          is_active?: boolean | null
+          location?: string | null
+          max_guests?: number | null
+          price_per_day?: number | null
+          rating?: number | null
+          reviews_count?: number | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          amenities?: string[] | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          images?: string[] | null
+          is_active?: boolean | null
+          location?: string | null
+          max_guests?: number | null
+          price_per_day?: number | null
+          rating?: number | null
+          reviews_count?: number | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      reviews_public: {
+        Row: {
+          booking_id: string | null
+          comment: string | null
+          created_at: string | null
+          id: string | null
+          item_id: string | null
+          item_type: string | null
+          rating: number | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          booking_id?: string | null
+          comment?: string | null
+          created_at?: string | null
+          id?: string | null
+          item_id?: string | null
+          item_type?: string | null
+          rating?: number | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          booking_id?: string | null
+          comment?: string | null
+          created_at?: string | null
+          id?: string | null
+          item_id?: string | null
+          item_type?: string | null
+          rating?: number | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      vendors_public: {
+        Row: {
+          business_name: string | null
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string | null
+          images: string[] | null
+          is_active: boolean | null
+          is_verified: boolean | null
+          location: string | null
+          price_range: string | null
+          rating: number | null
+          reviews_count: number | null
+          specialties: string[] | null
+          updated_at: string | null
+          user_id: string | null
+          website: string | null
+        }
+        Insert: {
+          business_name?: string | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          images?: string[] | null
+          is_active?: boolean | null
+          is_verified?: boolean | null
+          location?: string | null
+          price_range?: string | null
+          rating?: number | null
+          reviews_count?: number | null
+          specialties?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+          website?: string | null
+        }
+        Update: {
+          business_name?: string | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          images?: string[] | null
+          is_active?: boolean | null
+          is_verified?: boolean | null
+          location?: string | null
+          price_range?: string | null
+          rating?: number | null
+          reviews_count?: number | null
+          specialties?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
