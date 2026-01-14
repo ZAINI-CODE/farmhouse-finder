@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { format } from "date-fns";
 import { 
   MapPin, Users, Star, Heart, Search, SlidersHorizontal, 
-  Grid3X3, List, X, CalendarIcon, Loader2
+  Grid3X3, List, X, CalendarIcon, Loader2, Map
 } from "lucide-react";
+
+// Lazy load map component to avoid SSR issues
+const PropertyMap = lazy(() => import("@/components/properties/PropertyMap").then(m => ({ default: m.PropertyMap })));
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -44,7 +47,7 @@ const amenitiesOptions = ["Pool", "Garden", "Kitchen", "Parking", "WiFi", "Fire 
 export default function Properties() {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [searchParams] = useSearchParams();
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "list" | "map">("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 200000]);
@@ -197,14 +200,23 @@ export default function Properties() {
                   <button
                     onClick={() => setViewMode("grid")}
                     className={`p-3 transition-colors ${viewMode === "grid" ? "bg-primary text-primary-foreground" : "bg-card hover:bg-muted"}`}
+                    title="Grid view"
                   >
                     <Grid3X3 className="h-5 w-5" />
                   </button>
                   <button
                     onClick={() => setViewMode("list")}
                     className={`p-3 transition-colors ${viewMode === "list" ? "bg-primary text-primary-foreground" : "bg-card hover:bg-muted"}`}
+                    title="List view"
                   >
                     <List className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode("map")}
+                    className={`p-3 transition-colors ${viewMode === "map" ? "bg-primary text-primary-foreground" : "bg-card hover:bg-muted"}`}
+                    title="Map view"
+                  >
+                    <Map className="h-5 w-5" />
                   </button>
                 </div>
               </div>
@@ -383,6 +395,14 @@ export default function Properties() {
                 Clear Filters
               </Button>
             </div>
+          ) : viewMode === "map" ? (
+            <Suspense fallback={
+              <div className="flex items-center justify-center h-[600px]">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            }>
+              <PropertyMap properties={filteredProperties} getPropertyImage={getPropertyImage} />
+            </Suspense>
           ) : (
             <div className={viewMode === "grid" 
               ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
