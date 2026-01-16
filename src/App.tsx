@@ -33,6 +33,14 @@ import CookiePolicy from "./pages/CookiePolicy";
 import TermsOfService from "./pages/TermsOfService";
 import HelpCenter from "./pages/HelpCenter";
 import AboutUs from "./pages/AboutUs";
+import CancellationPolicy from "./pages/CancellationPolicy";
+import Contact from "./pages/Contact";
+import Safety from "./pages/Safety";
+import HowItWorks from "./pages/HowItWorks";
+import Careers from "./pages/Careers";
+import Press from "./pages/Press";
+import Resources from "./pages/Resources";
+import Community from "./pages/Community";
 import NotFound from "./pages/NotFound";
 import { CookieConsent } from "./components/CookieConsent";
 
@@ -76,6 +84,14 @@ const App = () => (
               <Route path="/terms" element={<TermsOfService />} />
               <Route path="/help" element={<HelpCenter />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path="/cancellation" element={<CancellationPolicy />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/safety" element={<Safety />} />
+              <Route path="/how-it-works" element={<HowItWorks />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/press" element={<Press />} />
+              <Route path="/resources" element={<Resources />} />
+              <Route path="/community" element={<Community />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
