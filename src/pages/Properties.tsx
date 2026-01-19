@@ -4,7 +4,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { format } from "date-fns";
 import { 
   MapPin, Users, Star, Heart, Search, SlidersHorizontal, 
-  Grid3X3, List, X, CalendarIcon, Loader2, Map
+  Grid3X3, List, X, CalendarIcon, Loader2, Map, ArrowUpDown, Crown
 } from "lucide-react";
 
 // Lazy load map component to avoid SSR issues
@@ -19,6 +19,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useFavorites } from "@/hooks/useFavorites";
 import { supabase } from "@/integrations/supabase/client";
 import property1 from "@/assets/property-1.jpg";
@@ -40,6 +47,9 @@ interface Property {
   images: string[] | null;
   amenities: string[] | null;
   description: string | null;
+  is_featured: boolean | null;
+  status: string | null;
+  created_at: string;
 }
 
 const amenitiesOptions = ["Pool", "Garden", "Kitchen", "Parking", "WiFi", "Fire Pit", "Views", "Hot Tub"];
@@ -55,6 +65,7 @@ export default function Properties() {
   const [minRating, setMinRating] = useState(0);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [sortBy, setSortBy] = useState<string>("featured");
   
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,8 +76,10 @@ export default function Properties() {
       setLoading(true);
       const { data, error } = await supabase
         .from('properties')
-        .select('id, title, location, price_per_day, rating, reviews_count, max_guests, images, amenities, description')
+        .select('id, title, location, price_per_day, rating, reviews_count, max_guests, images, amenities, description, is_featured, status, created_at')
+        .eq('status', 'published')
         .eq('is_active', true)
+        .or('expires_at.is.null,expires_at.gt.' + new Date().toISOString())
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -105,14 +118,45 @@ export default function Properties() {
   };
 
   const filteredProperties = properties.filter((property) => {
-    const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      property.location.toLowerCase().includes(searchQuery.toLowerCase());
+    // Enhanced search with partial matching across multiple fields
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = searchQuery === "" || 
+      property.title.toLowerCase().includes(searchLower) ||
+      property.location.toLowerCase().includes(searchLower) ||
+      (property.description && property.description.toLowerCase().includes(searchLower));
+    
     const matchesPrice = property.price_per_day >= priceRange[0] && property.price_per_day <= priceRange[1];
     const matchesGuests = guestCapacity === 0 || (property.max_guests && property.max_guests >= guestCapacity);
     const matchesRating = minRating === 0 || (property.rating && property.rating >= minRating);
     const matchesAmenities = selectedAmenities.length === 0 ||
       selectedAmenities.every((amenity) => property.amenities?.includes(amenity));
     return matchesSearch && matchesPrice && matchesGuests && matchesRating && matchesAmenities;
+  });
+
+  // Sort filtered properties
+  const sortedProperties = [...filteredProperties].sort((a, b) => {
+    switch (sortBy) {
+      case 'featured':
+        // Featured first, then by creation date
+        if (a.is_featured && !b.is_featured) return -1;
+        if (!a.is_featured && b.is_featured) return 1;
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      
+      case 'newest':
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      
+      case 'price_low':
+        return a.price_per_day - b.price_per_day;
+      
+      case 'price_high':
+        return b.price_per_day - a.price_per_day;
+      
+      case 'rating':
+        return (b.rating || 0) - (a.rating || 0);
+      
+      default:
+        return 0;
+    }
   });
 
   return (
@@ -127,7 +171,7 @@ export default function Properties() {
               Explore Properties in Lahore
             </h1>
             <p className="text-muted-foreground">
-              {loading ? 'Loading properties...' : `Discover ${filteredProperties.length} stunning venues for your next event`}
+              {loading ? 'Loading properties...' : `Discover ${sortedProperties.length} stunning venues for your next event`}
             </p>
           </div>
 
@@ -219,6 +263,28 @@ export default function Properties() {
                     <Map className="h-5 w-5" />
                   </button>
                 </div>
+              </div>
+            </div>
+            
+            {/* Sort Controls */}
+            <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+              <p className="text-sm text-muted-foreground">
+                {sortedProperties.length} {sortedProperties.length === 1 ? 'property' : 'properties'} found
+              </p>
+              <div className="flex items-center gap-2">
+                <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-[180px] h-10">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="featured">Featured First</SelectItem>
+                    <SelectItem value="newest">Newest First</SelectItem>
+                    <SelectItem value="price_low">Price: Low to High</SelectItem>
+                    <SelectItem value="price_high">Price: High to Low</SelectItem>
+                    <SelectItem value="rating">Highest Rated</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
@@ -378,7 +444,7 @@ export default function Properties() {
             <div className="flex items-center justify-center py-20">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
-          ) : filteredProperties.length === 0 ? (
+          ) : sortedProperties.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-muted-foreground text-lg">No properties found matching your criteria.</p>
               <Button
@@ -401,14 +467,14 @@ export default function Properties() {
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
             }>
-              <PropertyMap properties={filteredProperties} getPropertyImage={getPropertyImage} />
+              <PropertyMap properties={sortedProperties} getPropertyImage={getPropertyImage} />
             </Suspense>
           ) : (
             <div className={viewMode === "grid" 
               ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
               : "space-y-4"
             }>
-              {filteredProperties.map((property, index) => (
+              {sortedProperties.map((property, index) => (
                 <motion.div
                   key={property.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -429,6 +495,14 @@ export default function Properties() {
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        
+                        {/* Featured Badge */}
+                        {property.is_featured && (
+                          <div className="absolute top-3 left-3 px-3 py-1 bg-yellow-500 text-white rounded-full text-xs font-semibold flex items-center gap-1 shadow-lg">
+                            <Crown className="h-3 w-3" />
+                            Featured
+                          </div>
+                        )}
                         
                         <button 
                           onClick={(e) => {

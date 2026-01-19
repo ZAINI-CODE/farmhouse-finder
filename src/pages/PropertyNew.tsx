@@ -14,8 +14,11 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { 
-  ArrowLeft, MapPin, Users, Bed, Bath, IndianRupee, Loader2
+  ArrowLeft, MapPin, Users, Bed, Bath, IndianRupee, Loader2, Save, Send, Phone, Mail, MessageCircle, Globe
 } from 'lucide-react';
+
+// Constants
+const LISTING_EXPIRY_DAYS = 30;
 
 const amenitiesList = [
   'Parking', 'Swimming Pool', 'Garden', 'Kitchen', 'BBQ Area',
@@ -40,6 +43,12 @@ const PropertyNew = () => {
     bathrooms: '',
     amenities: [] as string[],
     images: [] as string[],
+    contact_phone: '',
+    contact_email: '',
+    whatsapp_number: '',
+    facebook_url: '',
+    instagram_url: '',
+    website_url: '',
   });
 
   const updateFormData = (field: string, value: any) => {
@@ -55,7 +64,7 @@ const PropertyNew = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, isDraft: boolean = false) => {
     e.preventDefault();
     
     if (!user) {
@@ -68,41 +77,56 @@ const PropertyNew = () => {
       return;
     }
 
-    if (!formData.title || !formData.location || !formData.price_per_day) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill in all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
+    if (!isDraft) {
+      // Validation only for publish (not for draft)
+      if (!formData.title || !formData.location || !formData.price_per_day) {
+        toast({
+          title: "Missing fields",
+          description: "Please fill in all required fields",
+          variant: "destructive",
+        });
+        return;
+      }
 
-    if (formData.images.length === 0) {
-      toast({
-        title: "No images",
-        description: "Please upload at least one image of your property",
-        variant: "destructive",
-      });
-      return;
+      if (formData.images.length === 0) {
+        toast({
+          title: "No images",
+          description: "Please upload at least one image of your property",
+          variant: "destructive",
+        });
+        return;
+      }
     }
 
     setSaving(true);
 
+    // Set expiry date to LISTING_EXPIRY_DAYS from now for published listings
+    const expiresAt = isDraft ? null : new Date(Date.now() + LISTING_EXPIRY_DAYS * 24 * 60 * 60 * 1000).toISOString();
+    
     const { error } = await supabase
       .from('properties')
       .insert({
         owner_id: user.id,
-        title: formData.title,
+        title: formData.title || 'Draft Property',
         description: formData.description || null,
-        location: formData.location,
+        location: formData.location || 'Not specified',
         address: formData.address || null,
-        price_per_day: parseFloat(formData.price_per_day),
+        price_per_day: formData.price_per_day ? parseFloat(formData.price_per_day) : 0,
         max_guests: formData.max_guests ? parseInt(formData.max_guests) : 50,
         bedrooms: formData.bedrooms ? parseInt(formData.bedrooms) : 1,
         bathrooms: formData.bathrooms ? parseInt(formData.bathrooms) : 1,
         amenities: formData.amenities,
         images: formData.images,
+        contact_phone: formData.contact_phone || null,
+        contact_email: formData.contact_email || null,
+        whatsapp_number: formData.whatsapp_number || null,
+        facebook_url: formData.facebook_url || null,
+        instagram_url: formData.instagram_url || null,
+        website_url: formData.website_url || null,
         is_active: true,
+        status: isDraft ? 'draft' : 'pending_approval',
+        submitted_at: isDraft ? null : new Date().toISOString(),
+        expires_at: expiresAt,
       });
 
     setSaving(false);
@@ -118,10 +142,12 @@ const PropertyNew = () => {
     }
 
     toast({
-      title: "Property Listed!",
-      description: "Your property has been successfully listed.",
+      title: isDraft ? "Draft Saved!" : "Property Submitted!",
+      description: isDraft 
+        ? "Your property has been saved as draft. You can edit and submit it later."
+        : "Your property has been submitted for admin approval.",
     });
-    navigate('/owner/admin');
+    navigate('/properties/manage');
   };
 
   if (authLoading) {
@@ -335,6 +361,103 @@ const PropertyNew = () => {
                 </CardContent>
               </Card>
 
+              {/* Contact Information */}
+              <Card className="border-0 shadow-sm">
+                <CardHeader>
+                  <CardTitle>Contact Information</CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    Provide contact details for potential customers
+                  </p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="contact_phone">Contact Phone</Label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="contact_phone"
+                          className="pl-10"
+                          placeholder="+92 300 1234567"
+                          value={formData.contact_phone}
+                          onChange={(e) => updateFormData('contact_phone', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="whatsapp_number">WhatsApp Number</Label>
+                      <div className="relative">
+                        <MessageCircle className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="whatsapp_number"
+                          className="pl-10"
+                          placeholder="+92 300 1234567"
+                          value={formData.whatsapp_number}
+                          onChange={(e) => updateFormData('whatsapp_number', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="contact_email">Contact Email</Label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        id="contact_email"
+                        type="email"
+                        className="pl-10"
+                        placeholder="contact@property.com"
+                        value={formData.contact_email}
+                        onChange={(e) => updateFormData('contact_email', e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Social Media & Website */}
+              <Card className="border-0 shadow-sm">
+                <CardHeader>
+                  <CardTitle>Social Media & Website (Optional)</CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    Add links to your social media profiles and website
+                  </p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="facebook_url">Facebook Page URL</Label>
+                    <Input
+                      id="facebook_url"
+                      placeholder="https://facebook.com/yourpage"
+                      value={formData.facebook_url}
+                      onChange={(e) => updateFormData('facebook_url', e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="instagram_url">Instagram Profile URL</Label>
+                    <Input
+                      id="instagram_url"
+                      placeholder="https://instagram.com/yourprofile"
+                      value={formData.instagram_url}
+                      onChange={(e) => updateFormData('instagram_url', e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="website_url">Website URL</Label>
+                    <div className="relative">
+                      <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        id="website_url"
+                        className="pl-10"
+                        placeholder="https://yourwebsite.com"
+                        value={formData.website_url}
+                        onChange={(e) => updateFormData('website_url', e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Submit */}
               <div className="flex gap-4 justify-end">
                 <Button
@@ -345,14 +468,39 @@ const PropertyNew = () => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={saving}>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={(e) => handleSubmit(e, true)}
+                  disabled={saving}
+                >
                   {saving ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Listing Property...
+                      Saving...
                     </>
                   ) : (
-                    'List Property'
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Save as Draft
+                    </>
+                  )}
+                </Button>
+                <Button 
+                  type="button"
+                  onClick={(e) => handleSubmit(e, false)}
+                  disabled={saving}
+                >
+                  {saving ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      Submit for Approval
+                    </>
                   )}
                 </Button>
               </div>

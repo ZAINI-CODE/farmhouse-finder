@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import {
   MapPin, Users, Star, Heart, Share2, Calendar, ChevronLeft,
   ChevronRight, Check, Wifi, Car, UtensilsCrossed, Flower2,
-  TreePine, Waves, Flame, Camera, Loader2
+  TreePine, Waves, Flame, Camera, Loader2, Phone, Mail, MessageCircle,
+  Facebook, Instagram, Globe
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -12,9 +13,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { ReviewsSection } from "@/components/reviews/ReviewsSection";
+import { useToast } from "@/hooks/use-toast";
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
@@ -52,15 +60,43 @@ interface Property {
   amenities: string[] | null;
   description: string | null;
   owner_id: string;
+  contact_phone: string | null;
+  contact_email: string | null;
+  whatsapp_number: string | null;
+  facebook_url: string | null;
+  instagram_url: string | null;
+  website_url: string | null;
 }
 
 export default function PropertyDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { isFavorite, toggleFavorite } = useFavorites();
   const [currentImage, setCurrentImage] = useState(0);
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const shareProperty = (platform: string) => {
+    const url = window.location.href;
+    const text = `Check out ${property?.title} on BookFarm`;
+    
+    switch (platform) {
+      case 'whatsapp':
+        window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+        break;
+      case 'facebook':
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        break;
+      case 'copy':
+        navigator.clipboard.writeText(url);
+        toast({
+          title: "Link copied!",
+          description: "Property link has been copied to clipboard",
+        });
+        break;
+    }
+  };
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -176,10 +212,28 @@ export default function PropertyDetail() {
                 <Heart className={`h-5 w-5 ${isFavorite(property.id, 'property') ? "fill-current" : ""}`} />
                 Save
               </Button>
-              <Button variant="outline" size="lg">
-                <Share2 className="h-5 w-5" />
-                Share
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="lg">
+                    <Share2 className="h-5 w-5 mr-2" />
+                    Share
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => shareProperty('whatsapp')}>
+                    <MessageCircle className="h-4 w-4 mr-2 text-green-600" />
+                    Share on WhatsApp
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => shareProperty('facebook')}>
+                    <Facebook className="h-4 w-4 mr-2 text-blue-600" />
+                    Share on Facebook
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => shareProperty('copy')}>
+                    <Share2 className="h-4 w-4 mr-2" />
+                    Copy Link
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 
@@ -369,6 +423,105 @@ export default function PropertyDetail() {
                   <p className="text-center text-sm text-muted-foreground mb-4">
                     You won't be charged yet
                   </p>
+
+                  {/* Contact Options */}
+                  {(property.whatsapp_number || property.contact_phone || property.contact_email) && (
+                    <>
+                      <Separator className="my-4" />
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium mb-3">Contact Property</p>
+                        
+                        {property.whatsapp_number && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full justify-start"
+                            onClick={() => {
+                              const cleanNumber = property.whatsapp_number!.replace(/\D/g, '');
+                              if (cleanNumber.length >= 10) {
+                                window.open(`https://wa.me/${cleanNumber}`, '_blank');
+                              } else {
+                                toast({
+                                  title: "Invalid number",
+                                  description: "WhatsApp number appears to be invalid",
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
+                          >
+                            <MessageCircle className="w-4 h-4 mr-2 text-green-600" />
+                            WhatsApp
+                          </Button>
+                        )}
+                        
+                        {property.contact_phone && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full justify-start"
+                            onClick={() => window.open(`tel:${property.contact_phone}`, '_blank')}
+                          >
+                            <Phone className="w-4 h-4 mr-2" />
+                            Call: {property.contact_phone}
+                          </Button>
+                        )}
+                        
+                        {property.contact_email && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full justify-start"
+                            onClick={() => window.open(`mailto:${property.contact_email}`, '_blank')}
+                          >
+                            <Mail className="w-4 h-4 mr-2" />
+                            Email
+                          </Button>
+                        )}
+                      </div>
+                    </>
+                  )}
+
+                  {/* Social Links */}
+                  {(property.facebook_url || property.instagram_url || property.website_url) && (
+                    <>
+                      <Separator className="my-4" />
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium mb-3">Follow Us</p>
+                        <div className="flex gap-2">
+                          {property.facebook_url && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex-1"
+                              onClick={() => window.open(property.facebook_url!, '_blank')}
+                            >
+                              <Facebook className="w-4 h-4" />
+                            </Button>
+                          )}
+                          {property.instagram_url && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex-1"
+                              onClick={() => window.open(property.instagram_url!, '_blank')}
+                            >
+                              <Instagram className="w-4 h-4" />
+                            </Button>
+                          )}
+                          {property.website_url && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex-1"
+                              onClick={() => window.open(property.website_url!, '_blank')}
+                            >
+                              <Globe className="w-4 h-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   <Separator className="my-4" />
 

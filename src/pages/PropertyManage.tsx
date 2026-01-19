@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { 
   ArrowLeft, Plus, Pencil, Trash2, MapPin, Users, Bed, 
-  IndianRupee, Loader2, Star, Eye, EyeOff
+  IndianRupee, Loader2, Star, Eye, EyeOff, AlertCircle, Crown
 } from 'lucide-react';
 
 interface Property {
@@ -37,6 +37,11 @@ interface Property {
   amenities: string[] | null;
   images: string[] | null;
   is_active: boolean | null;
+  status: string | null;
+  expires_at: string | null;
+  is_featured: boolean | null;
+  featured_until: string | null;
+  rejection_reason: string | null;
   rating: number | null;
   reviews_count: number | null;
   created_at: string;
@@ -50,6 +55,23 @@ const PropertyManage = () => {
   const [loading, setLoading] = useState(true);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+
+  const getStatusBadge = (status: string | null) => {
+    switch (status) {
+      case 'draft':
+        return { label: 'Draft', variant: 'secondary' as const };
+      case 'pending_approval':
+        return { label: 'Pending Approval', variant: 'default' as const };
+      case 'published':
+        return { label: 'Published', variant: 'default' as const };
+      case 'rejected':
+        return { label: 'Rejected', variant: 'destructive' as const };
+      case 'expired':
+        return { label: 'Expired', variant: 'secondary' as const };
+      default:
+        return { label: 'Unknown', variant: 'secondary' as const };
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -217,14 +239,41 @@ const PropertyManage = () => {
                         <div className="flex-1 p-6">
                           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                             <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-2">
+                              <div className="flex items-center gap-2 mb-2 flex-wrap">
                                 <h3 className="text-xl font-semibold text-foreground">
                                   {property.title}
                                 </h3>
-                                <Badge variant={property.is_active ? "default" : "secondary"}>
-                                  {property.is_active ? 'Active' : 'Inactive'}
+                                {property.is_featured && (
+                                  <Badge className="bg-yellow-500 hover:bg-yellow-600">
+                                    <Crown className="w-3 h-3 mr-1" />
+                                    Featured
+                                  </Badge>
+                                )}
+                                <Badge variant={getStatusBadge(property.status).variant}>
+                                  {getStatusBadge(property.status).label}
                                 </Badge>
+                                {!property.is_active && (
+                                  <Badge variant="secondary">Inactive</Badge>
+                                )}
                               </div>
+
+                              {property.rejection_reason && (
+                                <div className="mb-3 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
+                                  <div className="flex items-start gap-2">
+                                    <AlertCircle className="w-4 h-4 text-destructive mt-0.5 flex-shrink-0" />
+                                    <div>
+                                      <p className="text-sm font-semibold text-destructive">Rejection Reason:</p>
+                                      <p className="text-sm text-muted-foreground">{property.rejection_reason}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {property.expires_at && (
+                                <p className="text-xs text-muted-foreground mb-2">
+                                  Expires: {new Date(property.expires_at).toLocaleDateString()}
+                                </p>
+                              )}
 
                               <div className="flex items-center gap-1 text-muted-foreground mb-3">
                                 <MapPin className="w-4 h-4" />
