@@ -63,34 +63,51 @@ export function Footer() {
 
     setIsLoading(true);
     
-    const { error } = await supabase
-      .from("newsletter_subscriptions")
-      .insert({ email: validation.data });
+    try {
+      const baseUrl = window.location.origin;
+      
+      const { data, error } = await supabase.functions.invoke("send-newsletter-verification", {
+        body: { email: validation.data, baseUrl },
+      });
 
-    setIsLoading(false);
-
-    if (error) {
-      if (error.code === "23505") {
-        toast({
-          title: "Already subscribed",
-          description: "This email is already subscribed to our newsletter.",
-        });
-      } else {
+      if (error) {
+        console.error("Edge function error:", error);
         toast({
           title: "Error",
-          description: "Failed to subscribe. Please try again.",
+          description: "Failed to send verification email. Please try again.",
           variant: "destructive",
         });
+        return;
       }
-      return;
-    }
 
-    setIsSubscribed(true);
-    setEmail("");
-    toast({
-      title: "Subscribed!",
-      description: "Thank you for subscribing to our newsletter.",
-    });
+      if (data?.message === "already_verified") {
+        toast({
+          title: "Already verified",
+          description: "This email is already verified and subscribed.",
+        });
+      } else if (data?.message === "already_subscribed") {
+        toast({
+          title: "Already subscribed",
+          description: "This email is already subscribed. Check your inbox for the verification email.",
+        });
+      } else {
+        setIsSubscribed(true);
+        setEmail("");
+        toast({
+          title: "Check your inbox!",
+          description: "We've sent a verification link to your email address.",
+        });
+      }
+    } catch (err) {
+      console.error("Subscribe error:", err);
+      toast({
+        title: "Error",
+        description: "Failed to subscribe. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -107,12 +124,12 @@ export function Footer() {
                 Get the latest venues and exclusive offers delivered to your inbox
               </p>
             </div>
-            {isSubscribed ? (
-              <div className="flex items-center gap-2 text-accent">
-                <CheckCircle className="h-5 w-5" />
-                <span>Thank you for subscribing!</span>
-              </div>
-            ) : (
+          {isSubscribed ? (
+            <div className="flex items-center gap-2 text-accent">
+              <CheckCircle className="h-5 w-5" />
+              <span>Check your email to verify your subscription!</span>
+            </div>
+          ) : (
               <form onSubmit={handleSubscribe} className="flex gap-3 w-full lg:w-auto max-w-md">
                 <Input
                   type="email"

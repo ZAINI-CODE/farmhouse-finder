@@ -41,6 +41,7 @@ import Careers from "./pages/Careers";
 import Press from "./pages/Press";
 import Resources from "./pages/Resources";
 import Community from "./pages/Community";
+import VerifyNewsletter from "./pages/VerifyNewsletter";
 import NotFound from "./pages/NotFound";
 import { CookieConsent } from "./components/CookieConsent";
 
@@ -92,6 +93,7 @@ const App = () => (
               <Route path="/press" element={<Press />} />
               <Route path="/resources" element={<Resources />} />
               <Route path="/community" element={<Community />} />
+              <Route path="/verify-newsletter" element={<VerifyNewsletter />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
