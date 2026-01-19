@@ -28,6 +28,7 @@ import PropertyManage from "./pages/PropertyManage";
 import PropertyEdit from "./pages/PropertyEdit";
 import VendorRegister from "./pages/VendorRegister";
 import VendorDashboard from "./pages/VendorDashboard";
+import AdminListings from "./pages/AdminListings";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CookiePolicy from "./pages/CookiePolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -80,6 +81,7 @@ const App = () => (
               <Route path="/properties/edit/:id" element={<PropertyEdit />} />
               <Route path="/vendor/register" element={<VendorRegister />} />
               <Route path="/vendor/dashboard" element={<VendorDashboard />} />
+              <Route path="/admin/listings" element={<AdminListings />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/cookies" element={<CookiePolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
