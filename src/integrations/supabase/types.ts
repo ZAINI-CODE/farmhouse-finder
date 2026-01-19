@@ -202,22 +202,31 @@ export type Database = {
           email: string
           id: string
           is_active: boolean
+          is_verified: boolean
           subscribed_at: string
           unsubscribed_at: string | null
+          verification_token: string | null
+          verified_at: string | null
         }
         Insert: {
           email: string
           id?: string
           is_active?: boolean
+          is_verified?: boolean
           subscribed_at?: string
           unsubscribed_at?: string | null
+          verification_token?: string | null
+          verified_at?: string | null
         }
         Update: {
           email?: string
           id?: string
           is_active?: boolean
+          is_verified?: boolean
           subscribed_at?: string
           unsubscribed_at?: string | null
+          verification_token?: string | null
+          verified_at?: string | null
         }
         Relationships: []
       }
