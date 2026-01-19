@@ -1,7 +1,13 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Loader2, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const emailSchema = z.string().trim().email("Please enter a valid email address").max(255);
 
 const footerLinks = {
   company: [
@@ -37,6 +43,56 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const validation = emailSchema.safeParse(email);
+    if (!validation.success) {
+      toast({
+        title: "Invalid email",
+        description: validation.error.errors[0].message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    
+    const { error } = await supabase
+      .from("newsletter_subscriptions")
+      .insert({ email: validation.data });
+
+    setIsLoading(false);
+
+    if (error) {
+      if (error.code === "23505") {
+        toast({
+          title: "Already subscribed",
+          description: "This email is already subscribed to our newsletter.",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to subscribe. Please try again.",
+          variant: "destructive",
+        });
+      }
+      return;
+    }
+
+    setIsSubscribed(true);
+    setEmail("");
+    toast({
+      title: "Subscribed!",
+      description: "Thank you for subscribing to our newsletter.",
+    });
+  };
+
   return (
     <footer className="bg-primary text-primary-foreground">
       {/* Newsletter Section */}
@@ -51,16 +107,27 @@ export function Footer() {
                 Get the latest venues and exclusive offers delivered to your inbox
               </p>
             </div>
-            <div className="flex gap-3 w-full lg:w-auto max-w-md">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus:border-accent"
-              />
-              <Button variant="accent" className="shrink-0">
-                Subscribe
-              </Button>
-            </div>
+            {isSubscribed ? (
+              <div className="flex items-center gap-2 text-accent">
+                <CheckCircle className="h-5 w-5" />
+                <span>Thank you for subscribing!</span>
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe} className="flex gap-3 w-full lg:w-auto max-w-md">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus:border-accent"
+                  disabled={isLoading}
+                  required
+                />
+                <Button variant="accent" className="shrink-0" disabled={isLoading}>
+                  {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Subscribe"}
+                </Button>
+              </form>
+            )}
           </div>
         </div>
       </div>
