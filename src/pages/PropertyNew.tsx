@@ -17,6 +17,9 @@ import {
   ArrowLeft, MapPin, Users, Bed, Bath, IndianRupee, Loader2, Save, Send, Phone, Mail, MessageCircle, Globe
 } from 'lucide-react';
 
+// Constants
+const LISTING_EXPIRY_DAYS = 30;
+
 const amenitiesList = [
   'Parking', 'Swimming Pool', 'Garden', 'Kitchen', 'BBQ Area',
   'Air Conditioning', 'Wi-Fi', 'Sound System', 'Stage', 'Restrooms',
@@ -97,8 +100,8 @@ const PropertyNew = () => {
 
     setSaving(true);
 
-    // Set expiry date to 30 days from now for published listings
-    const expiresAt = isDraft ? null : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+    // Set expiry date to LISTING_EXPIRY_DAYS from now for published listings
+    const expiresAt = isDraft ? null : new Date(Date.now() + LISTING_EXPIRY_DAYS * 24 * 60 * 60 * 1000).toISOString();
     
     const { error } = await supabase
       .from('properties')

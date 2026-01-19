@@ -45,7 +45,7 @@ CREATE TABLE public.listing_promotions (
 -- Create admin_actions table for audit trail
 CREATE TABLE public.admin_actions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  admin_id UUID REFERENCES auth.users(id) ON DELETE SET NULL NOT NULL,
+  admin_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   action_type TEXT NOT NULL CHECK (action_type IN ('approve_listing', 'reject_listing', 'approve_user', 'reject_user', 'suspend_user', 'ban_user', 'grant_promotion', 'moderate_content')),
   target_type TEXT NOT NULL CHECK (target_type IN ('property', 'vendor', 'user', 'booking', 'review', 'message')),
   target_id UUID NOT NULL,

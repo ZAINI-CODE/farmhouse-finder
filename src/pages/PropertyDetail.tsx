@@ -436,7 +436,18 @@ export default function PropertyDetail() {
                             variant="outline"
                             size="sm"
                             className="w-full justify-start"
-                            onClick={() => window.open(`https://wa.me/${property.whatsapp_number.replace(/\D/g, '')}`, '_blank')}
+                            onClick={() => {
+                              const cleanNumber = property.whatsapp_number!.replace(/\D/g, '');
+                              if (cleanNumber.length >= 10) {
+                                window.open(`https://wa.me/${cleanNumber}`, '_blank');
+                              } else {
+                                toast({
+                                  title: "Invalid number",
+                                  description: "WhatsApp number appears to be invalid",
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
                           >
                             <MessageCircle className="w-4 h-4 mr-2 text-green-600" />
                             WhatsApp

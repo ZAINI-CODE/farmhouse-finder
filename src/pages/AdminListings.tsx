@@ -25,6 +25,9 @@ import {
   IndianRupee, Calendar, Crown, AlertCircle
 } from 'lucide-react';
 
+// Constants
+const LISTING_EXPIRY_DAYS = 30;
+
 interface Property {
   id: string;
   title: string;
@@ -145,8 +148,8 @@ const AdminListings = () => {
     setActionLoading(true);
     const table = activeTab === 'properties' ? 'properties' : 'vendors';
     
-    // Set expiry date to 30 days from now
-    const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+    // Set expiry date to LISTING_EXPIRY_DAYS from now
+    const expiresAt = new Date(Date.now() + LISTING_EXPIRY_DAYS * 24 * 60 * 60 * 1000).toISOString();
     
     const { error: updateError } = await supabase
       .from(table)
