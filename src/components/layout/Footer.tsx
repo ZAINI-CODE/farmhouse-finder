@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Loader2, CheckCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Loader2, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { SocialLinks } from "@/components/SocialLinks";
 
 const emailSchema = z.string().trim().email("Please enter a valid email address").max(255);
 
@@ -35,12 +36,7 @@ const footerLinks = {
   ],
 };
 
-const socialLinks = [
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-];
+
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -257,16 +253,9 @@ export function Footer() {
               © {new Date().getFullYear()} BookFarm. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center text-primary-foreground/70 hover:bg-accent hover:text-accent-foreground transition-all"
-                >
-                  <social.icon className="h-5 w-5" />
-                </a>
-              ))}
+            <SocialLinks
+                linkClassName="bg-primary-foreground/10 text-primary-foreground/70 hover:bg-accent hover:text-accent-foreground"
+              />
             </div>
           </div>
         </div>

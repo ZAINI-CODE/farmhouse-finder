@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -8,88 +8,163 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Calendar, DollarSign, Star, Users, MessageSquare, 
-  TrendingUp, Settings, Bell, Plus, Eye, Edit, ChefHat
+  Calendar, DollarSign, Star, MessageSquare, 
+  TrendingUp, Settings, Bell, Plus, Eye, ChefHat,
+  Loader2
 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { format } from 'date-fns';
+
+interface VendorService {
+  id: string;
+  service_type: string;
+  price: number;
+  status: string | null;
+  booking_id: string;
+  booking?: {
+    id: string;
+    event_date: string;
+    guest_count: number;
+    status: string | null;
+    total_amount: number;
+    property?: { title: string; location: string } | null;
+    customer?: { full_name: string; email: string; phone: string | null } | null;
+  } | null;
+}
 
 const VendorDashboard = () => {
   const [activeTab, setActiveTab] = useState('pending');
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [vendor, setVendor] = useState<{ id: string; business_name: string; rating: number | null } | null>(null);
+  const [bookingServices, setBookingServices] = useState<VendorService[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const bookingRequests = [
-    {
-      id: 1,
-      customer: 'Priya Sharma',
-      service: 'Wedding Catering',
-      date: 'Jan 20, 2025',
-      guests: 200,
-      venue: 'Green Valley Farmhouse',
-      amount: '₹1,50,000',
-      status: 'pending',
-    },
-    {
-      id: 2,
-      customer: 'Rahul Mehta',
-      service: 'Corporate Event Catering',
-      date: 'Jan 25, 2025',
-      guests: 100,
-      venue: 'City Convention Center',
-      amount: '₹75,000',
-      status: 'pending',
-    },
-    {
-      id: 3,
-      customer: 'Anita Desai',
-      service: 'Birthday Party Catering',
-      date: 'Feb 5, 2025',
-      guests: 50,
-      venue: 'Sunset Villa',
-      amount: '₹35,000',
-      status: 'confirmed',
-    },
-  ];
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/login');
+      return;
+    }
+    if (user) {
+      fetchVendorData();
+    }
+  }, [user, authLoading]);
 
-  const services = [
-    {
-      id: 1,
-      name: 'Wedding Catering Package',
-      price: '₹750/plate',
-      bookings: 24,
-      rating: 4.9,
-      status: 'active',
-    },
-    {
-      id: 2,
-      name: 'Corporate Event Package',
-      price: '₹500/plate',
-      bookings: 18,
-      rating: 4.8,
-      status: 'active',
-    },
-    {
-      id: 3,
-      name: 'Birthday Party Package',
-      price: '₹400/plate',
-      bookings: 32,
-      rating: 4.7,
-      status: 'active',
-    },
-  ];
+  const fetchVendorData = async () => {
+    if (!user) return;
+    setLoading(true);
+    try {
+      // Fetch vendor profile
+      const { data: vendorData } = await supabase
+        .from('vendors')
+        .select('id, business_name, rating')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (vendorData) {
+        setVendor(vendorData);
+
+        // Fetch booking services for this vendor
+        const { data: servicesData, error } = await supabase
+          .from('booking_services')
+          .select(`
+            *,
+            booking:bookings(
+              id, event_date, guest_count, status, total_amount,
+              property:properties(title, location),
+              customer:profiles(full_name, email, phone)
+            )
+          `)
+          .eq('vendor_id', vendorData.id)
+          .order('created_at', { ascending: false });
+
+        if (!error && servicesData) {
+          setBookingServices(servicesData as VendorService[]);
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching vendor data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdateStatus = async (serviceId: string, newStatus: 'pending' | 'confirmed' | 'completed' | 'cancelled') => {
+    const { error } = await supabase
+      .from('booking_services')
+      .update({ status: newStatus })
+      .eq('id', serviceId);
+
+    if (error) {
+      toast({ title: 'Error', description: 'Failed to update status.', variant: 'destructive' });
+    } else {
+      toast({ title: 'Updated', description: `Status updated to ${newStatus}.` });
+      fetchVendorData();
+    }
+  };
+
+  // Compute stats from real data
+  const totalEarnings = bookingServices
+    .filter(s => s.status === 'completed')
+    .reduce((sum, s) => sum + (s.price || 0), 0);
+  const totalBookings = bookingServices.length;
+  const pendingCount = bookingServices.filter(s => !s.status || s.status === 'pending').length;
+  const confirmedCount = bookingServices.filter(s => s.status === 'confirmed').length;
+  const completedCount = bookingServices.filter(s => s.status === 'completed').length;
 
   const stats = [
-    { label: 'Total Earnings', value: '₹12.5L', change: '+15%', icon: DollarSign },
-    { label: 'Total Bookings', value: '74', change: '+8%', icon: Calendar },
-    { label: 'Avg Rating', value: '4.8', change: '+0.2', icon: Star },
-    { label: 'Profile Views', value: '1.2K', change: '+25%', icon: Eye },
+    { label: 'Total Earnings', value: `PKR ${totalEarnings.toLocaleString()}`, change: '', icon: DollarSign },
+    { label: 'Total Bookings', value: totalBookings.toString(), change: '', icon: Calendar },
+    { label: 'Avg Rating', value: vendor?.rating ? vendor.rating.toFixed(1) : 'N/A', change: '', icon: Star },
+    { label: 'Pending', value: pendingCount.toString(), change: '', icon: Eye },
   ];
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string | null) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'confirmed': return 'bg-green-100 text-green-800';
-      case 'completed': return 'bg-blue-100 text-blue-800';
+      case 'pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+      case 'confirmed': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+      case 'completed': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
       default: return 'bg-muted text-muted-foreground';
     }
   };
+
+  if (authLoading || loading) {
+    return (
+      <div className="min-h-screen bg-secondary">
+        <Navbar />
+        <main className="pt-24 pb-16 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!vendor) {
+    return (
+      <div className="min-h-screen bg-secondary">
+        <Navbar />
+        <main className="pt-24 pb-16">
+          <div className="container mx-auto px-4 text-center py-20">
+            <ChefHat className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+            <h1 className="text-2xl font-bold mb-4">Vendor Profile Not Found</h1>
+            <p className="text-muted-foreground mb-6">
+              You don't have a vendor profile yet. Register as a vendor to access this dashboard.
+            </p>
+            <Button onClick={() => navigate('/vendor/register')}>Register as Vendor</Button>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  const pendingServices = bookingServices.filter(s => !s.status || s.status === 'pending');
+  const confirmedServices = bookingServices.filter(s => s.status === 'confirmed');
+  const completedServices = bookingServices.filter(s => s.status === 'completed');
 
   return (
     <div className="min-h-screen bg-secondary">
@@ -104,7 +179,7 @@ const VendorDashboard = () => {
                 <ChefHat className="w-8 h-8 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-2xl font-display font-bold text-foreground">Royal Catering Services</h1>
+                <h1 className="text-2xl font-display font-bold text-foreground">{vendor.business_name}</h1>
                 <p className="text-muted-foreground">Vendor Dashboard</p>
               </div>
             </div>
@@ -115,7 +190,11 @@ const VendorDashboard = () => {
               </Button>
               <Button variant="outline" size="sm" className="gap-2 relative">
                 <Bell className="w-4 h-4" />
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-xs rounded-full flex items-center justify-center">3</span>
+                {pendingCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-xs rounded-full flex items-center justify-center">
+                    {pendingCount}
+                  </span>
+                )}
               </Button>
               <Button size="sm" className="gap-2">
                 <Plus className="w-4 h-4" />
@@ -144,11 +223,13 @@ const VendorDashboard = () => {
                         <stat.icon className="w-5 h-5 text-primary" />
                       </div>
                     </div>
-                    <div className="flex items-center gap-1 mt-2">
-                      <TrendingUp className="w-3 h-3 text-green-600" />
-                      <span className="text-xs text-green-600">{stat.change}</span>
-                      <span className="text-xs text-muted-foreground">vs last month</span>
-                    </div>
+                    {stat.change && (
+                      <div className="flex items-center gap-1 mt-2">
+                        <TrendingUp className="w-3 h-3 text-green-600" />
+                        <span className="text-xs text-green-600">{stat.change}</span>
+                        <span className="text-xs text-muted-foreground">vs last month</span>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>
@@ -165,91 +246,112 @@ const VendorDashboard = () => {
                 <CardContent>
                   <Tabs value={activeTab} onValueChange={setActiveTab}>
                     <TabsList className="mb-4">
-                      <TabsTrigger value="pending">Pending (2)</TabsTrigger>
-                      <TabsTrigger value="confirmed">Confirmed (1)</TabsTrigger>
-                      <TabsTrigger value="completed">Completed</TabsTrigger>
+                      <TabsTrigger value="pending">Pending ({pendingCount})</TabsTrigger>
+                      <TabsTrigger value="confirmed">Confirmed ({confirmedCount})</TabsTrigger>
+                      <TabsTrigger value="completed">Completed ({completedCount})</TabsTrigger>
                     </TabsList>
                     
-                    <TabsContent value="pending" className="space-y-4">
-                      {bookingRequests.filter(b => b.status === 'pending').map((booking) => (
-                        <div key={booking.id} className="p-4 bg-secondary rounded-xl">
-                          <div className="flex items-start justify-between mb-3">
-                            <div>
-                              <h3 className="font-semibold text-foreground">{booking.service}</h3>
-                              <p className="text-sm text-muted-foreground">by {booking.customer}</p>
+                    {(['pending', 'confirmed', 'completed'] as const).map((tabStatus) => {
+                      const list =
+                        tabStatus === 'pending' ? pendingServices :
+                        tabStatus === 'confirmed' ? confirmedServices : completedServices;
+                      return (
+                        <TabsContent key={tabStatus} value={tabStatus} className="space-y-4">
+                          {list.length === 0 ? (
+                            <div className="text-center py-8 text-muted-foreground">
+                              No {tabStatus} bookings yet
                             </div>
-                            <Badge className={getStatusColor(booking.status)}>
-                              {booking.status}
-                            </Badge>
-                          </div>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm mb-4">
-                            <div>
-                              <span className="text-muted-foreground">Date</span>
-                              <p className="font-medium text-foreground">{booking.date}</p>
+                          ) : list.map((service) => (
+                            <div key={service.id} className="p-4 bg-secondary rounded-xl">
+                              <div className="flex items-start justify-between mb-3">
+                                <div>
+                                  <h3 className="font-semibold text-foreground">{service.service_type}</h3>
+                                  {service.booking?.customer && (
+                                    <p className="text-sm text-muted-foreground">
+                                      by {service.booking.customer.full_name}
+                                    </p>
+                                  )}
+                                </div>
+                                <Badge className={getStatusColor(service.status)}>
+                                  {service.status || 'pending'}
+                                </Badge>
+                              </div>
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm mb-4">
+                                <div>
+                                  <span className="text-muted-foreground">Date</span>
+                                  <p className="font-medium text-foreground">
+                                    {service.booking?.event_date
+                                      ? format(new Date(service.booking.event_date), 'MMM d, yyyy')
+                                      : '-'}
+                                  </p>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Guests</span>
+                                  <p className="font-medium text-foreground">{service.booking?.guest_count || '-'}</p>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Venue</span>
+                                  <p className="font-medium text-foreground">
+                                    {service.booking?.property?.title || '-'}
+                                  </p>
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Amount</span>
+                                  <p className="font-medium text-primary">
+                                    PKR {(service.price || 0).toLocaleString()}
+                                  </p>
+                                </div>
+                              </div>
+                              {(tabStatus === 'pending') && (
+                                <div className="flex gap-2">
+                                  <Button
+                                    size="sm"
+                                    className="flex-1"
+                                    onClick={() => handleUpdateStatus(service.id, 'confirmed')}
+                                  >
+                                    Accept
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="flex-1"
+                                    onClick={() => handleUpdateStatus(service.id, 'cancelled')}
+                                  >
+                                    Decline
+                                  </Button>
+                                  {service.booking?.customer?.phone && (
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => {
+                                        const phone = service.booking!.customer!.phone!.replace(/\D/g, '');
+                                        const msg = encodeURIComponent('Hello, regarding your booking request.');
+                                        window.open(
+                                          `https://wa.me/${phone}?text=${msg}`,
+                                          '_blank',
+                                          'noopener,noreferrer'
+                                        );
+                                      }}
+                                    >
+                                      <MessageSquare className="w-4 h-4" />
+                                    </Button>
+                                  )}
+                                </div>
+                              )}
+                              {tabStatus === 'confirmed' && (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => handleUpdateStatus(service.id, 'completed')}
+                                >
+                                  Mark as Completed
+                                </Button>
+                              )}
                             </div>
-                            <div>
-                              <span className="text-muted-foreground">Guests</span>
-                              <p className="font-medium text-foreground">{booking.guests}</p>
-                            </div>
-                            <div>
-                              <span className="text-muted-foreground">Venue</span>
-                              <p className="font-medium text-foreground">{booking.venue}</p>
-                            </div>
-                            <div>
-                              <span className="text-muted-foreground">Amount</span>
-                              <p className="font-medium text-primary">{booking.amount}</p>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button size="sm" className="flex-1">Accept</Button>
-                            <Button size="sm" variant="outline" className="flex-1">Decline</Button>
-                            <Button size="sm" variant="ghost">
-                              <MessageSquare className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </TabsContent>
-
-                    <TabsContent value="confirmed" className="space-y-4">
-                      {bookingRequests.filter(b => b.status === 'confirmed').map((booking) => (
-                        <div key={booking.id} className="p-4 bg-secondary rounded-xl">
-                          <div className="flex items-start justify-between mb-3">
-                            <div>
-                              <h3 className="font-semibold text-foreground">{booking.service}</h3>
-                              <p className="text-sm text-muted-foreground">by {booking.customer}</p>
-                            </div>
-                            <Badge className={getStatusColor(booking.status)}>
-                              {booking.status}
-                            </Badge>
-                          </div>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                            <div>
-                              <span className="text-muted-foreground">Date</span>
-                              <p className="font-medium text-foreground">{booking.date}</p>
-                            </div>
-                            <div>
-                              <span className="text-muted-foreground">Guests</span>
-                              <p className="font-medium text-foreground">{booking.guests}</p>
-                            </div>
-                            <div>
-                              <span className="text-muted-foreground">Venue</span>
-                              <p className="font-medium text-foreground">{booking.venue}</p>
-                            </div>
-                            <div>
-                              <span className="text-muted-foreground">Amount</span>
-                              <p className="font-medium text-primary">{booking.amount}</p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </TabsContent>
-
-                    <TabsContent value="completed">
-                      <div className="text-center py-8 text-muted-foreground">
-                        No completed bookings yet
-                      </div>
-                    </TabsContent>
+                          ))}
+                        </TabsContent>
+                      );
+                    })}
                   </Tabs>
                 </CardContent>
               </Card>
@@ -257,41 +359,6 @@ const VendorDashboard = () => {
 
             {/* Sidebar */}
             <div className="space-y-6">
-              {/* My Services */}
-              <Card className="border-0 shadow-sm">
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-display">My Services</CardTitle>
-                    <Button variant="ghost" size="sm" className="text-primary text-xs">
-                      Manage
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {services.map((service) => (
-                    <div key={service.id} className="p-3 bg-secondary rounded-lg">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h4 className="font-medium text-foreground text-sm">{service.name}</h4>
-                          <p className="text-primary font-semibold text-sm">{service.price}</p>
-                        </div>
-                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
-                          <Edit className="w-3 h-3" />
-                        </Button>
-                      </div>
-                      <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" /> {service.bookings} bookings
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Star className="w-3 h-3 text-yellow-500" /> {service.rating}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
               {/* Quick Actions */}
               <Card className="border-0 shadow-sm">
                 <CardHeader className="pb-2">
