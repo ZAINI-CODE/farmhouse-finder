@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import {
   Calendar as CalendarIcon, Users, MapPin, Check, ChevronRight,
-  CreditCard, Shield, ArrowLeft
+  CreditCard, Shield, ArrowLeft, Loader2
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -16,6 +16,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import property1 from "@/assets/property-1.jpg";
 
 const packages = [
@@ -72,18 +74,34 @@ export default function Booking() {
   const { propertyId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
   
   const [step, setStep] = useState(1);
   const [date, setDate] = useState<Date>();
   const [guests, setGuests] = useState(50);
   const [selectedPackage, setSelectedPackage] = useState("premium");
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [propertyTitle, setPropertyTitle] = useState("Your Property");
   const [contactInfo, setContactInfo] = useState({
     name: "",
     email: "",
     phone: "",
     notes: "",
   });
+
+  // Fetch property title for booking records
+  useEffect(() => {
+    if (!propertyId) return;
+    supabase
+      .from('properties')
+      .select('title')
+      .eq('id', propertyId)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.title) setPropertyTitle(data.title);
+      });
+  }, [propertyId]);
 
   const currentPackage = packages.find(p => p.id === selectedPackage)!;
   
@@ -111,26 +129,87 @@ export default function Booking() {
     );
   };
 
-  const handleSubmit = () => {
-    // Navigate to payment page with booking details
-    const bookingDetails = {
-      propertyId,
-      propertyName: "Gulshan Farmhouse",
-      date: date!,
-      guests,
-      packageName: currentPackage.name,
-      packagePrice: currentPackage.price,
-      addOns: selectedAddOns.map(id => {
-        const addon = addOns.find(a => a.id === id)!;
-        const price = addon.unit === "per person" ? addon.price * guests : addon.price;
-        return { name: addon.name, price };
-      }),
-      serviceFee,
-      total,
-      contactInfo,
-    };
-    
-    navigate("/payment", { state: { bookingDetails } });
+  const handleSubmit = async () => {
+    if (!user) {
+      toast({
+        title: "Please sign in",
+        description: "You need to be logged in to make a booking.",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+
+    if (!date || !propertyId) {
+      toast({
+        title: "Missing details",
+        description: "Please select a date and property.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Create booking in Supabase
+      const { data: bookingData, error } = await supabase
+        .from('bookings')
+        .insert({
+          property_id: propertyId,
+          user_id: user.id,
+          event_date: format(date, "yyyy-MM-dd"),
+          guest_count: guests,
+          total_amount: total,
+          event_type: currentPackage.name,
+          // Store only the user's free-form notes; avoid embedding structured/PII contact data
+          notes: (contactInfo.notes || "").trim() || null,
+          status: 'pending',
+          payment_status: 'unpaid',
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error creating booking:', error);
+        toast({
+          title: "Booking Error",
+          description: "Failed to create booking. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Navigate to payment with booking details including the new booking ID
+      const bookingDetails = {
+        id: bookingData.id,
+        propertyId,
+        propertyName: propertyTitle,
+        date: date,
+        guests,
+        packageName: currentPackage.name,
+        packagePrice: currentPackage.price,
+        addOns: selectedAddOns.map(id => {
+          const addon = addOns.find(a => a.id === id)!;
+          const price = addon.unit === "per person" ? addon.price * guests : addon.price;
+          return { name: addon.name, price };
+        }),
+        serviceFee,
+        total,
+        contactInfo,
+      };
+
+      navigate("/payment", { state: { bookingDetails } });
+    } catch (err) {
+      console.error('Booking submission error:', err);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -498,9 +577,14 @@ export default function Booking() {
                     size="xl"
                     className="w-full"
                     onClick={handleSubmit}
+                    disabled={isSubmitting}
                   >
-                    <CreditCard className="mr-2 h-5 w-5" />
-                    Proceed to Payment
+                    {isSubmitting ? (
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    ) : (
+                      <CreditCard className="mr-2 h-5 w-5" />
+                    )}
+                    {isSubmitting ? "Creating Booking…" : "Proceed to Payment"}
                   </Button>
 
                   <p className="text-center text-sm text-muted-foreground">

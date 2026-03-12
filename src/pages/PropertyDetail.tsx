@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   MapPin, Users, Star, Heart, Share2, Calendar, ChevronLeft,
   ChevronRight, Check, Wifi, Car, UtensilsCrossed, Flower2,
-  TreePine, Waves, Flame, Camera, Loader2
+  TreePine, Waves, Flame, Camera, Loader2, MessageCircle
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { useFavorites } from "@/hooks/useFavorites";
 import { ReviewsSection } from "@/components/reviews/ReviewsSection";
+import { MapComponent } from "@/components/MapComponent";
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
@@ -61,6 +62,7 @@ export default function PropertyDetail() {
   const [currentImage, setCurrentImage] = useState(0);
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
+  const [vendorPhone, setVendorPhone] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -77,6 +79,26 @@ export default function PropertyDetail() {
         console.error('Error fetching property:', error);
       } else {
         setProperty(data);
+        if (data?.owner_id) {
+          // Try vendor table first, then fall back to profile
+          const { data: vendorData } = await supabase
+            .from('vendors')
+            .select('phone')
+            .eq('user_id', data.owner_id)
+            .maybeSingle();
+          if (vendorData?.phone) {
+            setVendorPhone(vendorData.phone);
+          } else {
+            const { data: profileData } = await supabase
+              .from('profiles')
+              .select('phone')
+              .eq('user_id', data.owner_id)
+              .maybeSingle();
+            if (profileData?.phone) {
+              setVendorPhone(profileData.phone);
+            }
+          }
+        }
       }
       setLoading(false);
     };
@@ -297,12 +319,22 @@ export default function PropertyDetail() {
               {/* Location */}
               <div>
                 <h2 className="font-heading text-2xl font-semibold mb-4">Location</h2>
-                <div className="bg-card rounded-xl border border-border p-6">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <MapPin className="h-5 w-5" />
-                    <span>{property.address || property.location}</span>
-                  </div>
-                </div>
+                {(() => {
+                  const displayAddress = property.address || property.location;
+                  return (
+                    <>
+                      <MapComponent
+                        location={property.location}
+                        address={property.address}
+                        title={property.title}
+                      />
+                      <div className="flex items-center gap-2 text-muted-foreground mt-3">
+                        <MapPin className="h-4 w-4 shrink-0" />
+                        <span>{displayAddress}</span>
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
 
               <Separator />
@@ -365,6 +397,27 @@ export default function PropertyDetail() {
                   >
                     Request to Book
                   </Button>
+
+                  {vendorPhone && (
+                    <Button
+                      variant="outline"
+                      size="xl"
+                      className="w-full mb-4 gap-2 border-green-500 text-green-600 hover:bg-green-50 dark:hover:bg-green-950"
+                      onClick={() => {
+                        const msg = encodeURIComponent(
+                          `Hello, I am interested in your property: ${property.title}`
+                        );
+                        window.open(
+                          `https://wa.me/${vendorPhone.replace(/\D/g, "")}?text=${msg}`,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                    >
+                      <MessageCircle className="h-5 w-5" />
+                      WhatsApp Vendor
+                    </Button>
+                  )}
 
                   <p className="text-center text-sm text-muted-foreground mb-4">
                     You won't be charged yet
