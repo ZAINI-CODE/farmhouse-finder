@@ -3,108 +3,46 @@ import { Link } from "react-router-dom";
 import { MapPin, Users, Star, Heart, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import property1 from "@/assets/property-1.jpg";
-import property2 from "@/assets/property-2.jpg";
-import property3 from "@/assets/property-3.jpg";
-import property4 from "@/assets/property-4.jpg";
 
-const featuredProperties = [
-  {
-    id: "1",
-    title: "Royal Garden Farmhouse",
-    location: "DHA Phase 6, Lahore",
-    price: 85000,
-    rating: 4.9,
-    reviews: 127,
-    guests: 150,
-    image: property1,
-    badge: "Featured",
-    amenities: ["Pool", "Garden", "Catering"],
-  },
-  {
-    id: "2",
-    title: "Green Valley Resort",
-    location: "Bedian Road, Lahore",
-    price: 65000,
-    rating: 4.8,
-    reviews: 89,
-    guests: 200,
-    image: property2,
-    badge: "Popular",
-    amenities: ["Indoor", "Outdoor", "Parking"],
-  },
-  {
-    id: "3",
-    title: "Raiwind Gardens",
-    location: "Raiwind Road, Lahore",
-    price: 120000,
-    rating: 5.0,
-    reviews: 64,
-    guests: 300,
-    image: property3,
-    badge: "New",
-    amenities: ["Views", "Fire Pit", "Kitchen"],
-  },
-  {
-    id: "4",
-    title: "Pearl Farmhouse",
-    location: "Canal Road, Lahore",
-    price: 45000,
-    rating: 4.7,
-    reviews: 156,
-    guests: 80,
-    image: property4,
-    amenities: ["Garden", "Gazebo", "Lights"],
-  },
-  {
-    id: "5",
-    title: "Al-Fatah Party Lawn",
-    location: "Gulberg III, Lahore",
-    price: 95000,
-    rating: 4.9,
-    reviews: 203,
-    guests: 250,
-    image: property1,
-    badge: "Premium",
-    amenities: ["AC Hall", "Stage", "Catering"],
-  },
-  {
-    id: "6",
-    title: "Bismillah Banquet",
-    location: "Model Town, Lahore",
-    price: 75000,
-    rating: 4.6,
-    reviews: 145,
-    guests: 180,
-    image: property2,
-    amenities: ["Indoor", "Valet", "Kitchen"],
-  },
-  {
-    id: "7",
-    title: "Noor Mahal Gardens",
-    location: "Johar Town, Lahore",
-    price: 110000,
-    rating: 4.8,
-    reviews: 178,
-    guests: 350,
-    image: property3,
-    badge: "Top Rated",
-    amenities: ["Pool", "Lawn", "Marquee"],
-  },
-  {
-    id: "8",
-    title: "Al-Rehman Farmhouse",
-    location: "Barki Road, Lahore",
-    price: 55000,
-    rating: 4.5,
-    reviews: 92,
-    guests: 100,
-    image: property4,
-    amenities: ["BBQ", "Garden", "Parking"],
-  },
-];
+interface Property {
+  id: string;
+  title: string;
+  location: string;
+  price_per_day: number;
+  rating: number | null;
+  reviews_count: number | null;
+  max_guests: number | null;
+  images: string[] | null;
+  amenities: string[] | null;
+}
 
 export function FeaturedProperties() {
+  const [properties, setProperties] = useState<Property[]>([]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      const { data } = await supabase
+        .from('properties')
+        .select('id, title, location, price_per_day, rating, reviews_count, max_guests, images, amenities')
+        .eq('is_active', true)
+        .order('rating', { ascending: false })
+        .limit(8);
+      
+      if (data) setProperties(data);
+    };
+    fetchProperties();
+  }, []);
+
+  const getImage = (property: Property) => {
+    if (property.images && property.images.length > 0) return property.images[0];
+    return property1;
+  };
+
+  if (properties.length === 0) return null;
+
   return (
     <section className="py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
@@ -126,7 +64,7 @@ export function FeaturedProperties() {
               transition={{ delay: 0.1 }}
               className="font-heading text-3xl md:text-4xl font-bold text-foreground mt-2"
             >
-              Featured Properties in Lahore
+              Featured Properties
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -148,7 +86,7 @@ export function FeaturedProperties() {
 
         {/* Properties Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProperties.map((property, index) => (
+          {properties.map((property, index) => (
             <motion.div
               key={property.id}
               initial={{ opacity: 0, y: 30 }}
@@ -161,21 +99,11 @@ export function FeaturedProperties() {
                   {/* Image */}
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <img
-                      src={property.image}
+                      src={getImage(property)}
                       alt={property.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    
-                    {/* Badges */}
-                    {property.badge && (
-                      <Badge
-                        variant="secondary"
-                        className="absolute top-3 left-3 bg-accent text-accent-foreground border-0"
-                      >
-                        {property.badge}
-                      </Badge>
-                    )}
                     
                     {/* Favorite Button */}
                     <button className="absolute top-3 right-3 w-9 h-9 rounded-full bg-card/80 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:text-destructive hover:bg-card transition-all">
@@ -190,38 +118,44 @@ export function FeaturedProperties() {
                       <span>{property.location}</span>
                     </div>
                     
-                    <h3 className="font-heading font-semibold text-lg text-foreground mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="font-heading font-semibold text-lg text-foreground mb-2 group-hover:text-accent transition-colors">
                       {property.title}
                     </h3>
 
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {property.amenities.map((amenity) => (
-                        <span
-                          key={amenity}
-                          className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-md"
-                        >
-                          {amenity}
-                        </span>
-                      ))}
-                    </div>
+                    {property.amenities && property.amenities.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {property.amenities.slice(0, 3).map((amenity) => (
+                          <span
+                            key={amenity}
+                            className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-md"
+                          >
+                            {amenity}
+                          </span>
+                        ))}
+                      </div>
+                    )}
 
                     <div className="flex items-center justify-between pt-3 border-t border-border">
                       <div className="flex items-center gap-3">
                         <div className="flex items-center gap-1">
                           <Star className="h-4 w-4 fill-accent text-accent" />
-                          <span className="font-medium text-foreground">{property.rating}</span>
-                          <span className="text-muted-foreground text-sm">
-                            ({property.reviews})
-                          </span>
+                          <span className="font-medium text-foreground">{property.rating || '—'}</span>
+                          {property.reviews_count ? (
+                            <span className="text-muted-foreground text-sm">
+                              ({property.reviews_count})
+                            </span>
+                          ) : null}
                         </div>
-                        <div className="flex items-center gap-1 text-muted-foreground">
-                          <Users className="h-4 w-4" />
-                          <span className="text-sm">{property.guests}</span>
-                        </div>
+                        {property.max_guests && (
+                          <div className="flex items-center gap-1 text-muted-foreground">
+                            <Users className="h-4 w-4" />
+                            <span className="text-sm">{property.max_guests}</span>
+                          </div>
+                        )}
                       </div>
                       <div>
-                        <span className="font-heading font-bold text-lg text-primary">
-                          Rs. {property.price.toLocaleString()}
+                        <span className="font-heading font-bold text-lg text-accent">
+                          Rs. {property.price_per_day.toLocaleString()}
                         </span>
                         <span className="text-muted-foreground text-sm">/day</span>
                       </div>
