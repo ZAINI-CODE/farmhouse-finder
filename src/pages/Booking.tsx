@@ -162,11 +162,8 @@ export default function Booking() {
           guest_count: guests,
           total_amount: total,
           event_type: currentPackage.name,
-          notes: `Package: ${currentPackage.name}. Add-ons: ${
-            selectedAddOns.length > 0
-              ? selectedAddOns.map(id => addOns.find(a => a.id === id)?.name).join(", ")
-              : "none"
-          }. Contact: ${contactInfo.name} | ${contactInfo.phone} | ${contactInfo.notes || ""}`.trim(),
+          // Store only the user's free-form notes; avoid embedding structured/PII contact data
+          notes: (contactInfo.notes || "").trim() || null,
           status: 'pending',
           payment_status: 'unpaid',
         })
