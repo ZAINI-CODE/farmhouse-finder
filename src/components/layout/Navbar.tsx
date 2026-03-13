@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, Heart, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -16,9 +17,21 @@ const navLinks = [
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const isHome = location.pathname === "/";
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/properties?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+      setSearchQuery("");
+    }
+  };
 
   return (
     <header
@@ -75,39 +88,89 @@ export function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-2">
+            {/* Search */}
+            <AnimatePresence>
+              {searchOpen ? (
+                <motion.form
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={{ width: 220, opacity: 1 }}
+                  exit={{ width: 0, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  onSubmit={handleSearch}
+                  className="flex items-center gap-1 overflow-hidden"
+                >
+                  <Input
+                    autoFocus
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search properties..."
+                    className="h-9 text-sm"
+                    onKeyDown={(e) => e.key === "Escape" && setSearchOpen(false)}
+                  />
+                  <Button type="submit" size="sm" className="h-9 px-2">
+                    <Search className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9 shrink-0"
+                    onClick={() => setSearchOpen(false)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </motion.form>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setSearchOpen(true)}
+                  title="Search properties"
+                  className={cn(
+                    isHome
+                      ? "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                      : ""
+                  )}
+                >
+                  <Search className="h-5 w-5" />
+                </Button>
+              )}
+            </AnimatePresence>
+
+            {/* Favorites */}
             <Button
               variant="ghost"
               size="icon"
+              title="Favorites"
+              asChild
               className={cn(
                 isHome
                   ? "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
                   : ""
               )}
             >
-              <Search className="h-5 w-5" />
+              <Link to={user ? "/favorites" : "/login"}>
+                <Heart className="h-5 w-5" />
+              </Link>
             </Button>
+
+            {/* Messages */}
             <Button
               variant="ghost"
               size="icon"
+              title="Messages"
+              asChild
               className={cn(
                 isHome
                   ? "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
                   : ""
               )}
             >
-              <Heart className="h-5 w-5" />
+              <Link to={user ? "/dashboard?tab=messages" : "/login"}>
+                <MessageSquare className="h-5 w-5" />
+              </Link>
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className={cn(
-                isHome
-                  ? "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
-                  : ""
-              )}
-            >
-              <MessageSquare className="h-5 w-5" />
-            </Button>
+
             <div className={cn(
               isHome
                 ? "[&_button]:text-primary-foreground/90 [&_button]:hover:text-primary-foreground [&_button]:hover:bg-primary-foreground/10"
@@ -171,6 +234,19 @@ export function Navbar() {
               className="lg:hidden overflow-hidden"
             >
               <div className="py-4 space-y-3 bg-card/95 backdrop-blur-md rounded-xl mb-4 px-4">
+                {/* Mobile Search */}
+                <form onSubmit={handleSearch} className="flex gap-2">
+                  <Input
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search properties or location..."
+                    className="flex-1 h-10"
+                  />
+                  <Button type="submit" size="sm" className="h-10">
+                    <Search className="h-4 w-4" />
+                  </Button>
+                </form>
+
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
@@ -186,6 +262,25 @@ export function Navbar() {
                     {link.label}
                   </Link>
                 ))}
+
+                <Link
+                  to={user ? "/favorites" : "/login"}
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-2 py-2 px-4 rounded-lg font-medium text-foreground hover:bg-muted transition-colors"
+                >
+                  <Heart className="h-5 w-5" />
+                  Favorites
+                </Link>
+
+                <Link
+                  to={user ? "/dashboard?tab=messages" : "/login"}
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-2 py-2 px-4 rounded-lg font-medium text-foreground hover:bg-muted transition-colors"
+                >
+                  <MessageSquare className="h-5 w-5" />
+                  Messages
+                </Link>
+
                 <div className="flex items-center justify-between py-2 px-4">
                   <span className="text-sm text-muted-foreground">Theme</span>
                   <ThemeToggle />

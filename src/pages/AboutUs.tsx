@@ -93,15 +93,15 @@ export default function AboutUs() {
                 <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6">Our Story</h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    BookFarm was born from a simple frustration: finding the perfect farmhouse 
-                    venue for a wedding shouldn&apos;t be so difficult. Our founder, Sarah Mitchell, 
-                    spent months searching for the ideal rural setting for her sister&apos;s wedding, 
-                    only to find that beautiful properties existed but were nearly impossible to discover.
+                    BookFarm was founded with a clear mission: to make finding and booking the perfect 
+                    farmhouse venue easy and accessible across Pakistan. Our CEO, Muhammad Zain, 
+                    saw the gap in the market and built a platform to bridge property owners, vendors, 
+                    and customers seamlessly.
                   </p>
                   <p>
-                    In 2020, we launched BookFarm with a handful of properties and a big dream. 
-                    Today, we&apos;ve grown into a thriving community of property owners, vendors, 
-                    and customers who share our passion for creating magical moments in unique settings.
+                    Starting with a passionate team based in Pakistan, we developed BookFarm to 
+                    serve thousands of families and event planners who need reliable, verified venues 
+                    for their most important occasions.
                   </p>
                   <p>
                     Our platform doesn&apos;t just connect you with venues—we provide a complete 
