@@ -155,7 +155,7 @@ export default function MusicDJ() {
             {["All", "DJ", "Qawwali", "Dhol", "Classical", "Acoustic", "Mehndi"].map((filter) => (
               <button
                 key={filter}
-                className="px-4 py-2 rounded-full text-sm font-medium bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                className="px-4 py-2 rounded-full text-sm font-medium bg-secondary text-secondary-foreground hover:bg-primary hover:text-accent-foreground transition-colors"
               >
                 {filter}
               </button>
@@ -194,7 +194,7 @@ export default function MusicDJ() {
                     {/* Content */}
                     <div className="p-5">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-heading font-semibold text-lg text-foreground group-hover:text-primary transition-colors">
+                        <h3 className="font-heading font-semibold text-lg text-foreground group-hover:text-accent transition-colors">
                           {vendor.name}
                         </h3>
                         <div className="flex items-center gap-1">
@@ -226,7 +226,7 @@ export default function MusicDJ() {
                       </div>
 
                       <div className="flex items-center justify-between pt-4 border-t border-border">
-                        <span className="font-heading font-bold text-primary">
+                        <span className="font-heading font-bold text-accent">
                           {vendor.price}
                         </span>
                         <Button variant="ghost" size="sm" className="group/btn">

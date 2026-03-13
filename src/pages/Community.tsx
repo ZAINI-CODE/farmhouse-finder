@@ -100,13 +100,13 @@ export default function Community() {
       <Navbar />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-primary text-primary-foreground py-16">
+        <section className="bg-primary text-accent-foreground py-16">
           <div className="container mx-auto px-4 text-center">
             <Users className="h-12 w-12 mx-auto mb-6 opacity-80" />
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
               BookFarm Community
             </h1>
-            <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto mb-8">
+            <p className="text-accent-foreground/80 text-lg max-w-2xl mx-auto mb-8">
               Join a thriving community of property owners, vendors, and event enthusiasts. Learn, share, and grow together.
             </p>
             <Button size="lg" variant="secondary">
@@ -121,7 +121,7 @@ export default function Community() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
               {communityStats.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <p className="font-heading text-3xl font-bold text-primary">{stat.value}</p>
+                  <p className="font-heading text-3xl font-bold text-accent">{stat.value}</p>
                   <p className="text-sm text-muted-foreground">{stat.label}</p>
                 </div>
               ))}
@@ -138,7 +138,7 @@ export default function Community() {
                 <Card key={index} className="text-center hover:shadow-lg transition-shadow">
                   <CardContent className="pt-8 pb-6">
                     <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                      <feature.icon className="h-7 w-7 text-primary" />
+                      <feature.icon className="h-7 w-7 text-accent" />
                     </div>
                     <h3 className="font-heading text-lg font-semibold mb-2">{feature.title}</h3>
                     <p className="text-muted-foreground text-sm">{feature.description}</p>
@@ -226,18 +226,18 @@ export default function Community() {
         </section>
 
         {/* Join CTA */}
-        <section className="py-16 bg-primary text-primary-foreground">
+        <section className="py-16 bg-primary text-accent-foreground">
           <div className="container mx-auto px-4 text-center">
             <Heart className="h-12 w-12 mx-auto mb-6 opacity-80" />
             <h2 className="font-heading text-2xl font-bold mb-4">Ready to Join?</h2>
-            <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
+            <p className="text-accent-foreground/80 mb-8 max-w-xl mx-auto">
               Become part of a community that supports each other's success. Whether you're a property owner, vendor, or event enthusiast, there's a place for you here.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Button size="lg" variant="secondary">
                 Join Community
               </Button>
-              <Button size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
+              <Button size="lg" variant="outline" className="bg-transparent border-primary-foreground text-accent-foreground hover:bg-primary-foreground/10">
                 Learn More
               </Button>
             </div>

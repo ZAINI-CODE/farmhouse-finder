@@ -234,7 +234,7 @@ export default function Booking() {
                 <div
                   className={cn(
                     "w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-colors",
-                    step >= s ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
+                    step >= s ? "bg-accent text-white" : "bg-secondary text-muted-foreground"
                   )}
                 >
                   {step > s ? <Check className="h-5 w-5" /> : s}
@@ -242,7 +242,7 @@ export default function Booking() {
                 {s < 3 && (
                   <div className={cn(
                     "w-16 md:w-24 h-1 mx-2",
-                    step > s ? "bg-primary" : "bg-secondary"
+                    step > s ? "bg-accent" : "bg-secondary"
                   )} />
                 )}
               </div>
@@ -327,8 +327,8 @@ export default function Booking() {
                           className={cn(
                             "relative p-5 rounded-xl border-2 text-left transition-all",
                             selectedPackage === pkg.id
-                              ? "border-primary bg-primary/5"
-                              : "border-border hover:border-primary/50"
+                              ? "border-accent bg-accent/5"
+                              : "border-border hover:border-accent/50"
                           )}
                         >
                           {pkg.popular && (
@@ -339,18 +339,18 @@ export default function Booking() {
                           <h3 className="font-heading font-semibold text-lg mb-1">
                             {pkg.name}
                           </h3>
-                          <p className="text-2xl font-bold text-primary mb-3">
+                          <p className="text-2xl font-bold text-accent mb-3">
                             PKR {pkg.price.toLocaleString()}
                           </p>
                           <ul className="space-y-2">
                             {pkg.features.slice(0, 4).map((feature, i) => (
                               <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                                <Check className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                                <Check className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                                 {feature}
                               </li>
                             ))}
                             {pkg.features.length > 4 && (
-                              <li className="text-sm text-primary font-medium">
+                              <li className="text-sm text-accent font-medium">
                                 +{pkg.features.length - 4} more features
                               </li>
                             )}
@@ -375,19 +375,19 @@ export default function Booking() {
                           className={cn(
                             "flex items-center justify-between p-4 rounded-xl border-2 transition-all",
                             selectedAddOns.includes(addon.id)
-                              ? "border-primary bg-primary/5"
-                              : "border-border hover:border-primary/50"
+                              ? "border-accent bg-accent/5"
+                              : "border-border hover:border-accent/50"
                           )}
                         >
                           <div className="flex items-center gap-3">
                             <div className={cn(
                               "w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors",
                               selectedAddOns.includes(addon.id)
-                                ? "bg-primary border-primary"
+                                ? "bg-accent border-accent"
                                 : "border-muted-foreground"
                             )}>
                               {selectedAddOns.includes(addon.id) && (
-                                <Check className="h-4 w-4 text-primary-foreground" />
+                                <Check className="h-4 w-4 text-accent-foreground" />
                               )}
                             </div>
                             <div className="text-left">
@@ -395,7 +395,7 @@ export default function Booking() {
                               <p className="text-sm text-muted-foreground">{addon.unit}</p>
                             </div>
                           </div>
-                          <span className="font-semibold text-primary">
+                          <span className="font-semibold text-accent">
                             PKR {addon.price.toLocaleString()}
                           </span>
                         </button>
@@ -563,7 +563,7 @@ export default function Booking() {
 
                   {/* Payment Notice */}
                   <div className="bg-accent/10 rounded-xl p-4 flex items-start gap-3">
-                    <Shield className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                    <Shield className="h-5 w-5 text-accent shrink-0 mt-0.5" />
                     <div>
                       <p className="font-medium text-sm">Proceed to Payment</p>
                       <p className="text-sm text-muted-foreground">
@@ -646,7 +646,7 @@ export default function Booking() {
 
                       <div className="flex justify-between font-semibold text-base">
                         <span>Total</span>
-                        <span className="text-primary">PKR {total.toLocaleString()}</span>
+                        <span className="text-accent">PKR {total.toLocaleString()}</span>
                       </div>
                     </div>
                   </div>

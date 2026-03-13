@@ -187,8 +187,8 @@ export default function Services() {
                   onClick={() => setSearchParams(category.id === "all" ? {} : { category: category.id })}
                   className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium transition-all ${
                     activeCategory === category.id
-                      ? "bg-primary text-primary-foreground shadow-md"
-                      : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-primary/30"
+                      ? "bg-accent text-white shadow-md"
+                      : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-accent/30"
                   }`}
                 >
                   <Icon className="h-5 w-5" />
@@ -206,7 +206,7 @@ export default function Services() {
           {/* Vendors Grid */}
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <Loader2 className="h-8 w-8 animate-spin text-accent" />
             </div>
           ) : filteredVendors.length === 0 ? (
             <div className="text-center py-20">
@@ -270,7 +270,7 @@ export default function Services() {
                         </div>
 
                         {/* Content */}
-                        <h3 className="font-heading font-semibold text-lg text-foreground mb-1 group-hover:text-primary transition-colors">
+                        <h3 className="font-heading font-semibold text-lg text-foreground mb-1 group-hover:text-accent transition-colors">
                           {vendor.business_name}
                         </h3>
 
@@ -325,10 +325,10 @@ export default function Services() {
             viewport={{ once: true }}
             className="mt-16 bg-primary rounded-3xl p-8 md:p-12 text-center"
           >
-            <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary-foreground mb-4">
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-accent-foreground mb-4">
               Are You a Service Provider?
             </h2>
-            <p className="text-primary-foreground/80 mb-6 max-w-xl mx-auto">
+            <p className="text-accent-foreground/80 mb-6 max-w-xl mx-auto">
               Join BookFarm and connect with thousands of customers looking for your services.
             </p>
             <Link to="/register?type=vendor">

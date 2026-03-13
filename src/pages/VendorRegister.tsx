@@ -112,16 +112,16 @@ const VendorRegister = () => {
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-colors ${
                     step > s
-                      ? 'bg-primary text-primary-foreground'
+                      ? 'bg-accent text-white'
                       : step === s
-                      ? 'bg-primary text-primary-foreground'
+                      ? 'bg-accent text-white'
                       : 'bg-muted text-muted-foreground'
                   }`}
                 >
                   {step > s ? <Check className="w-5 h-5" /> : s}
                 </div>
                 {index < 3 && (
-                  <div className={`w-12 md:w-20 h-1 ${step > s ? 'bg-primary' : 'bg-muted'}`} />
+                  <div className={`w-12 md:w-20 h-1 ${step > s ? 'bg-accent' : 'bg-muted'}`} />
                 )}
               </div>
             ))}
@@ -244,12 +244,12 @@ const VendorRegister = () => {
                           onClick={() => toggleCategory(category.id)}
                           className={`p-4 rounded-xl border-2 text-left transition-all ${
                             formData.categories.includes(category.id)
-                              ? 'border-primary bg-primary/5'
-                              : 'border-border hover:border-primary/50'
+                              ? 'border-accent bg-accent/5'
+                              : 'border-border hover:border-accent/50'
                           }`}
                         >
                           <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${
-                            formData.categories.includes(category.id) ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                            formData.categories.includes(category.id) ? 'bg-accent text-white' : 'bg-muted'
                           }`}>
                             <category.icon className="w-5 h-5" />
                           </div>
@@ -392,7 +392,7 @@ const VendorRegister = () => {
                         {formData.categories.map((catId) => {
                           const cat = serviceCategories.find(c => c.id === catId);
                           return (
-                            <span key={catId} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+                            <span key={catId} className="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm">
                               {cat?.name}
                             </span>
                           );
@@ -425,8 +425,8 @@ const VendorRegister = () => {
                         onCheckedChange={(checked) => updateFormData('termsAccepted', checked)}
                       />
                       <label htmlFor="terms" className="text-sm text-muted-foreground cursor-pointer">
-                        I agree to the <Link to="/terms" className="text-primary hover:underline">Terms of Service</Link> and{' '}
-                        <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>. I understand that my 
+                        I agree to the <Link to="/terms" className="text-accent hover:underline">Terms of Service</Link> and{' '}
+                        <Link to="/privacy" className="text-accent hover:underline">Privacy Policy</Link>. I understand that my 
                         application will be reviewed before approval.
                       </label>
                     </div>

@@ -38,7 +38,7 @@ export const CookieConsent = () => {
           <div className="max-w-4xl mx-auto bg-card border border-border rounded-xl shadow-xl p-4 md:p-6">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
               <div className="flex-shrink-0 p-2 bg-primary/10 rounded-full">
-                <Cookie className="h-6 w-6 text-primary" />
+                <Cookie className="h-6 w-6 text-accent" />
               </div>
               
               <div className="flex-1">
@@ -46,7 +46,7 @@ export const CookieConsent = () => {
                 <p className="text-sm text-muted-foreground">
                   We use cookies to enhance your browsing experience and analyze site traffic. 
                   By clicking "Accept", you consent to our use of cookies. 
-                  <Link to="/cookies" className="text-primary hover:underline ml-1">
+                  <Link to="/cookies" className="text-accent hover:underline ml-1">
                     Learn more
                   </Link>
                 </p>

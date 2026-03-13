@@ -94,12 +94,12 @@ export default function Careers() {
       <Navbar />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-primary text-primary-foreground py-20">
+        <section className="bg-primary text-accent-foreground py-20">
           <div className="container mx-auto px-4 text-center">
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
               Join Our Team
             </h1>
-            <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto mb-8">
+            <p className="text-accent-foreground/80 text-lg max-w-2xl mx-auto mb-8">
               Help us transform how people discover and book event venues. We're building something special — and we want you to be part of it.
             </p>
             <Button size="lg" variant="secondary" asChild>
@@ -148,7 +148,7 @@ export default function Careers() {
               {benefits.map((benefit, index) => (
                 <div key={index} className="flex items-start gap-4 bg-background p-6 rounded-xl">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <benefit.icon className="h-6 w-6 text-primary" />
+                    <benefit.icon className="h-6 w-6 text-accent" />
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">{benefit.title}</h3>
@@ -205,11 +205,11 @@ export default function Careers() {
         </section>
 
         {/* Don't See a Fit */}
-        <section className="py-16 bg-primary text-primary-foreground">
+        <section className="py-16 bg-primary text-accent-foreground">
           <div className="container mx-auto px-4 text-center">
             <Users className="h-12 w-12 mx-auto mb-6 opacity-80" />
             <h2 className="font-heading text-2xl font-bold mb-4">Don't See the Right Role?</h2>
-            <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
+            <p className="text-accent-foreground/80 mb-8 max-w-xl mx-auto">
               We're always interested in meeting talented people. Send us your resume and tell us how you can contribute to BookFarm.
             </p>
             <Button asChild size="lg" variant="secondary">

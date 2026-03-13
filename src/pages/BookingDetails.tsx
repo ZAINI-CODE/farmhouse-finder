@@ -229,7 +229,7 @@ export default function BookingDetails() {
   if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Loader2 className="w-8 h-8 animate-spin text-accent" />
       </div>
     );
   }
@@ -336,7 +336,7 @@ export default function BookingDetails() {
               <Card className="md:col-span-2 border-0 shadow-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Building2 className="h-5 w-5 text-primary" />
+                    <Building2 className="h-5 w-5 text-accent" />
                     Property Details
                   </CardTitle>
                 </CardHeader>
@@ -367,7 +367,7 @@ export default function BookingDetails() {
               <Card className="border-0 shadow-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5 text-primary" />
+                    <Calendar className="h-5 w-5 text-accent" />
                     Event Details
                   </CardTitle>
                 </CardHeader>
@@ -398,14 +398,14 @@ export default function BookingDetails() {
               <Card className="border-0 shadow-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-primary" />
+                    <FileText className="h-5 w-5 text-accent" />
                     Customer Information
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <span className="font-semibold text-primary">
+                      <span className="font-semibold text-accent">
                         {booking.profile?.full_name?.charAt(0) || 'U'}
                       </span>
                     </div>
@@ -432,7 +432,7 @@ export default function BookingDetails() {
               <Card className="border-0 shadow-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-primary" />
+                    <CreditCard className="h-5 w-5 text-accent" />
                     Payment Summary
                   </CardTitle>
                 </CardHeader>
@@ -448,7 +448,7 @@ export default function BookingDetails() {
                   <Separator />
                   <div className="flex items-center justify-between font-semibold text-lg">
                     <span>Total Amount</span>
-                    <span className="text-primary">PKR {booking.total_amount.toLocaleString()}</span>
+                    <span className="text-accent">PKR {booking.total_amount.toLocaleString()}</span>
                   </div>
                 </CardContent>
               </Card>

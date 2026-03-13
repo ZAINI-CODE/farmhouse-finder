@@ -61,20 +61,20 @@ export function CallToAction() {
             
             <div className="relative">
               <div className="w-14 h-14 bg-primary-foreground/10 rounded-2xl flex items-center justify-center mb-6">
-                <Briefcase className="h-7 w-7 text-primary-foreground" />
+                <Briefcase className="h-7 w-7 text-accent-foreground" />
               </div>
               
-              <h3 className="font-heading text-2xl md:text-3xl font-bold text-primary-foreground mb-4">
+              <h3 className="font-heading text-2xl md:text-3xl font-bold text-accent-foreground mb-4">
                 Offer Event Services?
               </h3>
-              <p className="text-primary-foreground/80 mb-6 max-w-md">
+              <p className="text-accent-foreground/80 mb-6 max-w-md">
                 Join our vendor marketplace and connect with customers looking for catering, 
                 photography, decoration, and more.
               </p>
               
               <ul className="space-y-3 mb-8">
                 {["Reach new customers", "Showcase your portfolio", "Easy booking management", "Grow your brand"].map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-primary-foreground">
+                  <li key={item} className="flex items-center gap-2 text-accent-foreground">
                     <span className="w-5 h-5 rounded-full bg-primary-foreground/20 flex items-center justify-center">
                       <span className="w-2 h-2 rounded-full bg-accent" />
                     </span>

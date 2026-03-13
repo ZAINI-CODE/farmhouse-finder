@@ -91,7 +91,7 @@ export default function CookiePolicy() {
 
           <section className="pt-6 border-t border-border">
             <p className="text-muted-foreground">
-              Questions about cookies? Contact us at <a href="mailto:privacy@bookfarm.com" className="text-primary hover:underline">privacy@bookfarm.com</a>
+              Questions about cookies? Contact us at <a href="mailto:privacy@bookfarm.com" className="text-accent hover:underline">privacy@bookfarm.com</a>
             </p>
           </section>
         </div>

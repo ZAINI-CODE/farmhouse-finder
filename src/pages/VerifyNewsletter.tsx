@@ -87,7 +87,7 @@ export default function VerifyNewsletter() {
           {status === "loading" && (
             <div className="space-y-4">
               <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-                <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                <Loader2 className="w-8 h-8 text-accent animate-spin" />
               </div>
               <h1 className="text-2xl font-heading font-bold">Verifying your email...</h1>
               <p className="text-muted-foreground">Please wait while we verify your subscription.</p>

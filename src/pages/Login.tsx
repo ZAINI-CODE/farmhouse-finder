@@ -196,10 +196,10 @@ export default function Login() {
         <div className="absolute inset-0 bg-primary/70" />
         <div className="absolute inset-0 flex items-center justify-center p-12">
           <div className="text-center">
-            <h2 className="font-heading text-3xl font-bold text-primary-foreground mb-4">
+            <h2 className="font-heading text-3xl font-bold text-accent-foreground mb-4">
               Find Your Perfect Venue
             </h2>
-            <p className="text-primary-foreground/80 max-w-md">
+            <p className="text-accent-foreground/80 max-w-md">
               Access hundreds of verified farmhouses in Lahore and connect with trusted service providers for your dream event.
             </p>
           </div>

@@ -50,7 +50,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="font-heading text-xl font-semibold mb-3">4. Cookies & Tracking</h2>
             <p className="text-muted-foreground leading-relaxed">
-              We use cookies and similar technologies to enhance functionality, analyze usage, and deliver personalized content. See our <a href="/cookies" className="text-primary hover:underline">Cookie Policy</a> for details on managing preferences.
+              We use cookies and similar technologies to enhance functionality, analyze usage, and deliver personalized content. See our <a href="/cookies" className="text-accent hover:underline">Cookie Policy</a> for details on managing preferences.
             </p>
           </section>
 
@@ -72,7 +72,7 @@ export default function PrivacyPolicy() {
               <li>Opt-out of marketing communications</li>
             </ul>
             <p className="text-muted-foreground leading-relaxed mt-3">
-              To exercise these rights, contact us at <a href="mailto:privacy@bookfarm.com" className="text-primary hover:underline">privacy@bookfarm.com</a>.
+              To exercise these rights, contact us at <a href="mailto:privacy@bookfarm.com" className="text-accent hover:underline">privacy@bookfarm.com</a>.
             </p>
           </section>
 
@@ -85,7 +85,7 @@ export default function PrivacyPolicy() {
 
           <section className="pt-6 border-t border-border">
             <p className="text-muted-foreground">
-              Questions? Contact us at <a href="mailto:privacy@bookfarm.com" className="text-primary hover:underline">privacy@bookfarm.com</a>
+              Questions? Contact us at <a href="mailto:privacy@bookfarm.com" className="text-accent hover:underline">privacy@bookfarm.com</a>
             </p>
           </section>
         </div>

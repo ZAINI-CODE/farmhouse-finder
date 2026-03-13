@@ -119,7 +119,7 @@ export function ServiceCategories() {
                     </span>
                   </div>
                   
-                  <h3 className="font-heading font-semibold text-xl text-foreground mb-2 group-hover:text-primary transition-colors">
+                  <h3 className="font-heading font-semibold text-xl text-foreground mb-2 group-hover:text-accent transition-colors">
                     {category.title}
                   </h3>
                   <p className="text-muted-foreground text-sm mb-4">

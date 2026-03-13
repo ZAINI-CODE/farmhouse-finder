@@ -271,11 +271,11 @@ export default function Payment() {
                 </div>
 
                 {/* Amount to Pay */}
-                <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6">
+                <div className="bg-accent/10 border border-accent/20 rounded-2xl p-6">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">Amount to Pay</p>
-                      <p className="font-heading text-3xl font-bold text-primary">
+                      <p className="font-heading text-3xl font-bold text-accent">
                         PKR {bookingDetails.total.toLocaleString()}
                       </p>
                     </div>
@@ -301,8 +301,8 @@ export default function Payment() {
                         className={cn(
                           "p-4 rounded-xl border-2 text-center transition-all hover:shadow-md",
                           selectedBank === bank.id
-                            ? "border-primary bg-primary/5 shadow-md"
-                            : "border-border hover:border-primary/50"
+                            ? "border-accent bg-accent/5 shadow-md"
+                            : "border-border hover:border-accent/50"
                         )}
                       >
                         <div className={cn(
@@ -475,7 +475,7 @@ export default function Payment() {
 
                 {/* Security Note */}
                 <div className="flex items-center gap-3 p-4 bg-secondary/30 rounded-xl">
-                  <Shield className="h-5 w-5 text-primary" />
+                  <Shield className="h-5 w-5 text-accent" />
                   <p className="text-sm text-muted-foreground">
                     Your payment is secure. We verify all transactions within 24 hours.
                   </p>
@@ -544,7 +544,7 @@ export default function Payment() {
 
                   <div className="flex justify-between font-heading font-bold text-lg">
                     <span>Total</span>
-                    <span className="text-primary">PKR {bookingDetails.total.toLocaleString()}</span>
+                    <span className="text-accent">PKR {bookingDetails.total.toLocaleString()}</span>
                   </div>
 
                   {/* Contact Info */}

@@ -152,7 +152,7 @@ const Favorites = () => {
             <TabsContent value="properties">
               {isLoading ? (
                 <div className="flex items-center justify-center py-16">
-                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                  <Loader2 className="w-8 h-8 animate-spin text-accent" />
                 </div>
               ) : properties.length === 0 ? (
                 <div className="text-center py-16">
@@ -206,7 +206,7 @@ const Favorites = () => {
                             <MapPin className="w-3 h-3" /> {property.location}
                           </p>
                           <div className="flex items-center justify-between">
-                            <span className="font-semibold text-primary">
+                            <span className="font-semibold text-accent">
                               PKR {property.price_per_day?.toLocaleString()}/day
                             </span>
                             <Button size="sm" variant="outline" asChild>
@@ -224,7 +224,7 @@ const Favorites = () => {
             <TabsContent value="vendors">
               {isLoading ? (
                 <div className="flex items-center justify-center py-16">
-                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                  <Loader2 className="w-8 h-8 animate-spin text-accent" />
                 </div>
               ) : vendors.length === 0 ? (
                 <div className="text-center py-16">
