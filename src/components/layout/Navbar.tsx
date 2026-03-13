@@ -105,7 +105,7 @@ export function Navbar() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search properties..."
                     className="h-9 text-sm"
-                    onKeyDown={(e) => e.key === "Escape" && setSearchOpen(false)}
+                    onKeyDown={(e) => { if (e.key === "Escape") { setSearchOpen(false); setSearchQuery(""); } }}
                   />
                   <Button type="submit" size="sm" className="h-9 px-2">
                     <Search className="h-4 w-4" />
@@ -115,7 +115,7 @@ export function Navbar() {
                     variant="ghost"
                     size="icon"
                     className="h-9 w-9 shrink-0"
-                    onClick={() => setSearchOpen(false)}
+                    onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
                   >
                     <X className="h-4 w-4" />
                   </Button>

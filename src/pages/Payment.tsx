@@ -461,7 +461,9 @@ export default function Payment() {
 
                       <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
                         <div>
-                          <p className="text-xs text-muted-foreground">Account Number / Mobile</p>
+                          <p className="text-xs text-muted-foreground">
+                            {activeCategory === "mobile" ? "Mobile Number" : "Account Number"}
+                          </p>
                           <p className="font-mono font-medium">{selectedMethodDetails.accountNumber}</p>
                         </div>
                         <Button
