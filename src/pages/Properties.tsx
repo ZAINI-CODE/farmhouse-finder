@@ -119,7 +119,7 @@ export default function Properties() {
     <div className="min-h-screen bg-background">
       <Navbar />
       
-      <main className="pt-24 pb-20">
+      <main className="py-12">
         <div className="container mx-auto px-4 lg:px-8">
           {/* Page Header */}
           <div className="mb-8">
@@ -199,21 +199,21 @@ export default function Properties() {
                 <div className="flex border border-border rounded-lg overflow-hidden">
                   <button
                     onClick={() => setViewMode("grid")}
-                    className={`p-3 transition-colors ${viewMode === "grid" ? "bg-primary text-primary-foreground" : "bg-card hover:bg-muted"}`}
+                    className={`p-3 transition-colors ${viewMode === "grid" ? "bg-accent text-white" : "bg-card hover:bg-muted"}`}
                     title="Grid view"
                   >
                     <Grid3X3 className="h-5 w-5" />
                   </button>
                   <button
                     onClick={() => setViewMode("list")}
-                    className={`p-3 transition-colors ${viewMode === "list" ? "bg-primary text-primary-foreground" : "bg-card hover:bg-muted"}`}
+                    className={`p-3 transition-colors ${viewMode === "list" ? "bg-accent text-white" : "bg-card hover:bg-muted"}`}
                     title="List view"
                   >
                     <List className="h-5 w-5" />
                   </button>
                   <button
                     onClick={() => setViewMode("map")}
-                    className={`p-3 transition-colors ${viewMode === "map" ? "bg-primary text-primary-foreground" : "bg-card hover:bg-muted"}`}
+                    className={`p-3 transition-colors ${viewMode === "map" ? "bg-accent text-white" : "bg-card hover:bg-muted"}`}
                     title="Map view"
                   >
                     <Map className="h-5 w-5" />
@@ -278,8 +278,8 @@ export default function Properties() {
                           className={cn(
                             "flex items-center gap-1 px-3 py-1.5 rounded-full text-sm border transition-colors",
                             minRating === rating
-                              ? "bg-primary text-primary-foreground border-primary"
-                              : "bg-card border-border hover:border-primary"
+                              ? "bg-accent text-white border-accent"
+                              : "bg-card border-border hover:border-accent"
                           )}
                         >
                           {rating === 0 ? (
@@ -314,8 +314,8 @@ export default function Properties() {
                           className={cn(
                             "text-xs px-3 py-1.5 rounded-full border transition-colors",
                             selectedAmenities.includes(amenity)
-                              ? "bg-primary text-primary-foreground border-primary"
-                              : "bg-card border-border hover:border-primary"
+                              ? "bg-accent text-white border-accent"
+                              : "bg-card border-border hover:border-accent"
                           )}
                         >
                           {amenity}
@@ -376,7 +376,7 @@ export default function Properties() {
           {/* Properties Grid/List */}
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <Loader2 className="h-8 w-8 animate-spin text-accent" />
             </div>
           ) : filteredProperties.length === 0 ? (
             <div className="text-center py-20">
@@ -398,7 +398,7 @@ export default function Properties() {
           ) : viewMode === "map" ? (
             <Suspense fallback={
               <div className="flex items-center justify-center h-[600px]">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <Loader2 className="h-8 w-8 animate-spin text-accent" />
               </div>
             }>
               <PropertyMap properties={filteredProperties} getPropertyImage={getPropertyImage} />
@@ -428,7 +428,7 @@ export default function Properties() {
                           alt={property.title}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                         
                         <button 
                           onClick={(e) => {
@@ -453,7 +453,7 @@ export default function Properties() {
                           <span>{property.location}</span>
                         </div>
                         
-                        <h3 className="font-heading font-semibold text-lg text-foreground mb-2 group-hover:text-primary transition-colors">
+                        <h3 className="font-heading font-semibold text-lg text-foreground mb-2 group-hover:text-accent transition-colors">
                           {property.title}
                         </h3>
 
@@ -490,7 +490,7 @@ export default function Properties() {
                             </div>
                           </div>
                           <div>
-                            <span className="font-heading font-bold text-lg text-primary">
+                            <span className="font-heading font-bold text-lg text-accent">
                               PKR {property.price_per_day.toLocaleString()}
                             </span>
                             <span className="text-muted-foreground text-sm">/day</span>

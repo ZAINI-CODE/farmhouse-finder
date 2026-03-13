@@ -107,16 +107,16 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="bg-card border-t border-border">
       {/* Newsletter Section */}
-      <div className="border-b border-primary-foreground/10">
+      <div className="border-b border-border">
         <div className="container mx-auto px-4 lg:px-8 py-12">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             <div className="text-center lg:text-left">
-              <h3 className="font-heading text-2xl font-semibold mb-2">
+              <h3 className="font-heading text-2xl font-semibold text-foreground mb-2">
                 Subscribe to Our Newsletter
               </h3>
-              <p className="text-primary-foreground/70">
+              <p className="text-muted-foreground">
                 Get the latest venues and exclusive offers delivered to your inbox
               </p>
             </div>
@@ -132,7 +132,7 @@ export function Footer() {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus:border-accent"
+                  className="border-border focus:border-accent"
                   disabled={isLoading}
                   required
                 />
@@ -146,20 +146,20 @@ export function Footer() {
       </div>
 
       {/* Main Footer Content */}
-      <div className="container mx-auto px-4 lg:px-8 py-16">
+      <div className="container mx-auto px-4 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-12">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-6">
               <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
-                <span className="text-accent-foreground font-heading font-bold text-xl">B</span>
+                <span className="text-white font-heading font-bold text-xl">B</span>
               </div>
-              <span className="font-heading font-bold text-xl">BookFarm</span>
+              <span className="font-heading font-bold text-xl text-foreground">BookFarm</span>
             </Link>
-            <p className="text-primary-foreground/70 mb-6 max-w-sm">
+            <p className="text-muted-foreground mb-6 max-w-sm text-sm">
               Discover unique farmhouses and event venues. Connect with trusted vendors for your perfect celebration.
             </p>
-            <div className="space-y-3 text-sm text-primary-foreground/70">
+            <div className="space-y-3 text-sm text-muted-foreground">
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-accent" />
                 <span>hello@bookfarm.com</span>
@@ -177,13 +177,13 @@ export function Footer() {
 
           {/* Company Links */}
           <div>
-            <h4 className="font-heading font-semibold mb-4">Company</h4>
+            <h4 className="font-heading font-semibold text-foreground mb-4 text-sm uppercase tracking-wide">Company</h4>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.href}>
                   <Link
                     to={link.href}
-                    className="text-primary-foreground/70 hover:text-accent transition-colors text-sm"
+                    className="text-muted-foreground hover:text-accent transition-colors text-sm"
                   >
                     {link.label}
                   </Link>
@@ -194,13 +194,13 @@ export function Footer() {
 
           {/* Support Links */}
           <div>
-            <h4 className="font-heading font-semibold mb-4">Support</h4>
+            <h4 className="font-heading font-semibold text-foreground mb-4 text-sm uppercase tracking-wide">Support</h4>
             <ul className="space-y-3">
               {footerLinks.support.map((link) => (
                 <li key={link.href}>
                   <Link
                     to={link.href}
-                    className="text-primary-foreground/70 hover:text-accent transition-colors text-sm"
+                    className="text-muted-foreground hover:text-accent transition-colors text-sm"
                   >
                     {link.label}
                   </Link>
@@ -211,13 +211,13 @@ export function Footer() {
 
           {/* Hosting Links */}
           <div>
-            <h4 className="font-heading font-semibold mb-4">Hosting</h4>
+            <h4 className="font-heading font-semibold text-foreground mb-4 text-sm uppercase tracking-wide">Hosting</h4>
             <ul className="space-y-3">
               {footerLinks.hosting.map((link) => (
                 <li key={link.href}>
                   <Link
                     to={link.href}
-                    className="text-primary-foreground/70 hover:text-accent transition-colors text-sm"
+                    className="text-muted-foreground hover:text-accent transition-colors text-sm"
                   >
                     {link.label}
                   </Link>
@@ -228,13 +228,13 @@ export function Footer() {
 
           {/* Legal Links */}
           <div>
-            <h4 className="font-heading font-semibold mb-4">Legal</h4>
+            <h4 className="font-heading font-semibold text-foreground mb-4 text-sm uppercase tracking-wide">Legal</h4>
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.href}>
                   <Link
                     to={link.href}
-                    className="text-primary-foreground/70 hover:text-accent transition-colors text-sm"
+                    className="text-muted-foreground hover:text-accent transition-colors text-sm"
                   >
                     {link.label}
                   </Link>
@@ -246,15 +246,15 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-primary-foreground/10">
+      <div className="border-t border-border">
         <div className="container mx-auto px-4 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-primary-foreground/60">
+            <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} BookFarm. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
             <SocialLinks
-                linkClassName="bg-primary-foreground/10 text-primary-foreground/70 hover:bg-accent hover:text-accent-foreground"
+                linkClassName="bg-muted text-muted-foreground hover:bg-accent hover:text-white transition-colors"
               />
             </div>
           </div>

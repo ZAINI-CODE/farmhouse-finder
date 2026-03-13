@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, Heart, MessageSquare } from "lucide-react";
+import { Menu, X, Heart, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
@@ -9,57 +9,43 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import logo from "@/assets/logo.png";
 
 const navLinks = [
-  { href: "/properties", label: "Properties" },
+  { href: "/properties", label: "Explore" },
   { href: "/services", label: "Services" },
-  { href: "/how-it-works", label: "How It Works" },
+  { href: "/register?type=owner", label: "List Property" },
 ];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const isHome = location.pathname === "/";
   const { user, signOut } = useAuth();
 
   return (
-    <header
-      className={cn(
-        "z-50 transition-all duration-300",
-        isHome
-          ? "relative bg-transparent"
-          : "sticky top-0 bg-card/95 backdrop-blur-md border-b border-border shadow-sm"
-      )}
-    >
+    <header className="z-50 sticky top-0 bg-background border-b border-border shadow-sm transition-all duration-300">
       <nav className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <img 
-              src={logo} 
-              alt="BookFarm Logo" 
-              className="w-10 h-10 rounded-xl shadow-sm transition-transform group-hover:scale-105"
+            <img
+              src={logo}
+              alt="BookFarm Logo"
+              className="w-9 h-9 rounded-xl shadow-sm transition-transform group-hover:scale-105"
             />
-            <span
-              className={cn(
-                "font-heading font-bold text-xl transition-colors",
-                isHome ? "text-primary-foreground" : "text-foreground"
-              )}
-            >
+            <span className="font-heading font-bold text-xl text-foreground">
               BookFarm
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
                 className={cn(
-                  "font-medium transition-colors hover:text-accent relative group",
-                  isHome
-                    ? "text-primary-foreground/90 hover:text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground",
-                  location.pathname === link.href && "text-accent"
+                  "text-sm font-medium transition-colors hover:text-accent relative group",
+                  location.pathname === link.href
+                    ? "text-accent"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 {link.label}
@@ -74,74 +60,41 @@ export function Navbar() {
           </div>
 
           {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className={cn(
-                isHome
-                  ? "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
-                  : ""
-              )}
-            >
-              <Search className="h-5 w-5" />
+          <div className="hidden lg:flex items-center gap-1">
+            <Button variant="ghost" size="icon" asChild>
+              <Link to="/favorites">
+                <Heart className="h-5 w-5" />
+              </Link>
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className={cn(
-                isHome
-                  ? "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
-                  : ""
-              )}
-            >
-              <Heart className="h-5 w-5" />
+            <Button variant="ghost" size="icon" asChild>
+              <Link to="/dashboard">
+                <MessageSquare className="h-5 w-5" />
+              </Link>
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className={cn(
-                isHome
-                  ? "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
-                  : ""
-              )}
-            >
-              <MessageSquare className="h-5 w-5" />
-            </Button>
-            <div className={cn(
-              isHome
-                ? "[&_button]:text-primary-foreground/90 [&_button]:hover:text-primary-foreground [&_button]:hover:bg-primary-foreground/10"
-                : ""
-            )}>
-              <ThemeToggle />
-            </div>
+            <ThemeToggle />
             <div className="w-px h-6 bg-border mx-2" />
             {user ? (
               <>
                 <Link to="/dashboard">
-                  <Button
-                    variant={isHome ? "hero-outline" : "outline"}
-                    className={cn(isHome && "border-primary-foreground/30")}
-                  >
+                  <Button variant="outline" size="sm">
                     Dashboard
                   </Button>
                 </Link>
-                <Button variant="accent" onClick={() => signOut()}>
+                <Button variant="accent" size="sm" onClick={() => signOut()}>
                   Sign Out
                 </Button>
               </>
             ) : (
               <>
                 <Link to="/login">
-                  <Button
-                    variant={isHome ? "hero-outline" : "outline"}
-                    className={cn(isHome && "border-primary-foreground/30")}
-                  >
+                  <Button variant="ghost" size="sm">
                     Log In
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button variant="accent">Sign Up</Button>
+                  <Button variant="accent" size="sm">
+                    Sign Up
+                  </Button>
                 </Link>
               </>
             )}
@@ -150,12 +103,7 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={cn(
-              "lg:hidden p-2 rounded-lg transition-colors",
-              isHome
-                ? "text-primary-foreground hover:bg-primary-foreground/10"
-                : "text-foreground hover:bg-muted"
-            )}
+            className="lg:hidden p-2 rounded-lg text-foreground hover:bg-muted transition-colors"
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -170,14 +118,14 @@ export function Navbar() {
               exit={{ opacity: 0, height: 0 }}
               className="lg:hidden overflow-hidden"
             >
-              <div className="py-4 space-y-3 bg-card/95 backdrop-blur-md rounded-xl mb-4 px-4">
+              <div className="py-4 space-y-1 border-t border-border">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
                     to={link.href}
                     onClick={() => setIsOpen(false)}
                     className={cn(
-                      "block py-2 px-4 rounded-lg font-medium transition-colors",
+                      "block py-2.5 px-4 rounded-lg text-sm font-medium transition-colors",
                       location.pathname === link.href
                         ? "bg-accent/10 text-accent"
                         : "text-foreground hover:bg-muted"
@@ -190,7 +138,7 @@ export function Navbar() {
                   <span className="text-sm text-muted-foreground">Theme</span>
                   <ThemeToggle />
                 </div>
-                <div className="pt-4 border-t border-border space-y-2">
+                <div className="pt-3 border-t border-border space-y-2 px-1">
                   {user ? (
                     <>
                       <Link to="/dashboard" className="block" onClick={() => setIsOpen(false)}>
