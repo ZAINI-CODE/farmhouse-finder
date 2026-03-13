@@ -30,28 +30,28 @@ const values = [
 
 const team = [
   {
-    name: "Sarah Mitchell",
-    role: "Founder & CEO",
-    bio: "Former event planner with 15 years of experience. Sarah founded BookFarm to solve the challenge of finding unique venues.",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&crop=face"
-  },
-  {
-    name: "Michael Chen",
-    role: "Chief Technology Officer",
-    bio: "Tech veteran from Silicon Valley. Michael leads our engineering team in building a seamless booking experience.",
+    name: "Muhammad Zain",
+    role: "CEO & Senior Developer",
+    bio: "Visionary leader and senior developer who founded BookFarm to revolutionize farmhouse bookings across Pakistan.",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face"
   },
   {
-    name: "Emily Rodriguez",
-    role: "Head of Operations",
-    bio: "Operations expert ensuring every booking runs smoothly. Emily oversees property verification and vendor partnerships.",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face"
+    name: "Muhammad Ahsan",
+    role: "Backend Developer",
+    bio: "Experienced backend developer responsible for building robust APIs and server-side functionality for the platform.",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face"
   },
   {
-    name: "David Thompson",
-    role: "Head of Customer Success",
-    bio: "Customer experience champion. David and his team ensure every BookFarm customer has an exceptional journey.",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face"
+    name: "Ijaz Ahmed",
+    role: "Backend Developer",
+    bio: "Skilled backend developer ensuring the platform's systems are scalable, secure, and highly performant.",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face"
+  },
+  {
+    name: "Muhammad Mudasir",
+    role: "Database Manager",
+    bio: "Database expert managing PostgreSQL infrastructure, ensuring data integrity and optimal query performance.",
+    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop&crop=face"
   }
 ];
 
@@ -222,8 +222,8 @@ export default function AboutUs() {
                       <Mail className="h-6 w-6 text-primary" />
                     </div>
                     <h3 className="font-semibold mb-2">Email Us</h3>
-                    <a href="mailto:hello@bookfarm.com" className="text-primary hover:underline">
-                      hello@bookfarm.com
+                    <a href="mailto:funfarmhousedeals@gmail.com" className="text-primary hover:underline">
+                      funfarmhousedeals@gmail.com
                     </a>
                   </CardContent>
                 </Card>
@@ -233,9 +233,9 @@ export default function AboutUs() {
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                       <Phone className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="font-semibold mb-2">Call Us</h3>
-                    <a href="tel:+15551234567" className="text-primary hover:underline">
-                      +1 (555) 123-4567
+                    <h3 className="font-semibold mb-2">Call / WhatsApp</h3>
+                    <a href="https://wa.me/923038032173" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      0303-8032173
                     </a>
                   </CardContent>
                 </Card>
@@ -245,9 +245,9 @@ export default function AboutUs() {
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                       <MapPin className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="font-semibold mb-2">Visit Us</h3>
+                    <h3 className="font-semibold mb-2">Location</h3>
                     <p className="text-muted-foreground">
-                      San Francisco, CA
+                      Pakistan
                     </p>
                   </CardContent>
                 </Card>

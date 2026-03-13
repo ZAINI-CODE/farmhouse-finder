@@ -14,17 +14,17 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email Us",
-    details: ["General: hello@bookfarm.com", "Support: support@bookfarm.com", "Business: partners@bookfarm.com"],
+    details: ["funfarmhousedeals@gmail.com"],
   },
   {
     icon: Phone,
-    title: "Call Us",
-    details: ["+92 300 123 4567 (Main)", "+92 321 765 4321 (Support)", "Mon-Sat, 9 AM - 8 PM PKT"],
+    title: "Call / WhatsApp",
+    details: ["0303-8032173", "Mon-Sat, 9 AM - 8 PM PKT"],
   },
   {
     icon: MapPin,
-    title: "Visit Us",
-    details: ["Office 501, 5th Floor", "Arfa Software Technology Park", "Ferozepur Road, Lahore"],
+    title: "Location",
+    details: ["Pakistan"],
   },
   {
     icon: Clock,
@@ -223,6 +223,31 @@ export default function Contact() {
                 </Card>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* WhatsApp CTA */}
+        <section className="py-8 bg-green-50 dark:bg-green-950/20 border-y border-green-200 dark:border-green-800">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="font-heading text-xl font-bold mb-2 text-green-800 dark:text-green-200">
+              💬 Contact Us on WhatsApp
+            </h2>
+            <p className="text-green-700 dark:text-green-300 mb-4 text-sm">
+              Get instant support and quick answers via WhatsApp
+            </p>
+            <Button
+              className="bg-green-500 hover:bg-green-600 text-white gap-2"
+              asChild
+            >
+              <a
+                href="https://wa.me/923038032173"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <MessageCircle className="h-5 w-5" />
+                Chat on WhatsApp — 0303-8032173
+              </a>
+            </Button>
           </div>
         </section>
 

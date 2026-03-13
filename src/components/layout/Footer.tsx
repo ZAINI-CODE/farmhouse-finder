@@ -162,15 +162,15 @@ export function Footer() {
             <div className="space-y-3 text-sm text-primary-foreground/70">
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-accent" />
-                <span>hello@bookfarm.com</span>
+                <a href="mailto:funfarmhousedeals@gmail.com" className="hover:text-accent transition-colors">funfarmhousedeals@gmail.com</a>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-accent" />
-                <span>+1 (555) 123-4567</span>
+                <a href="https://wa.me/923038032173" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">0303-8032173 (WhatsApp)</a>
               </div>
               <div className="flex items-center gap-3">
                 <MapPin className="h-4 w-4 text-accent" />
-                <span>San Francisco, CA</span>
+                <span>Pakistan</span>
               </div>
             </div>
           </div>

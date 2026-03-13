@@ -103,8 +103,8 @@ const Dashboard = () => {
   }, [user, navigate]);
 
   const favorites = [
-    { id: 1, name: 'Pearl Farmhouse', location: 'Canal Road, Lahore', price: 'Rs. 45,000/day', image: '/placeholder.svg' },
-    { id: 2, name: 'Bahria Orchards Villa', location: 'Bahria Orchard, Lahore', price: 'Rs. 95,000/day', image: '/placeholder.svg' },
+    { id: 1, name: 'Pearl Farmhouse', location: 'Canal Road, Lahore', price: 'PKR 45,000/day', image: '/placeholder.svg' },
+    { id: 2, name: 'Bahria Orchards Villa', location: 'Bahria Orchard, Lahore', price: 'PKR 95,000/day', image: '/placeholder.svg' },
   ];
 
   const notifications = [

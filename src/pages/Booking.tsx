@@ -465,7 +465,7 @@ export default function Booking() {
                       <Label className="text-base">Phone Number</Label>
                       <Input
                         type="tel"
-                        placeholder="+1 (555) 000-0000"
+                        placeholder="03XX-XXXXXXX"
                         value={contactInfo.phone}
                         onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
                         className="h-14 text-base"
