@@ -82,7 +82,7 @@ const VendorDashboard = () => {
           .order('created_at', { ascending: false });
 
         if (!error && servicesData) {
-          setBookingServices(servicesData as VendorService[]);
+          setBookingServices(servicesData as unknown as VendorService[]);
         }
       }
     } catch (err) {
