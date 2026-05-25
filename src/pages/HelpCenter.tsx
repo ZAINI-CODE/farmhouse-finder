@@ -135,15 +135,15 @@ const contactOptions = [
     icon: Mail,
     title: "Email Support",
     description: "Get help via email within 24 hours",
-    action: "support@bookfarm.com",
+    action: "funfarmhousedeals@gmail.com",
     buttonText: "Send Email"
   },
   {
     icon: Phone,
-    title: "Phone Support",
+    title: "Phone / WhatsApp",
     description: "Available Mon-Sat, 9 AM - 6 PM",
-    action: "+1 (555) 123-4567",
-    buttonText: "Call Now"
+    action: "0303-8032173",
+    buttonText: "Call / WhatsApp"
   },
   {
     icon: MessageCircle,

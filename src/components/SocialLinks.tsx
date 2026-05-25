@@ -1,13 +1,13 @@
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const PLATFORM_WHATSAPP = "+923001234567";
+const PLATFORM_WHATSAPP = "923038032173";
 
 const socialLinks = [
   {
     id: "facebook",
     icon: Facebook,
-    href: "https://facebook.com/bookfarm",
+    href: "https://www.facebook.com/profile.php?id=61577963157871",
     label: "Facebook",
   },
   {

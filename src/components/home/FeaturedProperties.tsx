@@ -155,7 +155,7 @@ export function FeaturedProperties() {
                       </div>
                       <div>
                         <span className="font-heading font-bold text-lg text-accent">
-                          Rs. {property.price_per_day.toLocaleString()}
+                          PKR {property.price_per_day.toLocaleString()}
                         </span>
                         <span className="text-muted-foreground text-sm">/day</span>
                       </div>

@@ -398,7 +398,7 @@ export default function PropertyDetail() {
                     Request to Book
                   </Button>
 
-                  {vendorPhone && (
+                  {vendorPhone ? (
                     <Button
                       variant="outline"
                       size="xl"
@@ -416,6 +416,25 @@ export default function PropertyDetail() {
                     >
                       <MessageCircle className="h-5 w-5" />
                       WhatsApp Vendor
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      size="xl"
+                      className="w-full mb-4 gap-2 border-green-500 text-green-600 hover:bg-green-50 dark:hover:bg-green-950"
+                      onClick={() => {
+                        const msg = encodeURIComponent(
+                          `Hello, I am interested in the property: ${property.title}`
+                        );
+                        window.open(
+                          `https://wa.me/923038032173?text=${msg}`,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                    >
+                      <MessageCircle className="h-5 w-5" />
+                      Contact on WhatsApp
                     </Button>
                   )}
 

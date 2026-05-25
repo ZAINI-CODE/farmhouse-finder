@@ -237,7 +237,7 @@ const PropertyManage = () => {
                               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
                                 <div className="flex items-center gap-1">
                                   <IndianRupee className="w-4 h-4" />
-                                  <span>{property.price_per_day.toLocaleString()}/day</span>
+                                  <span>PKR {property.price_per_day.toLocaleString()}/day</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <Users className="w-4 h-4" />

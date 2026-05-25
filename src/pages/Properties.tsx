@@ -83,8 +83,11 @@ export default function Properties() {
   // Initialize filters from URL parameters
   useEffect(() => {
     const locationParam = searchParams.get("location");
+    const searchParam = searchParams.get("search");
     const dateParam = searchParams.get("date");
-    if (locationParam) {
+    if (searchParam) {
+      setSearchQuery(searchParam);
+    } else if (locationParam) {
       setSearchQuery(locationParam);
     }
     if (dateParam) {

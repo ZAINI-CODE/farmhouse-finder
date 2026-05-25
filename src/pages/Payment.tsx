@@ -3,8 +3,8 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import {
-  Building2, Copy, Check, ArrowLeft, Clock, AlertCircle,
-  Phone, Mail, MapPin, Upload, Shield
+  Copy, Check, ArrowLeft, Clock, AlertCircle,
+  Phone, Mail, MapPin, Shield, CreditCard, Smartphone, Landmark
 } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -12,11 +12,48 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useNotifications } from "@/hooks/useNotifications";
 import { supabase } from "@/integrations/supabase/client";
 import property1 from "@/assets/property-1.jpg";
+
+type PaymentCategory = "mobile" | "bank" | "card";
+
+const paymentCategories = [
+  { id: "mobile" as PaymentCategory, label: "Mobile Wallets", icon: Smartphone, description: "JazzCash & EasyPaisa" },
+  { id: "bank" as PaymentCategory, label: "Bank Transfer", icon: Landmark, description: "HBL, MCB, UBL & more" },
+  { id: "card" as PaymentCategory, label: "Credit / Debit Card", icon: CreditCard, description: "Visa & Mastercard" },
+];
+
+// Mobile wallet options
+const mobileWallets = [
+  {
+    id: "jazzcash",
+    name: "JazzCash",
+    shortName: "JazzCash",
+    logo: "📱",
+    color: "bg-red-500",
+    accountTitle: "BookFarm Properties",
+    accountNumber: "0303-8032173",
+    iban: "",
+    branchCode: "",
+    branchName: "Mobile Wallet",
+  },
+  {
+    id: "easypaisa",
+    name: "Easypaisa",
+    shortName: "Easypaisa",
+    logo: "💚",
+    color: "bg-green-500",
+    accountTitle: "BookFarm Properties",
+    accountNumber: "0303-8032173",
+    iban: "",
+    branchCode: "",
+    branchName: "Mobile Wallet",
+  },
+];
 
 // Pakistani Banks
 const pakistaniBanks = [
@@ -80,30 +117,6 @@ const pakistaniBanks = [
     branchCode: "0654",
     branchName: "Model Town, Lahore",
   },
-  {
-    id: "jazzcash",
-    name: "JazzCash",
-    shortName: "JazzCash",
-    logo: "📱",
-    color: "bg-red-500",
-    accountTitle: "BookFarm Properties",
-    accountNumber: "0300-1234567",
-    iban: "",
-    branchCode: "",
-    branchName: "Mobile Wallet",
-  },
-  {
-    id: "easypaisa",
-    name: "Easypaisa",
-    shortName: "Easypaisa",
-    logo: "💚",
-    color: "bg-green-500",
-    accountTitle: "BookFarm Properties",
-    accountNumber: "0345-9876543",
-    iban: "",
-    branchCode: "",
-    branchName: "Mobile Wallet",
-  },
 ];
 
 interface BookingDetails {
@@ -132,7 +145,8 @@ export default function Payment() {
   
   const bookingDetails = location.state?.bookingDetails as BookingDetails;
   
-  const [selectedBank, setSelectedBank] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<PaymentCategory>("mobile");
+  const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
   const [transactionId, setTransactionId] = useState("");
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -159,7 +173,9 @@ export default function Payment() {
     );
   }
 
-  const selectedBankDetails = pakistaniBanks.find(b => b.id === selectedBank);
+  const selectedWalletDetails = mobileWallets.find(w => w.id === selectedPayment);
+  const selectedBankDetails = pakistaniBanks.find(b => b.id === selectedPayment);
+  const selectedMethodDetails = selectedWalletDetails || selectedBankDetails;
 
   const copyToClipboard = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
@@ -172,10 +188,17 @@ export default function Payment() {
   };
 
   const handleSubmitPayment = async () => {
-    if (!selectedBank || !transactionId.trim()) {
+    if (activeCategory === "card") {
+      toast({
+        title: "Card Payment Coming Soon",
+        description: "Online card payments will be available soon. Please use a mobile wallet or bank transfer.",
+      });
+      return;
+    }
+    if (!selectedPayment || !transactionId.trim()) {
       toast({
         title: "Missing Information",
-        description: "Please select a bank and enter transaction ID",
+        description: "Please select a payment method and enter transaction ID",
         variant: "destructive",
       });
       return;
@@ -183,7 +206,8 @@ export default function Payment() {
 
     setIsSubmitting(true);
     
-    const selectedBankName = pakistaniBanks.find(b => b.id === selectedBank)?.name || selectedBank;
+    const allMethods = [...mobileWallets, ...pakistaniBanks];
+    const selectedMethodName = allMethods.find(m => m.id === selectedPayment)?.name || selectedPayment;
     
     // If this is an existing booking (has id), update it with payment info
     if ((bookingDetails as any).id) {
@@ -193,7 +217,7 @@ export default function Payment() {
           .update({
             payment_status: 'pending_verification',
             transaction_id: transactionId,
-            payment_method: selectedBankName,
+            payment_method: selectedMethodName,
           })
           .eq('id', (bookingDetails as any).id);
 
@@ -288,37 +312,114 @@ export default function Payment() {
                   </div>
                 </div>
 
-                {/* Bank Selection */}
+                {/* Payment Category Selection */}
                 <div>
                   <h2 className="font-heading text-xl font-semibold mb-4">
                     Select Payment Method
                   </h2>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    {pakistaniBanks.map((bank) => (
-                      <button
-                        key={bank.id}
-                        onClick={() => setSelectedBank(bank.id)}
-                        className={cn(
-                          "p-4 rounded-xl border-2 text-center transition-all hover:shadow-md",
-                          selectedBank === bank.id
-                            ? "border-primary bg-primary/5 shadow-md"
-                            : "border-border hover:border-primary/50"
-                        )}
-                      >
-                        <div className={cn(
-                          "w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl text-white",
-                          bank.color
-                        )}>
-                          {bank.logo}
-                        </div>
-                        <p className="font-medium text-sm">{bank.shortName}</p>
-                      </button>
-                    ))}
+                  <div className="grid grid-cols-3 gap-3 mb-6">
+                    {paymentCategories.map((cat) => {
+                      const CatIcon = cat.icon;
+                      return (
+                        <button
+                          key={cat.id}
+                          onClick={() => { setActiveCategory(cat.id); setSelectedPayment(null); }}
+                          className={cn(
+                            "p-4 rounded-xl border-2 text-center transition-all hover:shadow-md",
+                            activeCategory === cat.id
+                              ? "border-primary bg-primary/5 shadow-md"
+                              : "border-border hover:border-primary/50"
+                          )}
+                        >
+                          <CatIcon className={cn("h-6 w-6 mx-auto mb-2", activeCategory === cat.id ? "text-primary" : "text-muted-foreground")} />
+                          <p className="font-semibold text-sm">{cat.label}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">{cat.description}</p>
+                        </button>
+                      );
+                    })}
                   </div>
+
+                  {/* Mobile Wallets */}
+                  {activeCategory === "mobile" && (
+                    <div className="grid grid-cols-2 gap-3">
+                      {mobileWallets.map((wallet) => (
+                        <button
+                          key={wallet.id}
+                          onClick={() => setSelectedPayment(wallet.id)}
+                          className={cn(
+                            "p-4 rounded-xl border-2 text-center transition-all hover:shadow-md",
+                            selectedPayment === wallet.id
+                              ? "border-primary bg-primary/5 shadow-md"
+                              : "border-border hover:border-primary/50"
+                          )}
+                        >
+                          <div className={cn(
+                            "w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl text-white",
+                            wallet.color
+                          )}>
+                            {wallet.logo}
+                          </div>
+                          <p className="font-medium text-sm">{wallet.shortName}</p>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Bank Transfer */}
+                  {activeCategory === "bank" && (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {pakistaniBanks.map((bank) => (
+                        <button
+                          key={bank.id}
+                          onClick={() => setSelectedPayment(bank.id)}
+                          className={cn(
+                            "p-4 rounded-xl border-2 text-center transition-all hover:shadow-md",
+                            selectedPayment === bank.id
+                              ? "border-primary bg-primary/5 shadow-md"
+                              : "border-border hover:border-primary/50"
+                          )}
+                        >
+                          <div className={cn(
+                            "w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl text-white",
+                            bank.color
+                          )}>
+                            {bank.logo}
+                          </div>
+                          <p className="font-medium text-sm">{bank.shortName}</p>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Credit / Debit Card */}
+                  {activeCategory === "card" && (
+                    <div className="bg-card rounded-2xl border border-border p-6 text-center">
+                      <div className="flex justify-center gap-4 mb-4">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-bold text-sm">
+                          VISA
+                        </div>
+                        <div className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg font-bold text-sm">
+                          Mastercard
+                        </div>
+                      </div>
+                      <Badge variant="outline" className="mb-3">Coming Soon</Badge>
+                      <p className="text-muted-foreground text-sm">
+                        Online card payments via Visa &amp; Mastercard will be available soon.
+                        <br />Please use JazzCash, EasyPaisa, or Bank Transfer for now.
+                      </p>
+                      <Button
+                        variant="outline"
+                        className="mt-4"
+                        onClick={() => setActiveCategory("mobile")}
+                      >
+                        Use Mobile Wallet Instead
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
-                {/* Bank Details */}
-                {selectedBankDetails && (
+                {/* Payment Details */}
+                {selectedMethodDetails && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
@@ -327,13 +428,13 @@ export default function Payment() {
                     <div className="flex items-center gap-3">
                       <div className={cn(
                         "w-10 h-10 rounded-full flex items-center justify-center text-xl text-white",
-                        selectedBankDetails.color
+                        selectedMethodDetails.color
                       )}>
-                        {selectedBankDetails.logo}
+                        {selectedMethodDetails.logo}
                       </div>
                       <div>
-                        <h3 className="font-heading font-semibold">{selectedBankDetails.name}</h3>
-                        <p className="text-sm text-muted-foreground">{selectedBankDetails.branchName}</p>
+                        <h3 className="font-heading font-semibold">{selectedMethodDetails.name}</h3>
+                        <p className="text-sm text-muted-foreground">{selectedMethodDetails.branchName}</p>
                       </div>
                     </div>
 
@@ -343,12 +444,12 @@ export default function Payment() {
                       <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
                         <div>
                           <p className="text-xs text-muted-foreground">Account Title</p>
-                          <p className="font-medium">{selectedBankDetails.accountTitle}</p>
+                          <p className="font-medium">{selectedMethodDetails.accountTitle}</p>
                         </div>
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => copyToClipboard(selectedBankDetails.accountTitle, "Account Title")}
+                          onClick={() => copyToClipboard(selectedMethodDetails.accountTitle, "Account Title")}
                         >
                           {copiedField === "Account Title" ? (
                             <Check className="h-4 w-4 text-green-500" />
@@ -360,13 +461,15 @@ export default function Payment() {
 
                       <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
                         <div>
-                          <p className="text-xs text-muted-foreground">Account Number</p>
-                          <p className="font-mono font-medium">{selectedBankDetails.accountNumber}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {activeCategory === "mobile" ? "Mobile Number" : "Account Number"}
+                          </p>
+                          <p className="font-mono font-medium">{selectedMethodDetails.accountNumber}</p>
                         </div>
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => copyToClipboard(selectedBankDetails.accountNumber, "Account Number")}
+                          onClick={() => copyToClipboard(selectedMethodDetails.accountNumber, "Account Number")}
                         >
                           {copiedField === "Account Number" ? (
                             <Check className="h-4 w-4 text-green-500" />
@@ -376,16 +479,16 @@ export default function Payment() {
                         </Button>
                       </div>
 
-                      {selectedBankDetails.iban && (
+                      {selectedMethodDetails.iban && (
                         <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
                           <div>
                             <p className="text-xs text-muted-foreground">IBAN</p>
-                            <p className="font-mono font-medium text-sm">{selectedBankDetails.iban}</p>
+                            <p className="font-mono font-medium text-sm">{selectedMethodDetails.iban}</p>
                           </div>
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => copyToClipboard(selectedBankDetails.iban, "IBAN")}
+                            onClick={() => copyToClipboard(selectedMethodDetails.iban, "IBAN")}
                           >
                             {copiedField === "IBAN" ? (
                               <Check className="h-4 w-4 text-green-500" />
@@ -396,16 +499,16 @@ export default function Payment() {
                         </div>
                       )}
 
-                      {selectedBankDetails.branchCode && (
+                      {selectedMethodDetails.branchCode && (
                         <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
                           <div>
                             <p className="text-xs text-muted-foreground">Branch Code</p>
-                            <p className="font-mono font-medium">{selectedBankDetails.branchCode}</p>
+                            <p className="font-mono font-medium">{selectedMethodDetails.branchCode}</p>
                           </div>
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => copyToClipboard(selectedBankDetails.branchCode, "Branch Code")}
+                            onClick={() => copyToClipboard(selectedMethodDetails.branchCode, "Branch Code")}
                           >
                             {copiedField === "Branch Code" ? (
                               <Check className="h-4 w-4 text-green-500" />
@@ -433,7 +536,7 @@ export default function Payment() {
                 )}
 
                 {/* Transaction ID Input */}
-                {selectedBank && (
+                {selectedPayment && activeCategory !== "card" && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -442,13 +545,13 @@ export default function Payment() {
                     <div className="space-y-2">
                       <Label className="text-base">Transaction ID / Reference Number</Label>
                       <Input
-                        placeholder="Enter your bank transaction ID"
+                        placeholder="Enter your transaction ID"
                         value={transactionId}
                         onChange={(e) => setTransactionId(e.target.value)}
                         className="h-14 text-base"
                       />
                       <p className="text-sm text-muted-foreground">
-                        Enter the transaction ID from your bank transfer receipt
+                        Enter the transaction ID from your transfer receipt
                       </p>
                     </div>
 
