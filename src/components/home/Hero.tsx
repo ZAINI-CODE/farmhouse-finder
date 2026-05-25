@@ -25,7 +25,7 @@ export function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
@@ -33,18 +33,18 @@ export function Hero() {
           alt="Beautiful farmhouse venue at sunset"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/60 to-primary/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 lg:px-8 pt-32 pb-20">
+      <div className="relative z-10 container mx-auto px-4 lg:px-8 pt-16 pb-20">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block px-4 py-2 bg-accent/20 backdrop-blur-sm text-accent-foreground rounded-full text-sm font-medium mb-6 border border-accent/30">
+            <span className="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm font-medium mb-6 border border-white/30">
               ✨ Discover 500+ Verified Venues
             </span>
           </motion.div>
@@ -53,7 +53,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-heading text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-primary-foreground mb-6 leading-tight"
+            className="font-heading text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight"
           >
             Find Your Perfect
             <br />
@@ -64,7 +64,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto"
           >
             Book stunning farmhouses and event venues for weddings, corporate retreats, 
             and celebrations. Connect with trusted vendors all in one place.
@@ -75,7 +75,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="bg-card/95 backdrop-blur-md rounded-2xl shadow-lg p-2 max-w-3xl mx-auto"
+            className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl p-2 max-w-3xl mx-auto"
           >
             {/* Search Type Tabs */}
             <div className="flex gap-2 mb-4 p-1 bg-muted rounded-xl">
@@ -83,7 +83,7 @@ export function Hero() {
                 onClick={() => setSearchType("properties")}
                 className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
                   searchType === "properties"
-                    ? "bg-card text-foreground shadow-sm"
+                    ? "bg-white text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -93,7 +93,7 @@ export function Hero() {
                 onClick={() => setSearchType("services")}
                 className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
                   searchType === "services"
-                    ? "bg-card text-foreground shadow-sm"
+                    ? "bg-white text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -109,7 +109,7 @@ export function Hero() {
                   placeholder="Location"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="pl-10 h-12 bg-background border-border"
+                  className="pl-10 h-12 bg-background border-border focus:border-accent focus:ring-accent"
                 />
               </div>
               <div className="relative">
@@ -119,7 +119,7 @@ export function Hero() {
                   placeholder="Check In"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="pl-10 h-12 bg-background border-border"
+                  className="pl-10 h-12 bg-background border-border focus:border-accent focus:ring-accent"
                 />
               </div>
               <Button variant="accent" size="lg" className="h-12" onClick={handleSearch}>
@@ -146,7 +146,7 @@ export function Hero() {
                 <p className="text-3xl md:text-4xl font-heading font-bold text-accent">
                   {stat.value}
                 </p>
-                <p className="text-sm text-primary-foreground/70 mt-1">{stat.label}</p>
+                <p className="text-sm text-white/70 mt-1">{stat.label}</p>
               </div>
             ))}
           </motion.div>
@@ -163,9 +163,9 @@ export function Hero() {
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-primary-foreground/40 rounded-full flex justify-center"
+          className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center"
         >
-          <motion.div className="w-1.5 h-3 bg-primary-foreground/60 rounded-full mt-2" />
+          <motion.div className="w-1.5 h-3 bg-white/60 rounded-full mt-2" />
         </motion.div>
       </motion.div>
     </section>

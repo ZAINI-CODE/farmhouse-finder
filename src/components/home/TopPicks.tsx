@@ -89,7 +89,7 @@ export function TopPicks() {
                           {pick.highlight}
                         </Badge>
                       </div>
-                      <h3 className="font-heading font-semibold text-foreground truncate group-hover:text-primary transition-colors">
+                      <h3 className="font-heading font-semibold text-foreground truncate group-hover:text-accent transition-colors">
                         {pick.name}
                       </h3>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -102,7 +102,7 @@ export function TopPicks() {
                       </div>
                     </div>
                     <div className="text-right hidden sm:block">
-                      <p className="text-sm font-medium text-primary">{pick.price}</p>
+                      <p className="text-sm font-medium text-accent">{pick.price}</p>
                     </div>
                   </div>
                 </Link>

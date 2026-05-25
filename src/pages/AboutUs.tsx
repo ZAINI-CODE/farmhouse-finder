@@ -68,7 +68,7 @@ export default function AboutUs() {
       <Navbar />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative bg-primary text-primary-foreground py-20 overflow-hidden">
+        <section className="relative bg-primary text-accent-foreground py-20 overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.2),transparent_50%)]" />
           </div>
@@ -77,7 +77,7 @@ export default function AboutUs() {
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
                 About BookFarm
               </h1>
-              <p className="text-xl text-primary-foreground/80 leading-relaxed">
+              <p className="text-xl text-accent-foreground/80 leading-relaxed">
                 We connect people with beautiful farmhouse venues and trusted vendors 
                 to create unforgettable celebrations in stunning rural settings.
               </p>
@@ -131,7 +131,7 @@ export default function AboutUs() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <p className="font-heading text-4xl md:text-5xl font-bold text-primary mb-2">
+                  <p className="font-heading text-4xl md:text-5xl font-bold text-accent mb-2">
                     {stat.value}
                   </p>
                   <p className="text-muted-foreground">{stat.label}</p>
@@ -155,7 +155,7 @@ export default function AboutUs() {
                 <Card key={index} className="text-center hover:shadow-lg transition-shadow">
                   <CardContent className="pt-8 pb-6">
                     <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                      <value.icon className="h-7 w-7 text-primary" />
+                      <value.icon className="h-7 w-7 text-accent" />
                     </div>
                     <h3 className="font-heading text-xl font-semibold mb-3">{value.title}</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">{value.description}</p>
@@ -187,13 +187,13 @@ export default function AboutUs() {
                   </div>
                   <CardContent className="pt-6">
                     <h3 className="font-heading text-lg font-semibold">{member.name}</h3>
-                    <p className="text-primary font-medium text-sm mb-3">{member.role}</p>
+                    <p className="text-accent font-medium text-sm mb-3">{member.role}</p>
                     <p className="text-muted-foreground text-sm leading-relaxed">{member.bio}</p>
                     <div className="flex gap-3 mt-4">
-                      <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                      <a href="#" className="text-muted-foreground hover:text-accent transition-colors">
                         <Linkedin className="h-4 w-4" />
                       </a>
-                      <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                      <a href="#" className="text-muted-foreground hover:text-accent transition-colors">
                         <Twitter className="h-4 w-4" />
                       </a>
                     </div>
@@ -219,10 +219,10 @@ export default function AboutUs() {
                 <Card className="text-center hover:shadow-lg transition-shadow">
                   <CardContent className="pt-8 pb-6">
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                      <Mail className="h-6 w-6 text-primary" />
+                      <Mail className="h-6 w-6 text-accent" />
                     </div>
                     <h3 className="font-semibold mb-2">Email Us</h3>
-                    <a href="mailto:hello@bookfarm.com" className="text-primary hover:underline">
+                    <a href="mailto:hello@bookfarm.com" className="text-accent hover:underline">
                       hello@bookfarm.com
                     </a>
                   </CardContent>
@@ -231,10 +231,10 @@ export default function AboutUs() {
                 <Card className="text-center hover:shadow-lg transition-shadow">
                   <CardContent className="pt-8 pb-6">
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                      <Phone className="h-6 w-6 text-primary" />
+                      <Phone className="h-6 w-6 text-accent" />
                     </div>
                     <h3 className="font-semibold mb-2">Call Us</h3>
-                    <a href="tel:+15551234567" className="text-primary hover:underline">
+                    <a href="tel:+15551234567" className="text-accent hover:underline">
                       +1 (555) 123-4567
                     </a>
                   </CardContent>
@@ -243,7 +243,7 @@ export default function AboutUs() {
                 <Card className="text-center hover:shadow-lg transition-shadow">
                   <CardContent className="pt-8 pb-6">
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                      <MapPin className="h-6 w-6 text-primary" />
+                      <MapPin className="h-6 w-6 text-accent" />
                     </div>
                     <h3 className="font-semibold mb-2">Visit Us</h3>
                     <p className="text-muted-foreground">

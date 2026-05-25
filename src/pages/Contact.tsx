@@ -71,12 +71,12 @@ export default function Contact() {
       <Navbar />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-primary text-primary-foreground py-16">
+        <section className="bg-primary text-accent-foreground py-16">
           <div className="container mx-auto px-4 text-center">
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
               Get In Touch
             </h1>
-            <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto">
+            <p className="text-accent-foreground/80 text-lg max-w-2xl mx-auto">
               Have questions or need assistance? We're here to help you plan your perfect event.
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function Contact() {
                 <Card key={index} className="text-center hover:shadow-lg transition-shadow">
                   <CardContent className="pt-8 pb-6">
                     <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                      <info.icon className="h-7 w-7 text-primary" />
+                      <info.icon className="h-7 w-7 text-accent" />
                     </div>
                     <h3 className="font-heading text-lg font-semibold mb-3">{info.title}</h3>
                     <div className="space-y-1">
@@ -203,7 +203,7 @@ export default function Contact() {
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                        <Building className="h-6 w-6 text-primary" />
+                        <Building className="h-6 w-6 text-accent" />
                       </div>
                       <div>
                         <h3 className="font-semibold mb-2">BookFarm Headquarters</h3>
@@ -213,7 +213,7 @@ export default function Contact() {
                           Ferozepur Road, Lahore 54000<br />
                           Pakistan
                         </p>
-                        <div className="flex items-center gap-2 text-sm text-primary">
+                        <div className="flex items-center gap-2 text-sm text-accent">
                           <MessageCircle className="h-4 w-4" />
                           <span>Available for in-person meetings by appointment</span>
                         </div>

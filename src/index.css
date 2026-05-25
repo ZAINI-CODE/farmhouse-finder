@@ -6,76 +6,76 @@
 
 @layer base {
   :root {
-    /* BookFarm Design System - Dark Charcoal & Amber */
-    /* Primary - Dark Charcoal */
+    /* BookFarm Design System - Airbnb Style */
+    /* Primary - Dark Charcoal (section backgrounds, hero overlays) */
     --primary: 220 15% 20%;
-    --primary-foreground: 45 100% 97%;
+    --primary-foreground: 0 0% 100%;
     --primary-light: 220 12% 30%;
     --primary-dark: 220 18% 12%;
 
-    /* Secondary - Warm Stone */
-    --secondary: 30 10% 92%;
-    --secondary-foreground: 220 15% 20%;
+    /* Secondary - Neutral Light */
+    --secondary: 0 0% 95%;
+    --secondary-foreground: 0 0% 13%;
 
-    /* Accent - Amber Gold */
-    --accent: 38 92% 50%;
-    --accent-foreground: 220 18% 12%;
-    --accent-light: 38 85% 58%;
-    --accent-dark: 38 90% 42%;
+    /* Accent - Airbnb Red (#FF385C) — used for all primary CTAs & highlights */
+    --accent: 349 100% 61%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 349 100% 66%;
+    --accent-dark: 340 78% 50%;
 
     /* Background & Surface */
-    --background: 40 20% 97%;
-    --foreground: 220 15% 15%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 13%;
 
     /* Cards & Popovers */
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 15%;
+    --card: 0 0% 97%;
+    --card-foreground: 0 0% 13%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 15%;
+    --popover-foreground: 0 0% 13%;
 
     /* Muted */
-    --muted: 30 10% 90%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 44%;
 
     /* Destructive */
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 85% 97%;
 
     /* Borders & Inputs */
-    --border: 30 12% 85%;
-    --input: 30 12% 85%;
-    --ring: 38 92% 50%;
+    --border: 0 0% 87%;
+    --input: 0 0% 87%;
+    --ring: 349 100% 61%;
 
     /* Radius */
-    --radius: 1rem;
+    --radius: 0.75rem;
 
     /* Sidebar */
     --sidebar-background: 220 15% 18%;
-    --sidebar-foreground: 45 100% 97%;
-    --sidebar-primary: 38 92% 50%;
-    --sidebar-primary-foreground: 220 18% 12%;
-    --sidebar-accent: 38 85% 58%;
-    --sidebar-accent-foreground: 220 18% 12%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 349 100% 61%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 349 100% 66%;
+    --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 220 12% 28%;
-    --sidebar-ring: 38 92% 50%;
+    --sidebar-ring: 349 100% 61%;
 
     /* Custom Design Tokens */
     --gradient-hero: linear-gradient(135deg, hsl(220 15% 15% / 0.92), hsl(220 12% 20% / 0.85));
-    --gradient-accent: linear-gradient(135deg, hsl(38 92% 50%), hsl(38 85% 58%));
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(40 20% 98%));
+    --gradient-accent: linear-gradient(135deg, hsl(349 100% 61%), hsl(340 78% 50%));
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 97%));
 
     --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.08), 0 1px 2px -1px hsl(0 0% 0% / 0.06);
     --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.08), 0 2px 4px -2px hsl(0 0% 0% / 0.06);
     --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.08), 0 4px 6px -4px hsl(0 0% 0% / 0.06);
-    --shadow-accent: 0 8px 24px hsl(38 92% 50% / 0.25);
+    --shadow-accent: 0 8px 24px hsl(349 100% 61% / 0.25);
 
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
 
-    --chart-1: 38 92% 50%;
-    --chart-2: 38 85% 58%;
-    --chart-3: 30 80% 45%;
+    --chart-1: 349 100% 61%;
+    --chart-2: 340 78% 50%;
+    --chart-3: 178 100% 33%;
     --chart-4: 220 15% 35%;
     --chart-5: 220 10% 55%;
     --sidebar: 0 0% 100%;
@@ -89,52 +89,55 @@
   }
 
   .dark {
-    /* Primary - Light for dark mode */
-    --primary: 38 92% 50%;
-    --primary-foreground: 220 18% 10%;
-    --primary-light: 38 85% 58%;
-    --primary-dark: 38 90% 42%;
+    /* Primary stays dark charcoal in dark mode */
+    --primary: 220 15% 20%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 220 12% 30%;
+    --primary-dark: 220 18% 12%;
 
-    --secondary: 220 12% 18%;
-    --secondary-foreground: 40 20% 90%;
+    --secondary: 215 20% 22%;
+    --secondary-foreground: 210 40% 98%;
 
-    /* Accent - Amber stays vivid */
-    --accent: 38 92% 55%;
-    --accent-foreground: 220 18% 10%;
+    /* Accent - Airbnb Red stays vivid in dark mode */
+    --accent: 349 100% 61%;
+    --accent-foreground: 0 0% 100%;
+    --accent-light: 349 100% 66%;
+    --accent-dark: 340 78% 50%;
 
-    --background: 220 15% 8%;
-    --foreground: 40 20% 92%;
+    /* Dark mode backgrounds per Airbnb dark spec */
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
 
-    --card: 220 14% 12%;
-    --card-foreground: 40 20% 92%;
-    --popover: 220 14% 14%;
-    --popover-foreground: 40 20% 92%;
+    --card: 215 28% 17%;
+    --card-foreground: 210 40% 98%;
+    --popover: 215 28% 17%;
+    --popover-foreground: 210 40% 98%;
 
-    --muted: 220 12% 20%;
-    --muted-foreground: 220 8% 60%;
+    --muted: 215 20% 22%;
+    --muted-foreground: 215 15% 65%;
 
-    --border: 220 12% 22%;
-    --input: 220 12% 22%;
-    --ring: 38 92% 50%;
+    --border: 215 20% 25%;
+    --input: 215 20% 25%;
+    --ring: 349 100% 61%;
 
-    --sidebar-background: 220 15% 8%;
-    --sidebar-foreground: 40 20% 92%;
-    --sidebar-primary: 38 92% 50%;
-    --sidebar-primary-foreground: 220 18% 10%;
-    --sidebar-accent: 38 85% 58%;
-    --sidebar-accent-foreground: 220 18% 10%;
-    --sidebar-border: 220 12% 22%;
-    --sidebar-ring: 38 92% 50%;
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 349 100% 61%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 349 100% 66%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 215 20% 25%;
+    --sidebar-ring: 349 100% 61%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 85% 97%;
 
-    --chart-1: 38 92% 55%;
-    --chart-2: 38 85% 65%;
-    --chart-3: 30 80% 50%;
+    --chart-1: 349 100% 61%;
+    --chart-2: 349 100% 66%;
+    --chart-3: 178 100% 40%;
     --chart-4: 220 15% 45%;
     --chart-5: 220 10% 65%;
-    --sidebar: 220 14% 12%;
+    --sidebar: 215 28% 17%;
 
     --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.15);
     --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.15);
@@ -144,6 +147,7 @@
     --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.2), 0 4px 6px -4px hsl(0 0% 0% / 0.15);
     --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.2), 0 8px 10px -6px hsl(0 0% 0% / 0.15);
     --shadow-2xl: 0 25px 50px -12px hsl(0 0% 0% / 0.4);
+    --shadow-accent: 0 8px 24px hsl(349 100% 61% / 0.35);
   }
 }
 
@@ -167,11 +171,11 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary-light transition-all duration-200 shadow-md hover:shadow-lg;
+    @apply bg-accent text-accent-foreground hover:bg-accent-dark transition-all duration-200 rounded-lg font-semibold shadow-accent hover:shadow-lg;
   }
 
   .btn-accent {
-    @apply bg-accent text-accent-foreground hover:bg-accent-light transition-all duration-200 shadow-accent;
+    @apply bg-accent text-accent-foreground hover:bg-accent-dark transition-all duration-200 rounded-lg font-semibold shadow-accent;
   }
 
   .card-hover {
@@ -184,6 +188,11 @@
 
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-light;
+  }
+
+  /* Airbnb-style input focus */
+  .input-airbnb {
+    @apply border border-border rounded-lg px-3 py-2.5 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors;
   }
 }
 

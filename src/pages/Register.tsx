@@ -381,10 +381,10 @@ export default function Register() {
           <div className="absolute inset-0 bg-primary/70" />
           <div className="absolute inset-0 flex items-center justify-center p-12">
             <div className="text-center">
-              <h2 className="font-heading text-3xl font-bold text-primary-foreground mb-4">
+              <h2 className="font-heading text-3xl font-bold text-accent-foreground mb-4">
                 Join Our Community
               </h2>
-              <p className="text-primary-foreground/80 max-w-md">
+              <p className="text-accent-foreground/80 max-w-md">
                 Whether you're looking for the perfect venue in Lahore, want to list your property, or offer event services - BookFarm is your platform.
               </p>
             </div>

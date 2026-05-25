@@ -123,12 +123,12 @@ export default function HowItWorks() {
       <Navbar />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-primary text-primary-foreground py-16">
+        <section className="bg-primary text-accent-foreground py-16">
           <div className="container mx-auto px-4 text-center">
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
               How BookFarm Works
             </h1>
-            <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto">
+            <p className="text-accent-foreground/80 text-lg max-w-2xl mx-auto">
               From finding the perfect venue to celebrating your special day — we make event planning simple and enjoyable.
             </p>
           </div>
@@ -146,7 +146,7 @@ export default function HowItWorks() {
               {customerSteps.map((step, index) => (
                 <div key={index} className="flex gap-6 mb-8 last:mb-0">
                   <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg">
+                    <div className="w-12 h-12 rounded-full bg-primary text-accent-foreground flex items-center justify-center font-bold text-lg">
                       {step.step}
                     </div>
                     {index < customerSteps.length - 1 && (
@@ -155,7 +155,7 @@ export default function HowItWorks() {
                   </div>
                   <div className="flex-1 pb-8">
                     <div className="flex items-center gap-3 mb-2">
-                      <step.icon className="h-5 w-5 text-primary" />
+                      <step.icon className="h-5 w-5 text-accent" />
                       <h3 className="font-heading text-xl font-semibold">{step.title}</h3>
                     </div>
                     <p className="text-muted-foreground">{step.description}</p>
@@ -228,7 +228,7 @@ export default function HowItWorks() {
                     <ul className="space-y-3">
                       {benefit.items.map((item, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                          <CheckCircle className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                          <CheckCircle className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -241,17 +241,17 @@ export default function HowItWorks() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 bg-primary text-primary-foreground">
+        <section className="py-16 bg-primary text-accent-foreground">
           <div className="container mx-auto px-4 text-center">
             <h2 className="font-heading text-3xl font-bold mb-4">Ready to Get Started?</h2>
-            <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
+            <p className="text-accent-foreground/80 mb-8 max-w-xl mx-auto">
               Join thousands of happy customers and successful property owners on BookFarm.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Button asChild size="lg" variant="secondary">
                 <Link to="/properties">Explore Venues</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
+              <Button asChild size="lg" variant="outline" className="bg-transparent border-primary-foreground text-accent-foreground hover:bg-primary-foreground/10">
                 <Link to="/register">Create Account</Link>
               </Button>
             </div>

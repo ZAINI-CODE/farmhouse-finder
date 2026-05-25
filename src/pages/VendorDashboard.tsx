@@ -136,7 +136,7 @@ const VendorDashboard = () => {
       <div className="min-h-screen bg-secondary">
         <Navbar />
         <main className="pt-24 pb-16 flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <Loader2 className="h-8 w-8 animate-spin text-accent" />
         </main>
         <Footer />
       </div>
@@ -175,8 +175,8 @@ const VendorDashboard = () => {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center">
-                <ChefHat className="w-8 h-8 text-primary-foreground" />
+              <div className="w-16 h-16 bg-accent rounded-xl flex items-center justify-center">
+                <ChefHat className="w-8 h-8 text-accent-foreground" />
               </div>
               <div>
                 <h1 className="text-2xl font-display font-bold text-foreground">{vendor.business_name}</h1>
@@ -220,7 +220,7 @@ const VendorDashboard = () => {
                         <p className="text-2xl font-bold text-foreground mt-1">{stat.value}</p>
                       </div>
                       <div className="p-2 bg-primary/10 rounded-lg">
-                        <stat.icon className="w-5 h-5 text-primary" />
+                        <stat.icon className="w-5 h-5 text-accent" />
                       </div>
                     </div>
                     {stat.change && (
@@ -297,7 +297,7 @@ const VendorDashboard = () => {
                                 </div>
                                 <div>
                                   <span className="text-muted-foreground">Amount</span>
-                                  <p className="font-medium text-primary">
+                                  <p className="font-medium text-accent">
                                     PKR {(service.price || 0).toLocaleString()}
                                   </p>
                                 </div>

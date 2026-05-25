@@ -129,7 +129,7 @@ const PropertyManage = () => {
   if (authLoading) {
     return (
       <div className="min-h-screen bg-secondary flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Loader2 className="w-8 h-8 animate-spin text-accent" />
       </div>
     );
   }
@@ -173,7 +173,7 @@ const PropertyManage = () => {
           {/* Properties List */}
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              <Loader2 className="w-8 h-8 animate-spin text-accent" />
             </div>
           ) : properties.length === 0 ? (
             <Card className="border-0 shadow-sm">

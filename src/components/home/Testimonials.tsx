@@ -50,7 +50,7 @@ export function Testimonials() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mt-2"
+            className="font-heading text-3xl md:text-4xl font-bold text-accent-foreground mt-2"
           >
             What Our Customers Say
           </motion.h2>

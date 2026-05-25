@@ -263,7 +263,7 @@ const Dashboard = () => {
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3">
                           <div className="p-2 bg-primary/10 rounded-lg">
-                            <stat.icon className="w-5 h-5 text-primary" />
+                            <stat.icon className="w-5 h-5 text-accent" />
                           </div>
                           <div>
                             <p className="text-2xl font-bold text-foreground">{stat.value}</p>
@@ -308,7 +308,7 @@ const Dashboard = () => {
                     <TabsContent value="upcoming" className="space-y-4">
                       {loadingBookings ? (
                         <div className="flex items-center justify-center py-8">
-                          <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                          <Loader2 className="w-6 h-6 animate-spin text-accent" />
                         </div>
                       ) : upcomingBookings.length === 0 ? (
                         <div className="text-center py-8">
@@ -365,7 +365,7 @@ const Dashboard = () => {
                                 )}
                               </div>
                               <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-3 gap-2">
-                                <span className="font-semibold text-primary">PKR {booking.total_amount.toLocaleString()}</span>
+                                <span className="font-semibold text-accent">PKR {booking.total_amount.toLocaleString()}</span>
                                 <div className="flex gap-2">
                                   {booking.payment_status === 'pending' && (
                                     <Button size="sm" onClick={() => navigate('/payment', { state: { bookingDetails: booking } })}>
@@ -385,7 +385,7 @@ const Dashboard = () => {
                     <TabsContent value="past" className="space-y-4">
                       {loadingBookings ? (
                         <div className="flex items-center justify-center py-8">
-                          <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                          <Loader2 className="w-6 h-6 animate-spin text-accent" />
                         </div>
                       ) : pastBookings.length === 0 ? (
                         <div className="text-center py-8">
@@ -434,7 +434,7 @@ const Dashboard = () => {
                                 </span>
                               </div>
                               <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-3 gap-2">
-                                <span className="font-semibold text-primary">PKR {booking.total_amount.toLocaleString()}</span>
+                                <span className="font-semibold text-accent">PKR {booking.total_amount.toLocaleString()}</span>
                                 <div className="flex gap-2">
                                   <Button size="sm" variant="outline" onClick={() => navigate(`/booking/details/${booking.id}`)}>View Details</Button>
                                   <Button size="sm" onClick={() => navigate(`/booking/${booking.property_id}`)}>Book Again</Button>
@@ -457,7 +457,7 @@ const Dashboard = () => {
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg font-heading">Notifications</CardTitle>
-                    <Button variant="ghost" size="sm" className="text-primary text-xs">Mark all read</Button>
+                    <Button variant="ghost" size="sm" className="text-accent text-xs">Mark all read</Button>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
@@ -478,7 +478,7 @@ const Dashboard = () => {
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg font-heading">Saved Properties</CardTitle>
-                    <Link to="/properties" className="text-primary text-xs flex items-center gap-1">
+                    <Link to="/properties" className="text-accent text-xs flex items-center gap-1">
                       View all <ChevronRight className="w-3 h-3" />
                     </Link>
                   </div>
@@ -498,7 +498,7 @@ const Dashboard = () => {
                       <div>
                         <h4 className="font-medium text-foreground">{fav.name}</h4>
                         <p className="text-xs text-muted-foreground">{fav.location}</p>
-                        <p className="text-sm font-semibold text-primary mt-1">{fav.price}</p>
+                        <p className="text-sm font-semibold text-accent mt-1">{fav.price}</p>
                       </div>
                     </Link>
                   ))}
@@ -507,7 +507,7 @@ const Dashboard = () => {
 
               {/* Quick Actions for Customers */}
               {userRole === 'customer' && (
-                <Card className="border-0 shadow-sm bg-primary text-primary-foreground">
+                <Card className="border-0 shadow-sm bg-primary text-accent-foreground">
                   <CardContent className="p-6 text-center">
                     <h3 className="font-heading font-bold text-lg mb-2">Own a Farmhouse?</h3>
                     <p className="text-sm opacity-90 mb-4">List your property and start earning</p>

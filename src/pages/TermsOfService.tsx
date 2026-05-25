@@ -106,7 +106,7 @@ export default function TermsOfService() {
 
           <section className="pt-6 border-t border-border">
             <p className="text-muted-foreground">
-              For questions, contact us at <a href="mailto:legal@bookfarm.com" className="text-primary hover:underline">legal@bookfarm.com</a>
+              For questions, contact us at <a href="mailto:legal@bookfarm.com" className="text-accent hover:underline">legal@bookfarm.com</a>
             </p>
           </section>
         </div>

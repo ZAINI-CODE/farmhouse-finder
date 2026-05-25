@@ -360,7 +360,7 @@ export default function OwnerAdmin() {
   if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Loader2 className="w-8 h-8 animate-spin text-accent" />
       </div>
     );
   }
@@ -408,11 +408,11 @@ export default function OwnerAdmin() {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
             {[
-              { label: 'Total Bookings', value: stats.total, icon: Calendar, color: 'text-primary' },
+              { label: 'Total Bookings', value: stats.total, icon: Calendar, color: 'text-accent' },
               { label: 'Pending Approval', value: stats.pending, icon: Clock, color: 'text-yellow-500' },
               { label: 'Pending Payments', value: stats.pendingPayments, icon: Banknote, color: 'text-amber-500' },
               { label: 'Confirmed', value: stats.confirmed, icon: CheckCircle2, color: 'text-green-500' },
-              { label: 'Total Revenue', value: `PKR ${stats.revenue.toLocaleString()}`, icon: CreditCard, color: 'text-primary' },
+              { label: 'Total Revenue', value: `PKR ${stats.revenue.toLocaleString()}`, icon: CreditCard, color: 'text-accent' },
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -554,7 +554,7 @@ export default function OwnerAdmin() {
                                 </div>
                                 <div>
                                   <p className="text-muted-foreground">Amount</p>
-                                  <p className="font-semibold text-primary">PKR {booking.total_amount.toLocaleString()}</p>
+                                  <p className="font-semibold text-accent">PKR {booking.total_amount.toLocaleString()}</p>
                                 </div>
                               </div>
 

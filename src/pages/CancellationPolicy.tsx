@@ -47,12 +47,12 @@ export default function CancellationPolicy() {
       <Navbar />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-primary text-primary-foreground py-16">
+        <section className="bg-primary text-accent-foreground py-16">
           <div className="container mx-auto px-4 text-center">
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
               Cancellation & Refund Policy
             </h1>
-            <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto">
+            <p className="text-accent-foreground/80 text-lg max-w-2xl mx-auto">
               We understand plans can change. Here's everything you need to know about cancellations and refunds.
             </p>
           </div>
@@ -91,28 +91,28 @@ export default function CancellationPolicy() {
             <h2 className="font-heading text-2xl font-bold mb-8">How to Cancel Your Booking</h2>
             <div className="space-y-6">
               <div className="flex gap-4">
-                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 font-bold">1</div>
+                <div className="w-8 h-8 rounded-full bg-primary text-accent-foreground flex items-center justify-center shrink-0 font-bold">1</div>
                 <div>
                   <h3 className="font-semibold mb-1">Log into Your Account</h3>
                   <p className="text-muted-foreground">Sign in to your BookFarm account using your registered email and password.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 font-bold">2</div>
+                <div className="w-8 h-8 rounded-full bg-primary text-accent-foreground flex items-center justify-center shrink-0 font-bold">2</div>
                 <div>
                   <h3 className="font-semibold mb-1">Go to Your Dashboard</h3>
                   <p className="text-muted-foreground">Navigate to "My Bookings" section in your dashboard.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 font-bold">3</div>
+                <div className="w-8 h-8 rounded-full bg-primary text-accent-foreground flex items-center justify-center shrink-0 font-bold">3</div>
                 <div>
                   <h3 className="font-semibold mb-1">Select the Booking</h3>
                   <p className="text-muted-foreground">Find the booking you wish to cancel and click on it to view details.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 font-bold">4</div>
+                <div className="w-8 h-8 rounded-full bg-primary text-accent-foreground flex items-center justify-center shrink-0 font-bold">4</div>
                 <div>
                   <h3 className="font-semibold mb-1">Request Cancellation</h3>
                   <p className="text-muted-foreground">Click "Cancel Booking" and provide a reason. You'll receive a confirmation email with refund details.</p>
@@ -129,7 +129,7 @@ export default function CancellationPolicy() {
             <div className="space-y-8">
               <div>
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
-                  <Info className="h-5 w-5 text-primary" />
+                  <Info className="h-5 w-5 text-accent" />
                   Refund Processing Time
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
@@ -139,7 +139,7 @@ export default function CancellationPolicy() {
 
               <div>
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
-                  <Info className="h-5 w-5 text-primary" />
+                  <Info className="h-5 w-5 text-accent" />
                   Vendor Services
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
@@ -149,7 +149,7 @@ export default function CancellationPolicy() {
 
               <div>
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
-                  <Info className="h-5 w-5 text-primary" />
+                  <Info className="h-5 w-5 text-accent" />
                   Rescheduling Option
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
@@ -159,7 +159,7 @@ export default function CancellationPolicy() {
 
               <div>
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
-                  <Info className="h-5 w-5 text-primary" />
+                  <Info className="h-5 w-5 text-accent" />
                   Force Majeure
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
@@ -169,7 +169,7 @@ export default function CancellationPolicy() {
 
               <div>
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
-                  <Info className="h-5 w-5 text-primary" />
+                  <Info className="h-5 w-5 text-accent" />
                   Property Owner Cancellations
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
@@ -188,11 +188,11 @@ export default function CancellationPolicy() {
               Our support team is available to assist you with any cancellation-related queries.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="mailto:support@bookfarm.com" className="text-primary hover:underline">
+              <a href="mailto:support@bookfarm.com" className="text-accent hover:underline">
                 support@bookfarm.com
               </a>
               <span className="text-muted-foreground">|</span>
-              <a href="tel:+923001234567" className="text-primary hover:underline">
+              <a href="tel:+923001234567" className="text-accent hover:underline">
                 +92 300 123 4567
               </a>
             </div>

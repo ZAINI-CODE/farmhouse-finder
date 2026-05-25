@@ -53,7 +53,7 @@ const getCategoryColor = (category: string) => {
     bakery: "bg-amber-500/10 text-amber-600",
     planning: "bg-emerald-500/10 text-emerald-600",
   };
-  return colors[category.toLowerCase()] || "bg-primary/10 text-primary";
+  return colors[category.toLowerCase()] || "bg-primary/10 text-accent";
 };
 
 export default function ServiceDetail() {
@@ -90,7 +90,7 @@ export default function ServiceDetail() {
       <div className="min-h-screen bg-background">
         <Navbar />
         <main className="pt-24 pb-20 flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <Loader2 className="h-8 w-8 animate-spin text-accent" />
         </main>
         <Footer />
       </div>
@@ -176,17 +176,17 @@ export default function ServiceDetail() {
                     <p className="text-xs text-muted-foreground">{vendor.reviews_count || 0} reviews</p>
                   </div>
                   <div className="bg-secondary/50 rounded-xl p-4 text-center">
-                    <Award className="h-5 w-5 mx-auto text-primary mb-2" />
+                    <Award className="h-5 w-5 mx-auto text-accent mb-2" />
                     <p className="font-bold text-foreground">{vendor.is_verified ? 'Verified' : 'Unverified'}</p>
                     <p className="text-xs text-muted-foreground">Status</p>
                   </div>
                   <div className="bg-secondary/50 rounded-xl p-4 text-center">
-                    <Users className="h-5 w-5 mx-auto text-primary mb-2" />
+                    <Users className="h-5 w-5 mx-auto text-accent mb-2" />
                     <p className="font-bold text-foreground capitalize">{vendor.category}</p>
                     <p className="text-xs text-muted-foreground">Category</p>
                   </div>
                   <div className="bg-secondary/50 rounded-xl p-4 text-center">
-                    <Clock className="h-5 w-5 mx-auto text-primary mb-2" />
+                    <Clock className="h-5 w-5 mx-auto text-accent mb-2" />
                     <p className="font-bold text-foreground">{vendor.price_range || '$$'}</p>
                     <p className="text-xs text-muted-foreground">Price Range</p>
                   </div>

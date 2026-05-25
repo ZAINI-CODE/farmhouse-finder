@@ -128,7 +128,7 @@ export default function PropertyDetail() {
       <div className="min-h-screen bg-background">
         <Navbar />
         <main className="pt-24 pb-20 flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <Loader2 className="h-8 w-8 animate-spin text-accent" />
         </main>
         <Footer />
       </div>

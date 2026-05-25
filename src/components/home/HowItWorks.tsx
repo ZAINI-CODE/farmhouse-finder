@@ -80,7 +80,7 @@ export function HowItWorks() {
                 {/* Step Number */}
                 <div className="relative inline-flex items-center justify-center mb-6">
                   <div className={`w-16 h-16 rounded-2xl ${step.color} flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform`}>
-                    <step.icon className="h-8 w-8 text-primary-foreground" />
+                    <step.icon className="h-8 w-8 text-accent-foreground" />
                   </div>
                   <span className="absolute -top-2 -right-2 w-7 h-7 bg-card border-2 border-accent rounded-full flex items-center justify-center text-sm font-bold text-accent">
                     {index + 1}

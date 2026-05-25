@@ -96,7 +96,7 @@ export default function Safety() {
       <Navbar />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-primary text-primary-foreground py-16">
+        <section className="bg-primary text-accent-foreground py-16">
           <div className="container mx-auto px-4 text-center">
             <div className="w-16 h-16 rounded-full bg-primary-foreground/20 flex items-center justify-center mx-auto mb-6">
               <Shield className="h-8 w-8" />
@@ -104,7 +104,7 @@ export default function Safety() {
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
               Safety at BookFarm
             </h1>
-            <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto">
+            <p className="text-accent-foreground/80 text-lg max-w-2xl mx-auto">
               Your safety is our top priority. We've built multiple layers of protection to ensure you have a secure and worry-free experience.
             </p>
           </div>
@@ -119,7 +119,7 @@ export default function Safety() {
                 <Card key={index} className="hover:shadow-lg transition-shadow">
                   <CardContent className="p-6">
                     <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                      <feature.icon className="h-6 w-6 text-primary" />
+                      <feature.icon className="h-6 w-6 text-accent" />
                     </div>
                     <h3 className="font-heading text-lg font-semibold mb-2">{feature.title}</h3>
                     <p className="text-muted-foreground text-sm">{feature.description}</p>
@@ -136,7 +136,7 @@ export default function Safety() {
             <div className="max-w-4xl mx-auto">
               <div className="flex items-center gap-4 mb-8">
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Building className="h-6 w-6 text-primary" />
+                  <Building className="h-6 w-6 text-accent" />
                 </div>
                 <div>
                   <h2 className="font-heading text-2xl font-bold">Property Safety Standards</h2>
@@ -167,7 +167,7 @@ export default function Safety() {
                     <ul className="space-y-3">
                       {section.items.map((item, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                          <CheckCircle className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                          <CheckCircle className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -194,16 +194,16 @@ export default function Safety() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Card className="flex-1 max-w-xs">
                   <CardContent className="p-6 text-center">
-                    <Phone className="h-6 w-6 text-primary mx-auto mb-2" />
+                    <Phone className="h-6 w-6 text-accent mx-auto mb-2" />
                     <p className="font-semibold">Emergency Hotline</p>
-                    <a href="tel:+923001234567" className="text-primary hover:underline">+92 300 123 4567</a>
+                    <a href="tel:+923001234567" className="text-accent hover:underline">+92 300 123 4567</a>
                   </CardContent>
                 </Card>
                 <Card className="flex-1 max-w-xs">
                   <CardContent className="p-6 text-center">
-                    <Camera className="h-6 w-6 text-primary mx-auto mb-2" />
+                    <Camera className="h-6 w-6 text-accent mx-auto mb-2" />
                     <p className="font-semibold">Report via Email</p>
-                    <a href="mailto:safety@bookfarm.com" className="text-primary hover:underline">safety@bookfarm.com</a>
+                    <a href="mailto:safety@bookfarm.com" className="text-accent hover:underline">safety@bookfarm.com</a>
                   </CardContent>
                 </Card>
               </div>
@@ -214,7 +214,7 @@ export default function Safety() {
         {/* Community Trust */}
         <section className="py-16">
           <div className="container mx-auto px-4 text-center">
-            <Heart className="h-12 w-12 text-primary mx-auto mb-6" />
+            <Heart className="h-12 w-12 text-accent mx-auto mb-6" />
             <h2 className="font-heading text-2xl font-bold mb-4">Built on Trust</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Our community of property owners, vendors, and guests works together to maintain high standards. 

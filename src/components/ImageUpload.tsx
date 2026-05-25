@@ -169,14 +169,14 @@ export function ImageUpload({
         />
         {uploading ? (
           <div className="flex flex-col items-center gap-3">
-            <Loader2 className="w-10 h-10 text-primary animate-spin" />
+            <Loader2 className="w-10 h-10 text-accent animate-spin" />
             <p className="text-sm text-muted-foreground">Uploading images...</p>
           </div>
         ) : (
           <>
             <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
             <p className="text-sm text-muted-foreground">
-              Drag and drop images or <span className="text-primary font-medium">browse</span>
+              Drag and drop images or <span className="text-accent font-medium">browse</span>
             </p>
             <p className="text-xs text-muted-foreground mt-1">
               PNG, JPG, WebP up to 5MB each ({images.length}/{maxImages})
@@ -216,7 +216,7 @@ export function ImageUpload({
                 </Button>
               </div>
               {index === 0 && (
-                <span className="absolute top-2 left-2 text-xs bg-primary text-primary-foreground px-2 py-1 rounded">
+                <span className="absolute top-2 left-2 text-xs bg-primary text-accent-foreground px-2 py-1 rounded">
                   Cover
                 </span>
               )}
